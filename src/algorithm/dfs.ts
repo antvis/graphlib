@@ -1,12 +1,12 @@
 import Graph from '../Graph';
 
-const doDFS = <NodeType = any>(
-  graph: Graph<NodeType>,
-  node: NodeType,
+const doDFS = <NodeIDType = any>(
+  graph: Graph<NodeIDType>,
+  node: NodeIDType,
   postorder: boolean,
-  visited: Set<NodeType>,
-  navigator: (n: NodeType) => NodeType[],
-  result: NodeType[],
+  visited: Set<NodeIDType>,
+  navigator: (n: NodeIDType) => NodeIDType[],
+  result: NodeIDType[],
 ) => {
   if (!visited.has(node)) {
     visited.add(node);
@@ -14,7 +14,7 @@ const doDFS = <NodeType = any>(
       result.push(node);
     }
     navigator(node).forEach((n) =>
-      doDFS<NodeType>(graph, n, postorder, visited, navigator, result),
+      doDFS<NodeIDType>(graph, n, postorder, visited, navigator, result),
     );
     if (postorder) {
       result.push(node);
@@ -22,16 +22,16 @@ const doDFS = <NodeType = any>(
   }
 };
 
-const dfs = <NodeType = any>(
-  graph: Graph<NodeType>,
-  node: NodeType | NodeType[],
+const dfs = <NodeIDType = any>(
+  graph: Graph<NodeIDType>,
+  node: NodeIDType | NodeIDType[],
   order: 'pre' | 'post',
 ) => {
   const nodes = Array.isArray(node) ? node : [node];
-  const navigator = (n: NodeType) =>
+  const navigator = (n: NodeIDType) =>
     (graph.isDirected() ? graph.successors(n) : graph.neighbors(n))!;
-  const results: NodeType[] = [];
-  const visited = new Set<NodeType>();
+  const results: NodeIDType[] = [];
+  const visited = new Set<NodeIDType>();
   nodes.forEach((node) => {
     if (!graph.hasNode(node)) {
       throw new Error('Graph does not have node: ' + node);

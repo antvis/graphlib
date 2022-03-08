@@ -3,40 +3,40 @@ import PriorityQueue from '../PriorityQueue';
 
 const DEFAULT_WEIGHT_FUNC = () => 1;
 
-const dijkstra = <NodeType, EdgeType>(
-  graph: Graph<NodeType, EdgeType>,
-  source: NodeType,
-  weightFn?: (node: DefaultEdgeType<NodeType, EdgeType>) => number,
-  edgeFn?: (node: NodeType) => DefaultEdgeType<NodeType, EdgeType>[],
+const dijkstra = <NodeIDType, EdgeType>(
+  graph: Graph<NodeIDType, any, EdgeType>,
+  source: NodeIDType,
+  weightFn?: (node: DefaultEdgeType<NodeIDType, EdgeType>) => number,
+  edgeFn?: (node: NodeIDType) => DefaultEdgeType<NodeIDType, EdgeType>[],
 ) => {
-  return runDijkstra<NodeType, EdgeType>(
+  return runDijkstra<NodeIDType, EdgeType>(
     graph,
     source,
     weightFn || DEFAULT_WEIGHT_FUNC,
     edgeFn ||
-      function (v: NodeType) {
+      function (v: NodeIDType) {
         return graph.outEdges(v)!;
       },
   );
 };
 
-type Entry<NodeType> = {
+type Entry<NodeIDType> = {
   distance: number;
-  predecessor?: NodeType;
+  predecessor?: NodeIDType;
 };
 
-const runDijkstra = <NodeType, EdgeType>(
-  graph: Graph<NodeType, EdgeType>,
-  source: NodeType,
-  weightFn: (node: DefaultEdgeType<NodeType, EdgeType>) => number,
-  edgeFn: (node: NodeType) => DefaultEdgeType<NodeType, EdgeType>[],
+const runDijkstra = <NodeIDType, EdgeType>(
+  graph: Graph<NodeIDType, any, EdgeType>,
+  source: NodeIDType,
+  weightFn: (node: DefaultEdgeType<NodeIDType, EdgeType>) => number,
+  edgeFn: (node: NodeIDType) => DefaultEdgeType<NodeIDType, EdgeType>[],
 ) => {
-  const results: Record<string, Entry<NodeType>> = {};
-  const pq = new PriorityQueue<NodeType>();
-  let v: NodeType | undefined;
-  let vEntry: Entry<NodeType> | undefined;
+  const results: Record<string, Entry<NodeIDType>> = {};
+  const pq = new PriorityQueue<NodeIDType>();
+  let v: NodeIDType | undefined;
+  let vEntry: Entry<NodeIDType> | undefined;
 
-  var updateNeighbors = function (edge: DefaultEdgeType<NodeType, EdgeType>) {
+  var updateNeighbors = function (edge: DefaultEdgeType<NodeIDType, EdgeType>) {
     const w = edge.v !== v ? edge.v : edge.w;
     const wEntry = results[String(w)]!;
     const weight = weightFn(edge);

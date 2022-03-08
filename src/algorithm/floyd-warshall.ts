@@ -2,32 +2,32 @@ import Graph, { DefaultEdgeType } from '../Graph';
 
 const DEFAULT_WEIGHT_FUNC = () => 1;
 
-export function floydWarshall<NodeType, EdgeType>(
-  graph: Graph<NodeType, EdgeType>,
-  weightFn?: (node: DefaultEdgeType<NodeType, EdgeType>) => number,
-  edgeFn?: (node: NodeType) => DefaultEdgeType<NodeType, EdgeType>[],
+export function floydWarshall<NodeIDType, EdgeType>(
+  graph: Graph<NodeIDType, any, EdgeType>,
+  weightFn?: (node: DefaultEdgeType<NodeIDType, EdgeType>) => number,
+  edgeFn?: (node: NodeIDType) => DefaultEdgeType<NodeIDType, EdgeType>[],
 ) {
   return runFloydWarshall(
     graph,
     weightFn || DEFAULT_WEIGHT_FUNC,
     edgeFn ||
-      function (v: NodeType) {
+      function (v: NodeIDType) {
         return graph.outEdges(v)!;
       },
   );
 }
 
-type Entry<NodeType> = {
+type Entry<NodeIDType> = {
   distance?: number;
-  predecessor?: NodeType;
+  predecessor?: NodeIDType;
 };
 
-function runFloydWarshall<NodeType, EdgeType>(
-  graph: Graph<NodeType, EdgeType>,
-  weightFn: (node: DefaultEdgeType<NodeType, EdgeType>) => number,
-  edgeFn: (node: NodeType) => DefaultEdgeType<NodeType, EdgeType>[],
+function runFloydWarshall<NodeIDType, EdgeType>(
+  graph: Graph<NodeIDType, any, EdgeType>,
+  weightFn: (node: DefaultEdgeType<NodeIDType, EdgeType>) => number,
+  edgeFn: (node: NodeIDType) => DefaultEdgeType<NodeIDType, EdgeType>[],
 ) {
-  var results: Record<string, Record<string, Entry<NodeType>>> = {};
+  var results: Record<string, Record<string, Entry<NodeIDType>>> = {};
   var nodes = graph.nodes();
 
   nodes.forEach(function (node) {

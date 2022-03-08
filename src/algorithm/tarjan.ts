@@ -6,13 +6,13 @@ type Entry = {
   index: number;
 };
 
-const tarjan = <NodeType>(graph: Graph<NodeType>) => {
+const tarjan = <NodeIDType>(graph: Graph<NodeIDType>) => {
   let index = 0;
-  const stack: NodeType[] = [];
-  const visited = new Map<NodeType, Entry>(); // node id -> { onStack, lowlink, index }
-  const results: NodeType[][] = [];
+  const stack: NodeIDType[] = [];
+  const visited = new Map<NodeIDType, Entry>(); // node id -> { onStack, lowlink, index }
+  const results: NodeIDType[][] = [];
 
-  function dfs(v: NodeType) {
+  function dfs(v: NodeIDType) {
     const entry = {
       onStack: true,
       lowlink: index,

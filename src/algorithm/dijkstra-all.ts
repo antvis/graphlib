@@ -2,7 +2,7 @@ import Graph, { DefaultEdgeType } from '../Graph';
 import dijkstra from './dijkstra';
 
 const dijkstraAll = <NodeType, EdgeType>(
-  graph: Graph<NodeType, EdgeType>,
+  graph: Graph<NodeType, any, EdgeType>,
   weightFn?: (node: DefaultEdgeType<NodeType, EdgeType>) => number,
   edgeFn?: (node: NodeType) => DefaultEdgeType<NodeType, EdgeType>[],
 ) => {

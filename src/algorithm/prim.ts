@@ -1,16 +1,16 @@
 import Graph, { DefaultEdgeType } from '../Graph';
 import PriorityQueue from '../PriorityQueue';
 
-const prim = <NodeType, EdgeType>(
-  graph: Graph<NodeType, EdgeType>,
-  weightFn: (node: DefaultEdgeType<NodeType, EdgeType>) => number,
+const prim = <NodeIdType, NodeType, EdgeType>(
+  graph: Graph<NodeIdType, NodeType, EdgeType>,
+  weightFn: (node: DefaultEdgeType<NodeIdType, EdgeType>) => number,
 ) => {
-  const result = new Graph<NodeType, EdgeType>();
-  const parents = new Map<NodeType, NodeType>();
-  const pq = new PriorityQueue<NodeType>();
-  let v: NodeType;
+  const result = new Graph<NodeIdType, NodeType, EdgeType>();
+  const parents = new Map<NodeIdType, NodeIdType>();
+  const pq = new PriorityQueue<NodeIdType>();
+  let v: NodeIdType;
 
-  function updateNeighbors(edge: DefaultEdgeType<NodeType, EdgeType>) {
+  function updateNeighbors(edge: DefaultEdgeType<NodeIdType, EdgeType>) {
     const w = edge.v === v ? edge.w : edge.v;
     const pri = pq.priority(w);
     if (pri !== undefined) {
@@ -37,7 +37,7 @@ const prim = <NodeType, EdgeType>(
   let init = false;
   while (pq.size() > 0) {
     v = pq.removeMin()!;
-    
+
     if (parents.has(v)) {
       result.setEdge(v, parents.get(v)!);
     } else if (init) {

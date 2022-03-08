@@ -31,16 +31,21 @@ const defaultOption: GraphOption = {
   directed: true,
 };
 
-export interface DefaultEdgeType<NodeType, EdgeType> {
-  v: NodeType;
-  w: NodeType;
+export interface DefaultEdgeType<NodeIDType, EdgeType> {
+  v: NodeIDType;
+  w: NodeIDType;
   name?: string;
   value?: EdgeType;
 }
 
 type EdgeID = string;
 
-export default class Graph<NodeType = string, EdgeType = Record<string, any>, LabelType = string> {
+export default class Graph<
+  NodeIDType = string,
+  NodeType = Record<string, any>,
+  EdgeType = Record<string, any>,
+  GraphType = string,
+> {
   // Graph option or basic props
   private directed: boolean = true;
 
@@ -48,14 +53,14 @@ export default class Graph<NodeType = string, EdgeType = Record<string, any>, La
 
   private compound: boolean = false;
 
-  private GRAPH_NODE = GraphEnum.GRAPH_NODE as unknown as NodeType;
+  private GRAPH_NODE = GraphEnum.GRAPH_NODE as unknown as NodeIDType;
 
   /**
    * @description Label for this graph itself
    * @description.zh-CN 图本身的标签（label）
    * @default undefined
    */
-  label?: LabelType;
+  label?: GraphType;
 
   /**
    * @description Number of nodes in the graph
@@ -71,10 +76,13 @@ export default class Graph<NodeType = string, EdgeType = Record<string, any>, La
    */
   private edgeCountNum = 0;
 
-  private defaultNodeLabelFn: (v: NodeType) => LabelType | undefined = () => undefined;
+  private defaultNodeLabelFn: (v: NodeIDType) => NodeType | undefined = () => undefined;
 
-  private defaultEdgeLabelFn: (v: NodeType, w: NodeType, name?: string) => LabelType | undefined =
-    () => undefined;
+  private defaultEdgeLabelFn: (
+    v: NodeIDType,
+    w: NodeIDType,
+    name?: string,
+  ) => EdgeType | undefined = () => undefined;
 
   constructor(options: GraphOption = {}) {
     const resultOptions = {
@@ -93,23 +101,23 @@ export default class Graph<NodeType = string, EdgeType = Record<string, any>, La
 
   // Map for graph
 
-  private parentMap?: Map<NodeType, NodeType>;
+  private parentMap?: Map<NodeIDType, NodeIDType>;
 
-  private childrenMap?: Map<NodeType, Map<NodeType, boolean>>;
+  private childrenMap?: Map<NodeIDType, Map<NodeIDType, boolean>>;
 
-  private nodesLabelMap = new Map<NodeType, LabelType | undefined>();
+  private nodesLabelMap = new Map<NodeIDType, NodeType | undefined>();
 
-  private inEdgesMap = new Map<NodeType, Map<EdgeID, DefaultEdgeType<NodeType, EdgeType>>>();
+  private inEdgesMap = new Map<NodeIDType, Map<EdgeID, DefaultEdgeType<NodeIDType, EdgeType>>>();
 
-  private outEdgesMap = new Map<NodeType, Map<EdgeID, DefaultEdgeType<NodeType, EdgeType>>>();
+  private outEdgesMap = new Map<NodeIDType, Map<EdgeID, DefaultEdgeType<NodeIDType, EdgeType>>>();
 
-  private predecessorsMap = new Map<NodeType, Map<NodeType, number>>();
+  private predecessorsMap = new Map<NodeIDType, Map<NodeIDType, number>>();
 
-  private successorsMap = new Map<NodeType, Map<NodeType, number>>();
+  private successorsMap = new Map<NodeIDType, Map<NodeIDType, number>>();
 
-  private edgesMap = new Map<string, DefaultEdgeType<NodeType, EdgeType>>();
+  private edgesMap = new Map<string, DefaultEdgeType<NodeIDType, EdgeType>>();
 
-  private edgesLabelsMap = new Map<string, LabelType | undefined>();
+  private edgesLabelsMap = new Map<string, EdgeType | undefined>();
 
   /**
    * @description Is the graph directed or not
@@ -138,7 +146,7 @@ export default class Graph<NodeType = string, EdgeType = Record<string, any>, La
    * @param label
    * @returns
    */
-  setGraph = (label?: LabelType) => {
+  setGraph = (label?: GraphType) => {
     this.label = label;
     return this;
   };
@@ -148,7 +156,7 @@ export default class Graph<NodeType = string, EdgeType = Record<string, any>, La
    * @description.zh-CN 获取图的标识符
    * @returns stirng | undefined
    */
-  graph = () => this.label as LabelType;
+  graph = () => this.label as GraphType;
 
   /**
    * @description Set function that generate default label for node, if param is non-function value then default label will always be this value;
@@ -172,7 +180,7 @@ export default class Graph<NodeType = string, EdgeType = Record<string, any>, La
    */
   nodeCount = () => this.nodeCountNum;
 
-  node = (n: NodeType) => this.nodesLabelMap.get(n);
+  node = (n: NodeIDType) => this.nodesLabelMap.get(n);
 
   /**
    * @description Return all nodes in graph
@@ -202,7 +210,7 @@ export default class Graph<NodeType = string, EdgeType = Record<string, any>, La
    * @param value
    * @returns
    */
-  setNode = (node: NodeType, value?: LabelType) => {
+  setNode = (node: NodeIDType, value?: NodeType) => {
     const {
       nodesLabelMap,
       defaultNodeLabelFn,
@@ -247,7 +255,7 @@ export default class Graph<NodeType = string, EdgeType = Record<string, any>, La
    * @param value
    * @returns
    */
-  setNodes = (nodes: NodeType[], value?: LabelType) => {
+  setNodes = (nodes: NodeIDType[], value?: NodeType) => {
     nodes.map((node) => this.setNode(node, value));
     return this;
   };
@@ -258,7 +266,7 @@ export default class Graph<NodeType = string, EdgeType = Record<string, any>, La
    * @param node
    * @returns
    */
-  hasNode = (node: NodeType) => this.nodesLabelMap.has(node);
+  hasNode = (node: NodeIDType) => this.nodesLabelMap.has(node);
 
   /**
    * @description if graph is not compound then throw error
@@ -276,7 +284,7 @@ export default class Graph<NodeType = string, EdgeType = Record<string, any>, La
    * @param node
    * @returns
    */
-  parent = (node: NodeType) => {
+  parent = (node: NodeIDType) => {
     if (this.isCompound()) {
       const parent = this.parentMap?.get(node);
       if (parent !== this.GRAPH_NODE) {
@@ -290,7 +298,7 @@ export default class Graph<NodeType = string, EdgeType = Record<string, any>, La
    * @description.zh-CN 将节点与其父节点之间的父子关系删除(只有复合图可以使用)
    * @param node
    */
-  private removeFromParentsChildList = (node: NodeType) => {
+  private removeFromParentsChildList = (node: NodeIDType) => {
     const targetParent = this.parentMap!.get(node)!;
     this.childrenMap!.get(targetParent)!.delete(node);
   };
@@ -302,7 +310,7 @@ export default class Graph<NodeType = string, EdgeType = Record<string, any>, La
    * @param parent
    * @returns
    */
-  setParent = (node: NodeType, parent?: NodeType) => {
+  setParent = (node: NodeIDType, parent?: NodeIDType) => {
     this.checkCompound();
     let realParent = parent === undefined ? this.GRAPH_NODE : parent;
     let checkNode = this.parent(realParent);
@@ -337,7 +345,7 @@ export default class Graph<NodeType = string, EdgeType = Record<string, any>, La
    * @param node
    * @returns
    */
-  children = (node?: NodeType) => {
+  children = (node?: NodeIDType) => {
     const targetNode = node === undefined ? this.GRAPH_NODE : node;
 
     if (this.isCompound()) {
@@ -361,7 +369,7 @@ export default class Graph<NodeType = string, EdgeType = Record<string, any>, La
    * @param node
    * @returns
    */
-  predecessors = (node: NodeType) => {
+  predecessors = (node: NodeIDType) => {
     const preds = this.predecessorsMap.get(node);
     return preds ? Array.from(preds.keys()) : undefined;
   };
@@ -372,7 +380,7 @@ export default class Graph<NodeType = string, EdgeType = Record<string, any>, La
    * @param node
    * @returns
    */
-  successors = (node: NodeType) => {
+  successors = (node: NodeIDType) => {
     const succs = this.successorsMap.get(node);
     return succs ? Array.from(succs.keys()) : undefined;
   };
@@ -383,7 +391,7 @@ export default class Graph<NodeType = string, EdgeType = Record<string, any>, La
    * @param node
    * @returns
    */
-  neighbors = (node: NodeType) => {
+  neighbors = (node: NodeIDType) => {
     if (!this.hasNode(node)) {
       return undefined;
     }
@@ -396,7 +404,7 @@ export default class Graph<NodeType = string, EdgeType = Record<string, any>, La
    * @param node
    * @returns
    */
-  isLeaf = (node: NodeType) => {
+  isLeaf = (node: NodeIDType) => {
     if (this.isDirected()) {
       return !this.successors(node)?.length;
     }
@@ -409,9 +417,9 @@ export default class Graph<NodeType = string, EdgeType = Record<string, any>, La
    * @param filter
    * @returns
    */
-  filterNodes = (filter: (node: NodeType) => boolean) => {
+  filterNodes = (filter: (node: NodeIDType) => boolean) => {
     const { directed, multigraph, compound } = this;
-    const copyGraph = new Graph<NodeType, EdgeType, LabelType>({
+    const copyGraph = new Graph<NodeIDType, NodeType, EdgeType, GraphType>({
       directed,
       multigraph,
       compound,
@@ -432,7 +440,7 @@ export default class Graph<NodeType = string, EdgeType = Record<string, any>, La
     });
 
     if (compound) {
-      const findParent = (node: NodeType) => {
+      const findParent = (node: NodeIDType) => {
         let parent = this.parent(node);
 
         while (parent !== undefined && !copyGraph.hasNode(parent)) {
@@ -455,9 +463,9 @@ export default class Graph<NodeType = string, EdgeType = Record<string, any>, La
    * @param node
    * @returns
    */
-  removeNode = (node: NodeType) => {
+  removeNode = (node: NodeIDType) => {
     if (this.hasNode(node)) {
-      const cleanEdge = (edgeObj: DefaultEdgeType<NodeType, EdgeType>) => {
+      const cleanEdge = (edgeObj: DefaultEdgeType<NodeIDType, EdgeType>) => {
         this.removeEdge(edgeObj.v, edgeObj.w, edgeObj.name);
       };
 
@@ -516,8 +524,8 @@ export default class Graph<NodeType = string, EdgeType = Record<string, any>, La
    * @param name
    * @returns
    */
-  setEdge = (v_: NodeType, w_: NodeType, value?: any, name?: string) => {
-    const edgeObj = edgeArgsToObj<NodeType>(this.isDirected(), v_, w_, name);
+  setEdge = (v_: NodeIDType, w_: NodeIDType, value?: any, name?: string) => {
+    const edgeObj = edgeArgsToObj<NodeIDType>(this.isDirected(), v_, w_, name);
     const edgeId = edgeObjToId(this.isDirected(), edgeObj);
     const { v, w } = edgeObj;
 
@@ -549,7 +557,7 @@ export default class Graph<NodeType = string, EdgeType = Record<string, any>, La
     return this;
   };
 
-  setEdgeObj = (edgeObj: DefaultEdgeType<NodeType, EdgeType>) => {
+  setEdgeObj = (edgeObj: DefaultEdgeType<NodeIDType, EdgeType>) => {
     return this.setEdge(edgeObj.v, edgeObj.w, edgeObj.value, edgeObj.name);
   };
 
@@ -560,7 +568,7 @@ export default class Graph<NodeType = string, EdgeType = Record<string, any>, La
    * @param value
    * @returns
    */
-  setPath = (edges: NodeType[], value?: any) => {
+  setPath = (edges: NodeIDType[], value?: any) => {
     edges.reduce((v, w) => {
       this.setEdge(v, w, value);
       return w;
@@ -576,7 +584,7 @@ export default class Graph<NodeType = string, EdgeType = Record<string, any>, La
    * @param name
    * @returns
    */
-  edge = (v: NodeType, w: NodeType, name?: any) => {
+  edge = (v: NodeIDType, w: NodeIDType, name?: any) => {
     return this.edgesLabelsMap.get(edgeObjToId(this.isDirected(), { v, w, name }));
   };
 
@@ -586,7 +594,7 @@ export default class Graph<NodeType = string, EdgeType = Record<string, any>, La
    * @param edgeObj
    * @returns
    */
-  edgeFromObj = (edgeObj: { v: NodeType; w: NodeType; name?: any }) => {
+  edgeFromObj = (edgeObj: { v: NodeIDType; w: NodeIDType; name?: any }) => {
     return this.edgesLabelsMap.get(edgeObjToId(this.isDirected(), edgeObj));
   };
 
@@ -598,7 +606,7 @@ export default class Graph<NodeType = string, EdgeType = Record<string, any>, La
    * @param name
    * @returns
    */
-  hasEdge = (v: NodeType, w: NodeType, name?: any) => {
+  hasEdge = (v: NodeIDType, w: NodeIDType, name?: any) => {
     return this.edgesLabelsMap.has(edgeObjToId(this.isDirected(), { v, w, name }));
   };
 
@@ -610,7 +618,7 @@ export default class Graph<NodeType = string, EdgeType = Record<string, any>, La
    * @param name
    * @returns
    */
-  removeEdge = (v_: NodeType, w_: NodeType, name?: any) => {
+  removeEdge = (v_: NodeIDType, w_: NodeIDType, name?: any) => {
     const edgeId = edgeArgsToId(this.isDirected(), v_, w_, name);
     const edgeObj = this.edgesMap.get(edgeId);
     if (edgeObj) {
@@ -639,7 +647,7 @@ export default class Graph<NodeType = string, EdgeType = Record<string, any>, La
    * @param u
    * @returns
    */
-  inEdges = (v: NodeType, u?: NodeType) => {
+  inEdges = (v: NodeIDType, u?: NodeIDType) => {
     const inV = this.inEdgesMap.get(v);
     if (inV) {
       return Array.from(inV.values()).filter((e) => !u || e.v === u);
@@ -654,7 +662,7 @@ export default class Graph<NodeType = string, EdgeType = Record<string, any>, La
    * @param u
    * @returns
    */
-  outEdges = (w: NodeType, u?: NodeType) => {
+  outEdges = (w: NodeIDType, u?: NodeIDType) => {
     const outW = this.outEdgesMap.get(w);
     if (outW) {
       return Array.from(outW.values()).filter((e) => !u || e.w === u);
@@ -669,7 +677,7 @@ export default class Graph<NodeType = string, EdgeType = Record<string, any>, La
    * @param u
    * @returns
    */
-  nodeEdges = (v: NodeType, w?: NodeType) => {
+  nodeEdges = (v: NodeIDType, w?: NodeIDType) => {
     if (!this.hasNode(v)) {
       return undefined;
     }

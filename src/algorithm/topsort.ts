@@ -2,12 +2,12 @@ import Graph from '../Graph';
 
 export class CycleException extends Error {}
 
-function topsort<NodeType>(graph: Graph<NodeType>) {
-  var visited = new Set<NodeType>();
-  var stack = new Set<NodeType>();
-  var results: NodeType[] = [];
+function topsort<NodeIDType>(graph: Graph<NodeIDType>) {
+  var visited = new Set<NodeIDType>();
+  var stack = new Set<NodeIDType>();
+  var results: NodeIDType[] = [];
 
-  function visit(node: NodeType) {
+  function visit(node: NodeIDType) {
     if (stack.has(node)) {
       throw new CycleException();
     }

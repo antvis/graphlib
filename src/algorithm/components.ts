@@ -1,11 +1,11 @@
 import Graph from '../Graph';
 
-const components = <NodeType = any>(graph: Graph<NodeType>) => {
+const components = <NodeIDType>(graph: Graph<NodeIDType>) => {
   const visited = new Set();
-  const resultComponents: NodeType[][] = [];
+  const resultComponents: NodeIDType[][] = [];
   const nodes = graph.nodes();
 
-  const dfs = (node: NodeType, arr: NodeType[]) => {
+  const dfs = (node: NodeIDType, arr: NodeIDType[]) => {
     if (!visited.has(node)) {
       visited.add(node);
       arr.push(node);
