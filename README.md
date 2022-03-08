@@ -1,33 +1,10 @@
-# new-graphlib
+# Graphlib
+> a typescript rewrite for graphlib
 
-## Getting Started
+<a href="https://github.com/mxz96102/new-graphlib/actions">
+  <img src="https://img.shields.io/github/workflow/status/mxz96102/new-graphlib/Node.js%20CI?style=flat-square" />
+</a>
 
-Install dependencies,
+<img src="https://img.shields.io/codecov/c/github/mxz96102/new-graphlib" />
 
-```bash
-$ npm i
-```
 
-Start the dev server,
-
-```bash
-$ npm start
-```
-
-Build documentation,
-
-```bash
-$ npm run docs:build
-```
-
-Run test,
-
-```bash
-$ npm test
-```
-
-Build library via `father-build`,
-
-```bash
-$ npm run build
-```
