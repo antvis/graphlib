@@ -780,12 +780,6 @@ describe('Graph', function () {
     it('is chainable', function () {
       expect(g.setEdge('a', 'b')).toEqual(g);
     });
-
-    it('read edges correctly', () => {
-      g.setEdge('a', 'b', 'foo');
-      console.log(edge(g.edges()[0]));
-      expect(g.edges().map((e) => g.edge(e))).toEqual(g.edges());
-    });
   });
 
   describe('setDefaultEdgeLabel', function () {
