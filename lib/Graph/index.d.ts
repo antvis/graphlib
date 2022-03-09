@@ -250,7 +250,7 @@ export default class Graph<
    * @returns
    */
   setEdge: (v_: NodeIDType, w_: NodeIDType, value?: any, name?: string | undefined) => this;
-  setEdgeObj: (edgeObj: DefaultEdgeType<NodeIDType, EdgeType>) => this;
+  setEdgeObj: (edgeObj: DefaultEdgeType<NodeIDType, EdgeType>, value: EdgeType) => this;
   /**
    * @description Add edge using a sorted node array ([a,b,c] => a->b b->c c->a)
    * @description.zh-CN 用一系列节点来定义一群边([a,b,c] => a->b b->c c->a)
@@ -267,14 +267,14 @@ export default class Graph<
    * @param name
    * @returns
    */
-  edge: (v: NodeIDType, w: NodeIDType, name?: any) => EdgeType | undefined;
+  edgeFromArgs: (v: NodeIDType, w: NodeIDType, name?: any) => EdgeType | undefined;
   /**
    * @description Get edge between two nodes by edge object
    * @description.zh-CN 从edgeObj获得两个节点中的一条边
    * @param edgeObj
    * @returns
    */
-  edgeFromObj: (edgeObj: { v: NodeIDType; w: NodeIDType; name?: any }) => EdgeType | undefined;
+  edge: (edgeObj: { v: NodeIDType; w: NodeIDType; name?: any }) => EdgeType | undefined;
   /**
    * @description Does two nodes has a specific edge
    * @description.zh-CN 两个节点之间是否存在确定的一条边
@@ -293,6 +293,7 @@ export default class Graph<
    * @returns
    */
   removeEdge: (v_: NodeIDType, w_: NodeIDType, name?: any) => this;
+  removeEdgeObj: ({ v, w, name }: { v: NodeIDType; w: NodeIDType; name?: any }) => this;
   edges: () => DefaultEdgeType<NodeIDType, EdgeType>[];
   /**
    * @description get edges that target at the node (could be from certain node)

@@ -223,7 +223,7 @@ export default class Graph<
       successorsMap,
     } = this;
     if (nodesLabelMap.has(node)) {
-      if (value) {
+      if (value !== undefined) {
         nodesLabelMap.set(node, value);
       }
       return this;
@@ -557,8 +557,8 @@ export default class Graph<
     return this;
   };
 
-  setEdgeObj = (edgeObj: DefaultEdgeType<NodeIDType, EdgeType>) => {
-    return this.setEdge(edgeObj.v, edgeObj.w, edgeObj.value, edgeObj.name);
+  setEdgeObj = (edgeObj: DefaultEdgeType<NodeIDType, EdgeType>, value: EdgeType) => {
+    return this.setEdge(edgeObj.v, edgeObj.w, value, edgeObj.name);
   };
 
   /**
@@ -584,8 +584,9 @@ export default class Graph<
    * @param name
    * @returns
    */
-  edge = (v: NodeIDType, w: NodeIDType, name?: any) => {
-    return this.edgesLabelsMap.get(edgeObjToId(this.isDirected(), { v, w, name }));
+
+  edgeFromArgs = (v: NodeIDType, w: NodeIDType, name?: any) => {
+    return this.edge({ v, w, name });
   };
 
   /**
@@ -594,7 +595,7 @@ export default class Graph<
    * @param edgeObj
    * @returns
    */
-  edgeFromObj = (edgeObj: { v: NodeIDType; w: NodeIDType; name?: any }) => {
+  edge = (edgeObj: { v: NodeIDType; w: NodeIDType; name?: any }) => {
     return this.edgesLabelsMap.get(edgeObjToId(this.isDirected(), edgeObj));
   };
 
@@ -636,6 +637,10 @@ export default class Graph<
       this.edgeCountNum -= 1;
     }
     return this;
+  };
+
+  removeEdgeObj = ({ v, w, name }: { v: NodeIDType; w: NodeIDType; name?: any }) => {
+    return this.removeEdge(v, w, name);
   };
 
   edges = () => Array.from(this.edgesMap.values());

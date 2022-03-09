@@ -148,7 +148,7 @@ NODE_SIZES.forEach(function (size) {
 
   runBenchmark('edge' + nameSuffix, function () {
     var edge = edges[this.nextInt(edges.length)];
-    g.edge(edge);
+    g.edgeFromArg(edge);
   });
 
   runBenchmark('set + removeEdge' + nameSuffix, function () {

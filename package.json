@@ -1,6 +1,6 @@
 {
-  "name": "dice-graphlib",
-  "version": "1.0.4",
+  "name": "@antv/graphlib",
+  "version": "1.0.0",
   "scripts": {
     "start": "dumi dev",
     "docs:build": "dumi build",
