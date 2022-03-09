@@ -14,7 +14,7 @@
 
 ### Benchmark
 
-| test\\performance(ops/s)  | @dagre/graphlib | @antv/graphlib | 倍数     |
+| test\\performance(ops/s)  | @dagre/graphlib | @antv/graphlib | times    |
 | ------------------------- | --------------- | -------------- | -------- |
 | nodes(100,0.2)            | 353,396.95      | 3,429,316.12   | **9.7**  |
 | sources(100,0.2)          | 10,521.67       | 392,493.77     | **37**   |
