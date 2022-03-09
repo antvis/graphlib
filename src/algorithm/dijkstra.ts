@@ -31,14 +31,14 @@ const runDijkstra = <NodeIDType, EdgeType>(
   weightFn: (node: DefaultEdgeType<NodeIDType, EdgeType>) => number,
   edgeFn: (node: NodeIDType) => DefaultEdgeType<NodeIDType, EdgeType>[],
 ) => {
-  const results: Record<string, Entry<NodeIDType>> = {};
+  const results: Map<NodeIDType, Entry<NodeIDType>> = new Map();
   const pq = new PriorityQueue<NodeIDType>();
   let v: NodeIDType | undefined;
   let vEntry: Entry<NodeIDType> | undefined;
 
-  var updateNeighbors = function (edge: DefaultEdgeType<NodeIDType, EdgeType>) {
+  const updateNeighbors = (edge: DefaultEdgeType<NodeIDType, EdgeType>) => {
     const w = edge.v !== v ? edge.v : edge.w;
-    const wEntry = results[String(w)]!;
+    const wEntry = results.get(w)!;
     const weight = weightFn(edge);
 
     const distance = vEntry!.distance + weight;
@@ -60,23 +60,27 @@ const runDijkstra = <NodeIDType, EdgeType>(
     }
   };
 
-  graph.nodes().forEach(function (v) {
+  graph.nodes().forEach((v) => {
     const distance = v === source ? 0 : Number.POSITIVE_INFINITY;
-    results[String(v)] = { distance: distance };
+    results.set(v, { distance });
     pq.add(v, distance);
   });
 
   while (pq.size() > 0) {
     v = pq.removeMin()!;
-
-    vEntry = results[String(v)];
+    vEntry = results.get(v);
     if (vEntry && vEntry.distance === Number.POSITIVE_INFINITY) {
       break;
     }
     edgeFn(v).forEach(updateNeighbors);
   }
 
-  return results;
+  const obj = {} as Record<string, Entry<NodeIDType>>;
+  Array.from(results.entries()).forEach(([node, e]) => {
+    obj[String(node)] = e;
+    return obj;
+  });
+  return obj;
 };
 
 export default dijkstra;

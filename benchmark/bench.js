@@ -5,7 +5,9 @@ var Benchmark = require('benchmark'),
   sprintf = require('sprintf').sprintf;
 
 var seed = process.env.SEED;
-seedrandom(seed, { global: true });
+seedrandom(seed, {
+  global: true,
+});
 if (seed) {
   console.log('SEED: %s (%d)', seed, Math.random());
 }
@@ -80,10 +82,10 @@ function buildGraph(numNodes, edgeDensity) {
 }
 
 NODE_SIZES.forEach(function (size) {
-  var g = buildGraph(size, EDGE_DENSITY),
-    nodes = g.nodes(),
-    edges = g.edges(),
-    nameSuffix = '(' + size + ',' + EDGE_DENSITY + ')';
+  const g = buildGraph(size, EDGE_DENSITY);
+  const nodes = g.nodes();
+  const edges = g.edges();
+  const nameSuffix = '(' + size + ',' + EDGE_DENSITY + ')';
 
   runBenchmark('nodes' + nameSuffix, function () {
     g.nodes();
@@ -148,7 +150,7 @@ NODE_SIZES.forEach(function (size) {
 
   runBenchmark('edge' + nameSuffix, function () {
     var edge = edges[this.nextInt(edges.length)];
-    g.edgeFromArg(edge);
+    g.edge(edge);
   });
 
   runBenchmark('set + removeEdge' + nameSuffix, function () {

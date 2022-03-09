@@ -1,6 +1,6 @@
 {
   "name": "@antv/graphlib",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "scripts": {
     "start": "dumi dev",
     "docs:build": "dumi build",
@@ -13,8 +13,9 @@
     "test": "umi-test",
     "test:coverage": "umi-test --coverage",
     "prepublishOnly": "npm run build",
-    "benchmark": "node --experimental-specifier-resolution=node benchmark/bench.js"
+    "benchmark": "node benchmark/bench.js"
   },
+  "license": "MIT",
   "main": "lib/index.js",
   "module": "es/index.js",
   "types": "lib/index.d.ts",

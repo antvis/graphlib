@@ -6,10 +6,12 @@ const dijkstraAll = <NodeType, EdgeType>(
   weightFn?: (node: DefaultEdgeType<NodeType, EdgeType>) => number,
   edgeFn?: (node: NodeType) => DefaultEdgeType<NodeType, EdgeType>[],
 ) => {
-  return graph.nodes().reduce((map, node) => {
+  const map: Record<any, ReturnType<typeof dijkstra>> = {};
+  graph.nodes().forEach((node) => {
     map[String(node)] = dijkstra(graph, node, weightFn, edgeFn);
     return map;
-  }, {} as Record<any, ReturnType<typeof dijkstra>>);
+  });
+  return map;
 };
 
 export default dijkstraAll;

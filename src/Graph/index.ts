@@ -1,6 +1,7 @@
 import { edgeArgsToId, isFunction } from '../util';
 import { GraphEnum } from '../enum';
 import { decrementOrRemoveEntry, edgeArgsToObj, edgeObjToId, incrementOrInitEntry } from '../util';
+import { read, write } from './toJSON';
 
 export interface GraphOption {
   /**
@@ -427,15 +428,15 @@ export default class Graph<
 
     copyGraph.setGraph(this.graph());
 
-    Array.from(this.nodesLabelMap.entries()).forEach(([node, value]) => {
-      if (filter(node)) {
-        copyGraph.setNode(node, value);
+    this.nodes().forEach((n) => {
+      if (filter(n)) {
+        copyGraph.setNode(n, this.node(n));
       }
     });
 
-    Array.from(this.edgesMap.entries()).forEach(([edgeId, edgeObj]) => {
+    this.edges().forEach((edgeObj) => {
       if (copyGraph.hasNode(edgeObj.v) && copyGraph.hasNode(edgeObj.w)) {
-        copyGraph.setEdge(edgeObj.v, edgeObj.w, this.edgesLabelsMap.get(edgeId), edgeObj.name);
+        copyGraph.setEdgeObj(edgeObj, this.edge(edgeObj));
       }
     });
 
@@ -449,6 +450,7 @@ export default class Graph<
 
         return parent;
       };
+
       copyGraph.nodes().forEach((node) => {
         copyGraph.setParent(node, findParent(node));
       });
@@ -485,9 +487,11 @@ export default class Graph<
 
       Array.from(outE.values()).forEach((edge) => cleanEdge(edge));
 
-      [nodesLabelMap, inEdgesMap, outEdgesMap, predecessorsMap, successorsMap].forEach((map) =>
-        map.delete(node),
-      );
+      nodesLabelMap.delete(node);
+      inEdgesMap.delete(node);
+      outEdgesMap.delete(node);
+      predecessorsMap.delete(node);
+      successorsMap.delete(node);
       this.nodeCountNum -= 1;
     }
     return this;
@@ -557,7 +561,7 @@ export default class Graph<
     return this;
   };
 
-  setEdgeObj = (edgeObj: DefaultEdgeType<NodeIDType, EdgeType>, value: EdgeType) => {
+  setEdgeObj = (edgeObj: DefaultEdgeType<NodeIDType, EdgeType>, value?: EdgeType) => {
     return this.setEdge(edgeObj.v, edgeObj.w, value, edgeObj.name);
   };
 
@@ -688,4 +692,8 @@ export default class Graph<
     }
     return this.inEdges(v, w)?.concat(this.outEdges(v, w)!);
   };
+
+  static fromJSON = read;
+
+  toJSON = () => write<NodeIDType, NodeType, EdgeType, GraphType>(this);
 }

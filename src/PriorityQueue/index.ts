@@ -43,7 +43,7 @@ export default class PriorityQueue<T = string> {
 
   private heapify = (i: number) => {
     const { arr } = this;
-    const l = 2 * i;
+    const l = i << 1;
     const r = l + 1;
     let largest = i;
     if (l < arr.length) {
@@ -91,7 +91,7 @@ export default class PriorityQueue<T = string> {
   };
 
   decrease = (key: T, priority: number) => {
-    if (!this.keyIndice.has(key)) {
+    if (!this.has(key)) {
       throw new Error(`There's no key named ${key}`);
     }
     // there must be an index
