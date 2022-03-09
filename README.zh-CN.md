@@ -1,20 +1,20 @@
 # Graphlib
 
-> The typescript rewrite version of @dagrejs/graphlib, because graphlib was old and lacked typescript annotations, which led to inconsistent typescript files and even compilation failure or failure due to the typescript of Graphlib, antv team has rewritten it;
+> @dagrejs/graphlib 的 typescript 版本重写，由于 Graphlib 年久失修，而且缺乏 typescript 的相关类型注释，导致了类型文件不统一，甚至使用时会因为 Graphlib 的类型问题导致编译失败亦或是功能失效，antv 团队对其进行了重写
 
 ![build status](https://img.shields.io/github/workflow/status/antvis/graphlib/Node.js%20CI?style=flat-square) ![coverage status](https://img.shields.io/codecov/c/github/mxz96102/new-graphlib)
 
-### Improvements and break changes
+### 改进以及不兼容的改动
 
-- Graph has a type that accepts four parameters `<NodeIDType,NodeType, EdgeType, GraphType>` to make it easier for users to customize it themselves, no longer stuck to the original single number/string type, now because of the use of Map and Set, you can use any type (including reference Now, because of Map and Set, you can use any type (including reference type) as the index of a point.
-- no longer accept the same node ID string, 1 and "1" are two different points, no automatic type conversion of NodeIDType comparison. 1.
-- Graph's edge-related methods `edge` `setEdge` `removeEdge` no longer accept type overloading.
-  - `edge` `setEdgeObj` `removeEdgeObj` accepts an edgeObj
-  - `edgeFromArgs` `setEdge` `removeEdge` accepts specific parameters (v, w, name, value)
+1. Graph 有了类型，接受四个参数 `<NodeIDType,NodeType, EdgeType, GraphType>` 来方便用户自己更方便的进行定制，不再拘泥于原来的单一 number/string 类型，现在因为 Map 和 Set 的使用，你可以用任意类型（包括引用类型）来作为点的索引。
+1. 不再接受节点 ID 的字符串化的相同，1 和“1”是两个不同的点，不在进行 NodeIDType 的自动类型转化的比较。
+1. Graph 的 edge 相关方法`edge` `setEdge` `removeEdge`不再接受类型重载，
+   1. `edge` `setEdgeObj` `removeEdgeObj` 接受一个 edgeObj
+   1. `edgeFromArgs` `setEdge` `removeEdge` 接受具体参数(v, w, name, value)
 
-### Benchmark
+### 性能对比
 
-| test\\performance(ops/s)  | @dagre/graphlib | @antv/graphlib | 倍数     |
+| 项目\\性能(ops/s)         | @dagre/graphlib | @antv/graphlib | 倍数     |
 | ------------------------- | --------------- | -------------- | -------- |
 | nodes(100,0.2)            | 353,396.95      | 3,429,316.12   | **9.7**  |
 | sources(100,0.2)          | 10,521.67       | 392,493.77     | **37**   |
@@ -38,7 +38,7 @@
 | components(100,0.2)       | 1,729.79        | 5,321.20       | **3.1**  |
 | dijkstraAll(100,0.2)      | 30.83           | 47.73          | **1.55** |
 
-### Test Coverage
+### 测试覆盖
 
 | File              | % Stmts | % Branch | % Funcs | % Lines |
 | ----------------- | ------- | -------- | ------- | ------- |
