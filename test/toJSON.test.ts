@@ -1,6 +1,6 @@
 import { Graph } from '../src';
 
-const rw = (graph) => Graph.fromJSON(graph.toJSON());
+const rw = (graph: Graph) => Graph.fromJSON(graph.toJSON());
 
 describe('json', function () {
   it('preserves the graph options', function () {
@@ -13,15 +13,17 @@ describe('json', function () {
   });
 
   it('preserves the graph value, if any', function () {
-    expect(rw(new Graph().setGraph(1)).graph()).toEqual(1);
-    expect(rw(new Graph().setGraph({ foo: 'bar' })).graph()).toEqual({ foo: 'bar' });
+    expect(rw(new Graph<string, any, any, any>().setGraph(1)).graph()).toEqual(1);
+    expect(rw(new Graph<string, any, any, any>().setGraph({ foo: 'bar' })).graph()).toEqual({
+      foo: 'bar',
+    });
     expect(rw(new Graph()).graph()).toBe(undefined);
   });
 
   it('preserves nodes', function () {
     expect(rw(new Graph().setNode('a')).hasNode('a')).toBe(true);
     expect(rw(new Graph().setNode('a')).node('a')).toBe(undefined);
-    expect(rw(new Graph().setNode('a', 1)).node('a')).toEqual(1);
+    expect(rw(new Graph<string, any, any, any>().setNode('a', 1)).node('a')).toEqual(1);
     expect(rw(new Graph().setNode('a', { foo: 'bar' })).node('a')).toEqual({ foo: 'bar' });
   });
 
@@ -35,7 +37,7 @@ describe('json', function () {
   });
 
   it('preserves multi-edges', function () {
-    var g = new Graph({ multigraph: true });
+    var g = new Graph<string, any, any, any>({ multigraph: true });
 
     g.setEdgeObj({ v: 'a', w: 'b', name: 'foo' });
     expect(rw(g).hasEdge('a', 'b', 'foo')).toBe(true);

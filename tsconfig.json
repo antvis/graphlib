@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "esnext",
     "module": "esnext",
-    "lib": ["ES2015"],
+    "lib": ["ES2015", "ES2016"],
     "moduleResolution": "node",
     "jsx": "react",
     "esModuleInterop": true,
@@ -10,5 +10,6 @@
     "strict": true,
     "skipLibCheck": true,
     "declaration": true
-  }
+  },
+  "exclude": ["test"]
 }

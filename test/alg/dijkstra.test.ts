@@ -1,9 +1,10 @@
 import { Graph } from '../../src';
 import { dijkstra } from '../../src/algorithm';
+import { DefaultEdgeType } from '../../src/Graph';
 
-function weightFn(g) {
-  return function (e) {
-    return g.edge(e);
+function weightFn(g: Graph<string, string, number>) {
+  return function (e: DefaultEdgeType<string, number>) {
+    return g.edge(e)!;
   };
 }
 
@@ -49,7 +50,7 @@ describe('alg.dijkstra', function () {
   });
 
   it('uses an optionally supplied weight function', function () {
-    let g = new Graph();
+    let g = new Graph<string, string, number>();
     g.setEdge('a', 'b', 1);
     g.setEdge('a', 'c', 2);
     g.setEdge('b', 'd', 3);
@@ -64,13 +65,13 @@ describe('alg.dijkstra', function () {
   });
 
   it('uses an optionally supplied edge function', function () {
-    let g = new Graph();
+    let g = new Graph<string, string, number>();
     g.setPath(['a', 'c', 'd']);
     g.setEdge('b', 'c');
 
     expect(
       dijkstra(g, 'd', undefined, function (e) {
-        return g.inEdges(e);
+        return g.inEdges(e)!;
       }),
     ).toEqual({
       a: { distance: 2, predecessor: 'c' },
@@ -81,7 +82,7 @@ describe('alg.dijkstra', function () {
   });
 
   it('throws an Error if it encounters a negative edge weight', function () {
-    let g = new Graph();
+    let g = new Graph<string, string, number>();
     g.setEdge('a', 'b', 1);
     g.setEdge('a', 'c', -2);
     g.setEdge('b', 'd', 3);

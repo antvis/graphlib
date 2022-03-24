@@ -2,7 +2,7 @@ import { Graph } from '../src';
 import _ from 'lodash';
 
 describe('Graph', function () {
-  let g;
+  let g: Graph<string, any, any, any>;
 
   beforeEach(function () {
     g = new Graph();
@@ -333,7 +333,7 @@ describe('Graph', function () {
     });
 
     it("can take a function that takes the node's name", function () {
-      g.setDefaultNodeLabel(function (v) {
+      g.setDefaultNodeLabel(function (v: string) {
         return v + '-foo';
       });
       g.setNode('a');
@@ -748,7 +748,7 @@ describe('Graph', function () {
     });
 
     it('can take an multi-edge object as the first parameter', function () {
-      var g = new Graph({
+      var g = new Graph<string, any, string>({
         multigraph: true,
       });
       g.setEdgeObj(
@@ -813,7 +813,7 @@ describe('Graph', function () {
       var g = new Graph({
         multigraph: true,
       });
-      g.setDefaultEdgeLabel(function (v, w, name) {
+      g.setDefaultEdgeLabel(function (v: string, w: string, name: string) {
         return v + '-' + w + '-' + name + '-foo';
       });
       g.setEdgeObj({

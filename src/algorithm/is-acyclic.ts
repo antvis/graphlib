@@ -1,7 +1,7 @@
 import Graph from '../Graph';
 import topsort, { CycleException } from './topsort';
 
-const isAcyclic = <NodeType>(graph: Graph) => {
+const isAcyclic = (graph: Graph) => {
   try {
     topsort(graph);
   } catch (e) {

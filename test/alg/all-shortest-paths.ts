@@ -1,12 +1,20 @@
 import { Graph } from '../../src';
+import { DefaultEdgeType } from '../../src/Graph';
 
-function weightFn(g) {
-  return function (e) {
-    return g.edge(e);
+function weightFn(g: Graph<string, any, number>) {
+  return function (e: DefaultEdgeType<string, number>) {
+    return g.edge(e)!;
   };
 }
 
-export function allShortestPathsTest(sp, name) {
+export function allShortestPathsTest(
+  sp: (
+    graph: Graph<string, any, any>,
+    weightFn?: (node: DefaultEdgeType<string, any>) => number,
+    edgeFn?: (node: string) => DefaultEdgeType<string, any>[],
+  ) => void,
+  name: string,
+) {
   describe(`${name} allShortestPaths`, function () {
     it('returns 0 for the node itself', function () {
       let g = new Graph();
@@ -65,7 +73,7 @@ export function allShortestPathsTest(sp, name) {
     });
 
     it('uses an optionally supplied weight function', function () {
-      let g = new Graph();
+      let g = new Graph<string, any, number>();
       g.setEdge('a', 'b', 2);
       g.setEdge('b', 'c', 3);
 
@@ -110,13 +118,13 @@ export function allShortestPathsTest(sp, name) {
     });
 
     it('uses an optionally supplied incident function', function () {
-      let g = new Graph();
+      let g = new Graph<string, any, any>();
       g.setEdge('a', 'b');
       g.setEdge('b', 'c');
 
       expect(
         sp(g, undefined, function (v) {
-          return g.inEdges(v);
+          return g.inEdges(v)!;
         }),
       ).toEqual({
         a: {
@@ -159,7 +167,7 @@ export function allShortestPathsTest(sp, name) {
     });
 
     it('works with undirected graphs', function () {
-      let g = new Graph({
+      let g = new Graph<string, any, number, string>({
         directed: false,
       });
       g.setEdge('a', 'b', 1);
@@ -167,7 +175,7 @@ export function allShortestPathsTest(sp, name) {
       g.setEdge('c', 'a', 4);
       g.setEdge('b', 'd', 6);
 
-      expect(sp(g, weightFn(g), g.nodeEdges.bind(g))).toEqual({
+      expect(sp(g, weightFn(g), (n: string) => g.nodeEdges(n)!)).toEqual({
         a: {
           a: {
             distance: 0,

@@ -4,12 +4,12 @@ const doDFS = <NodeIDType = any>(
   graph: Graph<NodeIDType>,
   node: NodeIDType,
   postorder: boolean,
-  visited: Set<NodeIDType>,
+  visited: NodeIDType[],
   navigator: (n: NodeIDType) => NodeIDType[],
   result: NodeIDType[],
 ) => {
-  if (!visited.has(node)) {
-    visited.add(node);
+  if (!visited.includes(node)) {
+    visited.push(node);
     if (!postorder) {
       result.push(node);
     }
@@ -23,7 +23,7 @@ const doDFS = <NodeIDType = any>(
 };
 
 const dfs = <NodeIDType = any>(
-  graph: Graph<NodeIDType>,
+  graph: Graph<NodeIDType, any, any, any>,
   node: NodeIDType | NodeIDType[],
   order: 'pre' | 'post',
 ) => {
@@ -31,7 +31,7 @@ const dfs = <NodeIDType = any>(
   const navigator = (n: NodeIDType) =>
     (graph.isDirected() ? graph.successors(n) : graph.neighbors(n))!;
   const results: NodeIDType[] = [];
-  const visited = new Set<NodeIDType>();
+  const visited: NodeIDType[] = [];
   nodes.forEach((node) => {
     if (!graph.hasNode(node)) {
       throw new Error('Graph does not have node: ' + node);
