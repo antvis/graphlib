@@ -2,7 +2,7 @@
 
 > @dagrejs/graphlib 的 typescript 版本重写，由于 Graphlib 年久失修，而且缺乏 typescript 的相关类型注释，导致了类型文件不统一，甚至使用时会因为 Graphlib 的类型问题导致编译失败亦或是功能失效，antv 团队对其进行了重写
 
-![build status](https://img.shields.io/github/workflow/status/antvis/graphlib/Build) ![coverage status](https://img.shields.io/codecov/c/github/mxz96102/new-graphlib)
+![build status](https://img.shields.io/github/workflow/status/antvis/graphlib/Build) ![coverage status](https://img.shields.io/codecov/c/github/antvis/graphlib)
 
 ### 改进以及不兼容的改动
 

@@ -2,7 +2,7 @@
 
 > The typescript rewrite version of @dagrejs/graphlib, because graphlib was old and lacked typescript annotations, which led to inconsistent typescript files and even compilation failure or failure due to the typescript of Graphlib, antv team has rewritten it;
 
-![build status](https://img.shields.io/github/workflow/status/antvis/graphlib/Build) ![coverage status](https://img.shields.io/codecov/c/github/mxz96102/new-graphlib)
+![build status](https://img.shields.io/github/workflow/status/antvis/graphlib/Build) ![coverage status](https://img.shields.io/codecov/c/github/antvis/graphlib)
 
 ### Improvements and break changes
 
