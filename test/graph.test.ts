@@ -1258,4 +1258,51 @@ describe('Graph', function () {
       ]);
     });
   });
+
+  describe('node degree count', function () {
+    it('no nodes will return all 0', () => {
+      expect(g.nodeDegree('a')).toBe(0);
+      expect(g.nodeInDegree('a')).toBe(0);
+      expect(g.nodeOutDegree('a')).toBe(0);
+    });
+
+    it('no edges will return all 0', () => {
+      g.setNode('a');
+      expect(g.nodeDegree('a')).toBe(0);
+      expect(g.nodeInDegree('a')).toBe(0);
+      expect(g.nodeOutDegree('a')).toBe(0);
+    });
+
+    it('count degree right', () => {
+      g.setEdge('a', 'b');
+      expect(g.nodeDegree('a')).toBe(1);
+      expect(g.nodeInDegree('a')).toBe(0);
+      expect(g.nodeOutDegree('a')).toBe(1);
+      expect(g.nodeDegree('b')).toBe(1);
+      expect(g.nodeInDegree('b')).toBe(1);
+      expect(g.nodeOutDegree('b')).toBe(0);
+    });
+
+    it('count degree right for multigraph', () => {
+      g = new Graph({ compound: true, multigraph: true });
+      g.setEdge('a', 'b');
+      g.setEdge('a', 'b', 'foo', 'bar');
+      expect(g.nodeDegree('a')).toBe(2);
+      expect(g.nodeInDegree('a')).toBe(0);
+      expect(g.nodeOutDegree('a')).toBe(2);
+      expect(g.nodeDegree('b')).toBe(2);
+      expect(g.nodeInDegree('b')).toBe(2);
+      expect(g.nodeOutDegree('b')).toBe(0);
+    });
+
+    it('count self loops', () => {
+      g.setEdge('a', 'a');
+      expect(g.countSelfLoops()).toBe(1);
+    });
+
+    it('count self loops return 0 when there is no self loop', () => {
+      g.setEdge('a', 'b');
+      expect(g.countSelfLoops()).toBe(0);
+    });
+  });
 });
