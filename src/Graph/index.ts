@@ -33,9 +33,25 @@ const defaultOption: GraphOption = {
 };
 
 export interface DefaultEdgeType<NodeIDType, EdgeType> {
+  /**
+   * @description the node where this edge start
+   * @description.zh-CN 边开始的节点
+   */
   v: NodeIDType;
+  /**
+   * @description the node where this edge end
+   * @description.zh-CN 边结束的节点
+   */
   w: NodeIDType;
+  /**
+   * @description The name used to distinguish the multilateral relationship between two nodes
+   * @description.zh-CN 用来区分两点之间的多边关系的名称
+   */
   name?: string;
+  /**
+   * @description The value of the edge
+   * @description.zh-CN 边的值
+   */
   value?: EdgeType;
 }
 
@@ -77,8 +93,16 @@ export default class Graph<
    */
   private edgeCountNum = 0;
 
+  /**
+   * @description return node label with its id
+   * @description.zh-CN 返回节点的默认的标签
+   */
   private defaultNodeLabelFn: (v: NodeIDType) => NodeType | undefined = () => undefined;
 
+  /**
+   * @description return edge label with its id
+   * @description.zh-CN 返回边的默认的标签
+   */
   private defaultEdgeLabelFn: (
     v: NodeIDType,
     w: NodeIDType,
@@ -102,22 +126,50 @@ export default class Graph<
 
   // Map for graph
 
+  /**
+   * @description Map for parent relationship
+   * @description.zh-CN 父子关系的映射
+   */
   private parentMap?: Map<NodeIDType, NodeIDType>;
 
+  /**
+   * @description Map for children relationship
+   * @description.zh-CN 子孙关系的映射
+   */
   private childrenMap?: Map<NodeIDType, Map<NodeIDType, boolean>>;
 
   private nodesLabelMap = new Map<NodeIDType, NodeType | undefined>();
 
+  /**
+   * @description Map for edges
+   * @description.zh-CN 边的映射
+   */
   private inEdgesMap = new Map<NodeIDType, Map<EdgeID, DefaultEdgeType<NodeIDType, EdgeType>>>();
 
   private outEdgesMap = new Map<NodeIDType, Map<EdgeID, DefaultEdgeType<NodeIDType, EdgeType>>>();
 
+  /**
+   * @description Map for predecessors
+   * @description.zh-CN 前驱节点的映射
+   */
   private predecessorsMap = new Map<NodeIDType, Map<NodeIDType, number>>();
 
+  /**
+   * @description Map for successors
+   * @description.zh-CN 后继节点的映射
+   */
   private successorsMap = new Map<NodeIDType, Map<NodeIDType, number>>();
 
+  /**
+   * @description Map for edge object
+   * @description.zh-CN 边的映射
+   */
   private edgesMap = new Map<string, DefaultEdgeType<NodeIDType, EdgeType>>();
 
+  /**
+   * @description Map for edge label
+   * @description.zh-CN 边的标签的映射
+   */
   private edgesLabelsMap = new Map<string, EdgeType | undefined>();
 
   /**
@@ -181,6 +233,10 @@ export default class Graph<
    */
   nodeCount = () => this.nodeCountNum;
 
+  /**
+   * @description get node label
+   * @description.zh-CN 获取节点的标签
+   */
   node = (n: NodeIDType) => this.nodesLabelMap.get(n);
 
   /**
@@ -223,6 +279,8 @@ export default class Graph<
       predecessorsMap,
       successorsMap,
     } = this;
+
+    // 如果节点不在图中，则创建节点
     if (nodesLabelMap.has(node)) {
       if (value !== undefined) {
         nodesLabelMap.set(node, value);
@@ -232,6 +290,7 @@ export default class Graph<
 
     nodesLabelMap.set(node, value || defaultNodeLabelFn(node));
 
+    // 如果是复合图，则创建节点的子节点
     if (isCompound()) {
       parentMap?.set(node, this.GRAPH_NODE);
       childrenMap?.set(node, new Map());
@@ -588,7 +647,6 @@ export default class Graph<
    * @param name
    * @returns
    */
-
   edgeFromArgs = (v: NodeIDType, w: NodeIDType, name?: any) => {
     return this.edge({ v, w, name });
   };
@@ -643,10 +701,18 @@ export default class Graph<
     return this;
   };
 
+  /**
+   * @description remove a specific edge by edge object
+   * @description.zh-CN 删除一条边
+   */
   removeEdgeObj = ({ v, w, name }: { v: NodeIDType; w: NodeIDType; name?: any }) => {
     return this.removeEdge(v, w, name);
   };
 
+  /**
+   * @description get all edges object in graph
+   * @description.zh-CN 获得图中所有的边对象
+   */
   edges = () => Array.from(this.edgesMap.values());
 
   /**
@@ -696,4 +762,64 @@ export default class Graph<
   static fromJSON = read;
 
   toJSON = () => write<NodeIDType, NodeType, EdgeType, GraphType>(this);
+
+  // ver 2 function
+
+  /**
+   * @description Count the in edges of node
+   * @description.zh-CN 计算节点的入边的数量
+   */
+  nodeInDegree = (node: NodeIDType) => {
+    const inEdges = this.inEdgesMap.get(node);
+    if (inEdges) {
+      return inEdges.size;
+    }
+    return 0;
+  };
+
+  /**
+   * @description Count the out edges of node
+   * @description.zh-CN 计算节点的出边的数量
+   */
+  nodeOutDegree = (node: NodeIDType) => {
+    const outEdges = this.outEdgesMap.get(node);
+    if (outEdges) {
+      return outEdges.size;
+    }
+    return 0;
+  };
+
+  /**
+   * @description Count the total edges of node
+   * @description.zh-CN 计算节点的所有边的数量
+   */
+  nodeDegree = (node: NodeIDType) => {
+    return this.nodeInDegree(node) + this.nodeOutDegree(node);
+  };
+
+  /**
+   * @description Get the source of edge
+   * @description.zh-CN 获取边的源节点
+   */
+  source = (edge: DefaultEdgeType<NodeIDType, EdgeType>) => edge.v;
+
+  /**
+   * @description Get the target of edge
+   * @description.zh-CN 获取边的目标节点
+   */
+  target = (edge: DefaultEdgeType<NodeIDType, EdgeType>) => edge.w;
+
+  /**
+   * @description Count the total edges with self loop
+   * @description.zh-CN 计算节点的自环边的数量
+   */
+  countSelfLoops = () => {
+    let count = 0;
+    for (const edge of this.edges()) {
+      if (edge.v === edge.w) {
+        count += 1;
+      }
+    }
+    return count;
+  };
 }

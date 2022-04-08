@@ -6,6 +6,12 @@ type JSONNode<NodeIDType = string, NodeType = any> = {
   parent?: NodeIDType;
 };
 
+/**
+ * @description Convert a graph's node to JSON.
+ * @description.zh-CN 转换图的节点为 JSON。
+ * @param graph
+ * @returns
+ */
 const nodeToJSON = <NodeIDType = string, NodeType = any>(
   graph: Graph<NodeIDType, NodeType, any, any>,
 ) => {
@@ -28,12 +34,34 @@ const nodeToJSON = <NodeIDType = string, NodeType = any>(
 };
 
 type JSONEdge<NodeIDType = string, EdgeType = Record<string, any>> = {
+  /**
+   * @description The source node id.
+   * @description.zh-CN 源节点 id。
+   */
   v: NodeIDType;
+  /**
+   * @description The target node id.
+   * @description.zh-CN 目标节点 id。
+   */
   w: NodeIDType;
+  /**
+   * @description The edge value.
+   * @description.zh-CN 边的值。
+   */
   value?: EdgeType;
+  /**
+   * @description The edge name.
+   * @description.zh-CN 边的名称。
+   */
   name?: string;
 };
 
+/**
+ * @description Convert all graph's edges to JSON.
+ * @description.zh-CN 转换图的所有边为 JSON。
+ * @param graph
+ * @returns
+ */
 const edgeToJSON = <NodeIDType = string, EdgeType = Record<string, any>>(
   graph: Graph<NodeIDType, any, EdgeType, any>,
 ) => {
@@ -65,6 +93,12 @@ type JSONGraph<NodeIDType, NodeType, EdgeType, GraphType> = {
   value?: GraphType;
 };
 
+/**
+ * @description Convert a graph to JSON.
+ * @description.zh-CN 转换图为 JSON。
+ * @param graph
+ * @returns
+ */
 export const write = <
   NodeIDType = string,
   NodeType = Record<string, any>,
@@ -90,6 +124,12 @@ export const write = <
   return json;
 };
 
+/**
+ * @description read a graph from JSON.
+ * @description.zh-CN 从 JSON 读取图。
+ * @param json
+ * @returns
+ */
 export const read = <
   NodeIDType = string,
   NodeType = Record<string, any>,
