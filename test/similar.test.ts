@@ -1,7 +1,7 @@
-import { comparision, Graph } from '../src';
-import { isGraphOptionSame } from '../src/comparison';
+import { similar, Graph } from '../src';
+import { isGraphOptionSame } from '../src/similar';
 
-describe('comparision', function () {
+describe('similar', function () {
   describe('containSameNodes', function () {
     it('returns true if the two graphs contains all the same nodes', function () {
       const aGraph = new Graph();
@@ -12,7 +12,7 @@ describe('comparision', function () {
       bGraph.setNode('a');
       bGraph.setNode('b');
       bGraph.setNode('c');
-      expect(comparision.containSameNodes(aGraph, bGraph)).toBe(true);
+      expect(similar.containSameNodes(aGraph, bGraph)).toBe(true);
     });
 
     it('returns true if the two graphs contains a same node', function () {
@@ -24,7 +24,7 @@ describe('comparision', function () {
       bGraph.setNode('e');
       bGraph.setNode('f');
       bGraph.setNode('c');
-      expect(comparision.containSameNodes(aGraph, bGraph)).toBe(true);
+      expect(similar.containSameNodes(aGraph, bGraph)).toBe(true);
     });
 
     it('returns false if the two graphs does not contains the same nodes', function () {
@@ -36,7 +36,7 @@ describe('comparision', function () {
       bGraph.setNode('e');
       bGraph.setNode('f');
       bGraph.setNode('g');
-      expect(comparision.containSameNodes(aGraph, bGraph)).toBe(false);
+      expect(similar.containSameNodes(aGraph, bGraph)).toBe(false);
     });
   });
 
@@ -50,7 +50,7 @@ describe('comparision', function () {
       bGraph.setEdge('a', 'b', 'a');
       bGraph.setEdge('b', 'c', 'b');
       bGraph.setEdge('c', 'd', 'c');
-      expect(comparision.containSameEdges(aGraph, bGraph)).toBe(true);
+      expect(similar.containSameEdges(aGraph, bGraph)).toBe(true);
     });
 
     it('returns true if the two graphs contains a same edge', function () {
@@ -62,7 +62,7 @@ describe('comparision', function () {
       bGraph.setEdge('a', 'b', 'a');
       bGraph.setEdge('b', 'd', 'b');
       bGraph.setEdge('c', 'e', 'c');
-      expect(comparision.containSameEdges(aGraph, bGraph)).toBe(true);
+      expect(similar.containSameEdges(aGraph, bGraph)).toBe(true);
     });
 
     it('returns false if the two graphs does not contains the same edges', function () {
@@ -74,7 +74,7 @@ describe('comparision', function () {
       bGraph.setEdge('a', 'h', 'a');
       bGraph.setEdge('b', 'd', 'b');
       bGraph.setEdge('c', 'e', 'c');
-      expect(comparision.containSameEdges(aGraph, bGraph)).toBe(false);
+      expect(similar.containSameEdges(aGraph, bGraph)).toBe(false);
     });
   });
 
@@ -88,7 +88,7 @@ describe('comparision', function () {
       bGraph.setNode('a');
       bGraph.setNode('b');
       bGraph.setNode('c');
-      expect(comparision.getSameNodes(aGraph, bGraph)).toEqual(['a', 'b', 'c']);
+      expect(similar.getSameNodes(aGraph, bGraph)).toEqual(['a', 'b', 'c']);
     });
 
     it('returns the same nodes in the two graphs', function () {
@@ -100,7 +100,7 @@ describe('comparision', function () {
       bGraph.setNode('a');
       bGraph.setNode('b');
       bGraph.setNode('d');
-      expect(comparision.getSameNodes(aGraph, bGraph)).toEqual(['a', 'b']);
+      expect(similar.getSameNodes(aGraph, bGraph)).toEqual(['a', 'b']);
     });
 
     it('return empty array if the two graphs does not contains the same nodes', function () {
@@ -112,7 +112,7 @@ describe('comparision', function () {
       bGraph.setNode('e');
       bGraph.setNode('f');
       bGraph.setNode('g');
-      expect(comparision.getSameNodes(aGraph, bGraph)).toEqual([]);
+      expect(similar.getSameNodes(aGraph, bGraph)).toEqual([]);
     });
   });
 
@@ -126,7 +126,7 @@ describe('comparision', function () {
       bGraph.setEdge('a', 'b', 'a');
       bGraph.setEdge('b', 'c', 'b');
       bGraph.setEdge('c', 'd', 'c');
-      expect(comparision.getSameEdges(aGraph, bGraph)).toEqual([
+      expect(similar.getSameEdges(aGraph, bGraph)).toEqual([
         {
           v: 'a',
           w: 'b',
@@ -151,7 +151,7 @@ describe('comparision', function () {
       bGraph.setEdge('a', 'b', 'a');
       bGraph.setEdge('b', 'd', 'b');
       bGraph.setEdge('c', 'e', 'c');
-      expect(comparision.getSameEdges(aGraph, bGraph)).toEqual([
+      expect(similar.getSameEdges(aGraph, bGraph)).toEqual([
         {
           v: 'a',
           w: 'b',
@@ -168,7 +168,7 @@ describe('comparision', function () {
       bGraph.setEdge('a', 'h', 'a');
       bGraph.setEdge('b', 'd', 'b');
       bGraph.setEdge('c', 'e', 'c');
-      expect(comparision.getSameEdges(aGraph, bGraph)).toEqual([]);
+      expect(similar.getSameEdges(aGraph, bGraph)).toEqual([]);
     });
   });
 
@@ -203,7 +203,7 @@ describe('comparision', function () {
       bGraph.setNode('a');
       bGraph.setNode('b');
       bGraph.setNode('c');
-      expect(comparision.containAllSameNodes(aGraph, bGraph)).toBe(true);
+      expect(similar.containAllSameNodes(aGraph, bGraph)).toBe(true);
     });
 
     it('returns false when the two graphs does not contain the same nodes', function () {
@@ -215,7 +215,7 @@ describe('comparision', function () {
       bGraph.setNode('a');
       bGraph.setNode('b');
       bGraph.setNode('d');
-      expect(comparision.containAllSameNodes(aGraph, bGraph)).toBe(false);
+      expect(similar.containAllSameNodes(aGraph, bGraph)).toBe(false);
     });
   });
 
@@ -229,7 +229,7 @@ describe('comparision', function () {
       bGraph.setEdge('a', 'b', 'a');
       bGraph.setEdge('b', 'c', 'b');
       bGraph.setEdge('c', 'd', 'c');
-      expect(comparision.containAllSameEdges(aGraph, bGraph)).toBe(true);
+      expect(similar.containAllSameEdges(aGraph, bGraph)).toBe(true);
     });
 
     it('returns false when the two graphs does not contain the same edges', function () {
@@ -241,7 +241,7 @@ describe('comparision', function () {
       bGraph.setEdge('a', 'b', 'a');
       bGraph.setEdge('b', 'd', 'b');
       bGraph.setEdge('c', 'e', 'c');
-      expect(comparision.containAllSameEdges(aGraph, bGraph)).toBe(false);
+      expect(similar.containAllSameEdges(aGraph, bGraph)).toBe(false);
     });
   });
 
@@ -261,7 +261,7 @@ describe('comparision', function () {
       bGraph.setEdge('a', 'b', 'a');
       bGraph.setEdge('b', 'c', 'b');
       bGraph.setEdge('c', 'd', 'c');
-      expect(comparision.isGraphSame(aGraph, bGraph)).toBe(true);
+      expect(similar.isGraphSame(aGraph, bGraph)).toBe(true);
     });
 
     it('returns false when the two graphs are not the same', function () {
@@ -279,7 +279,7 @@ describe('comparision', function () {
       bGraph.setEdge('a', 'b', 'a');
       bGraph.setEdge('b', 'd', 'b');
       bGraph.setEdge('c', 'e', 'c');
-      expect(comparision.isGraphSame(aGraph, bGraph)).toBe(false);
+      expect(similar.isGraphSame(aGraph, bGraph)).toBe(false);
     });
   });
 
@@ -299,7 +299,7 @@ describe('comparision', function () {
       bGraph.setEdge('a', 'b', 'a');
       bGraph.setEdge('b', 'c', 'b');
       bGraph.setEdge('c', 'd', 'c');
-      expect(comparision.isGraphContainsAnother(aGraph, bGraph)).toBe(true);
+      expect(similar.isGraphContainsAnother(aGraph, bGraph)).toBe(true);
     });
 
     it('returns false when the first graph does not contain the second graph', function () {
@@ -317,7 +317,7 @@ describe('comparision', function () {
       bGraph.setEdge('a', 'b', 'a');
       bGraph.setEdge('b', 'd', 'b');
       bGraph.setEdge('c', 'e', 'c');
-      expect(comparision.isGraphContainsAnother(aGraph, bGraph)).toBe(false);
+      expect(similar.isGraphContainsAnother(aGraph, bGraph)).toBe(false);
     });
   });
 });

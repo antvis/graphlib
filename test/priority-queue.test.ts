@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import PriorityQueue from '../src/PriorityQueue';
+import PriorityQueue from '../src/algorithm/PriorityQueue';
 
 describe('data.PriorityQueue', function () {
   let pq: PriorityQueue<any>;
