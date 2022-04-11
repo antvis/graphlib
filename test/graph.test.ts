@@ -1,4 +1,4 @@
-import { Graph } from '../src';
+import { Graph, isGraph } from '../src';
 import _ from 'lodash';
 
 describe('Graph', function () {
@@ -1296,13 +1296,32 @@ describe('Graph', function () {
     });
 
     it('count self loops', () => {
-      g.setEdge('a', 'a');
-      expect(g.countSelfLoops()).toBe(1);
+      g = new Graph({ compound: true, multigraph: true });
+      g.setEdge('a', 'a', 'foo', 'bar1');
+      g.setEdge('a', 'a', 'foo', 'bar2');
+      expect(g.countSelfLoops()).toBe(2);
     });
 
     it('count self loops return 0 when there is no self loop', () => {
-      g.setEdge('a', 'b');
+      g.setPath(['a', 'b', 'c', 'd']);
       expect(g.countSelfLoops()).toBe(0);
+    });
+  });
+
+  describe('simple function', function () {
+    it('is graph', () => {
+      expect(isGraph(g)).toBeTruthy();
+      expect(isGraph(1)).toBeFalsy();
+      expect(isGraph('1')).toBeFalsy();
+      expect(isGraph({})).toBeFalsy();
+    });
+    it('source', function () {
+      g.setEdge('a', 'b');
+      expect(g.source(g.edges()[0])).toBe('a');
+    });
+    it('target', function () {
+      g.setEdge('a', 'b');
+      expect(g.target(g.edges()[0])).toBe('b');
     });
   });
 });

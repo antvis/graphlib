@@ -1,11 +1,21 @@
 import { GraphEnum } from './enum';
-import { DefaultEdgeType } from './Graph';
+import Graph, { DefaultEdgeType } from './Graph';
 
+/**
+ * @description add one to key's value in map
+ * @description.zh-CN 在 map 中 key 的值加 1
+ * @param map
+ * @param key
+ */
 export function incrementOrInitEntry(map: Map<any, any>, key: any) {
   const val = map.get(key) || 0;
   map.set(key, val + 1);
 }
 
+/**
+ * @description minus one from key's value in map, is value is 0, delete the key
+ * @description.zh-CN 在 map 中 key 的值减 1，如果值为 0，则删除 key
+ */
 export function decrementOrRemoveEntry(map: Map<any, number>, key: any) {
   let val = map.get(key);
   if (val !== undefined) {
@@ -18,8 +28,16 @@ export function decrementOrRemoveEntry(map: Map<any, number>, key: any) {
   }
 }
 
-
-export function edgeArgsToId<NodeType>(isDirected: boolean, v_: NodeType, w_: NodeType, name?: any) {
+/**
+ * @description convert edge to string id
+ * @description.zh-CN 转换边为字符串 id
+ */
+export function edgeArgsToId<NodeType>(
+  isDirected: boolean,
+  v_: NodeType,
+  w_: NodeType,
+  name?: any,
+) {
   let v = String(v_);
   let w = String(w_);
   if (!isDirected && v > w) {
@@ -37,6 +55,10 @@ export function edgeArgsToId<NodeType>(isDirected: boolean, v_: NodeType, w_: No
   );
 }
 
+/**
+ * @description convert edge arguments to edge object
+ * @description.zh-CN 转换边参数为边对象
+ */
 export function edgeArgsToObj<NodeType>(
   isDirected: boolean,
   v: NodeType,
@@ -58,10 +80,18 @@ export function edgeArgsToObj<NodeType>(
   return edgeObj;
 }
 
+/**
+ * @description convert edge object to string id
+ * @description.zh-CN 转换边对象为字符串 id
+ */
 export function edgeObjToId(isDirected: boolean, edgeObj: { v: any; w: any; name?: any }) {
   return edgeArgsToId(isDirected, edgeObj.v, edgeObj.w, edgeObj.name);
 }
 
-export function isFunction(target: any) {
-  return !!(target && target.constructor && target.call && target.apply);
+export function isFunction(obj: any) {
+  return typeof obj === 'function';
+}
+
+export function isGraph(obj: any) {
+  return obj instanceof Graph;
 }
