@@ -3,6 +3,11 @@ import PriorityQueue from '../PriorityQueue';
 
 const DEFAULT_WEIGHT_FUNC = () => 1;
 
+/**
+ * @description Dijkstra's algorithm for single-source shortest paths.
+ * @description https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm
+ * @description.zh-CN Dijkstra 算法用于单源最短路径。
+ */
 const dijkstra = <NodeIDType, EdgeType>(
   graph: Graph<NodeIDType, any, EdgeType>,
   source: NodeIDType,
@@ -25,6 +30,11 @@ type Entry<NodeIDType> = {
   predecessor?: NodeIDType;
 };
 
+/**
+ * @description Dijkstra's algorithm for single-source shortest paths.
+ * @description https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm
+ * @description.zh-CN Dijkstra 算法用于单源最短路径。
+ */
 const runDijkstra = <NodeIDType, EdgeType>(
   graph: Graph<NodeIDType, any, EdgeType>,
   source: NodeIDType,
@@ -53,6 +63,7 @@ const runDijkstra = <NodeIDType, EdgeType>(
       );
     }
 
+    // If there is already a shorter path to w, ignore this edge.
     if (distance < wEntry.distance) {
       wEntry.distance = distance;
       wEntry.predecessor = v;
