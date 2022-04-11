@@ -1,4 +1,4 @@
-import { GraphEnum } from './enum';
+import { GraphEnum } from './Graph/enum';
 import Graph, { DefaultEdgeType } from './Graph';
 
 /**

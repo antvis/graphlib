@@ -1,3 +1,8 @@
+/**
+ * @file Functions that used to find similar element between two graph
+ * @file.zh-CN 在两个图中查找相似元素的函数
+ */
+
 import Graph from './Graph';
 
 /**

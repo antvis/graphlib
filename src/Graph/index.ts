@@ -1,5 +1,5 @@
 import { edgeArgsToId, isFunction } from '../util';
-import { GraphEnum } from '../enum';
+import { GraphEnum } from './enum';
 import { decrementOrRemoveEntry, edgeArgsToObj, edgeObjToId, incrementOrInitEntry } from '../util';
 import { read, write } from './toJSON';
 
