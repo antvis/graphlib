@@ -808,18 +808,4 @@ export default class Graph<
    * @description.zh-CN 获取边的目标节点
    */
   target = (edge: DefaultEdgeType<NodeIDType, EdgeType>) => edge.w;
-
-  /**
-   * @description Count the total edges with self loop
-   * @description.zh-CN 计算节点的自环边的数量
-   */
-  countSelfLoops = () => {
-    let count = 0;
-    for (const edge of this.edges()) {
-      if (edge.v === edge.w) {
-        count += 1;
-      }
-    }
-    return count;
-  };
 }

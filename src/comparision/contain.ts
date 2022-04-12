@@ -3,7 +3,8 @@
  * @file.zh-CN 在两个图中查找相似元素的函数
  */
 
-import Graph from './Graph';
+import { isSimpleGraph } from '../essence';
+import Graph from '../Graph';
 
 /**
  * @description Check if two graphs are contains the same nodes.
@@ -28,8 +29,8 @@ export const containSameNodes = <NodeIDType = any>(
  * @description.zh-CN 检查两个图是否包含相同的边。
  */
 export const containSameEdges = <NodeIDType = any>(
-  aGraph: Graph<NodeIDType>,
-  bGraph: Graph<NodeIDType>,
+  aGraph: Graph<NodeIDType, any, any>,
+  bGraph: Graph<NodeIDType, any, any>,
 ) => {
   const aEdges = aGraph.edges();
   for (let i = 0; i < aEdges.length; i++) {

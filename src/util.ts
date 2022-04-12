@@ -1,5 +1,5 @@
 import { GraphEnum } from './Graph/enum';
-import Graph, { DefaultEdgeType } from './Graph';
+import { DefaultEdgeType } from './Graph';
 
 /**
  * @description add one to key's value in map
@@ -90,8 +90,4 @@ export function edgeObjToId(isDirected: boolean, edgeObj: { v: any; w: any; name
 
 export function isFunction(obj: any) {
   return typeof obj === 'function';
-}
-
-export function isGraph(obj: any) {
-  return obj instanceof Graph;
 }

@@ -1,6 +1,6 @@
 import Graph from './Graph';
-import { isGraph } from './util';
 import * as algorithm from './algorithm';
-import * as similar from './similar';
+import * as comparision from './comparision';
+import * as essence from './essence';
 
-export { Graph, algorithm, isGraph, similar };
+export { Graph, algorithm, comparision, essence };
