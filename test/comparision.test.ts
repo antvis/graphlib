@@ -343,14 +343,60 @@ describe('comparision', function () {
       aGraph.setNode('c');
       aGraph.setEdge('a', 'b', 'a');
       aGraph.setEdge('b', 'c', 'b');
+      const bGraph = new Graph();
+      bGraph.setNode('a');
+      bGraph.setNode('b');
+      bGraph.setNode('c');
+      bGraph.setEdge('a', 'b', 'a');
+      bGraph.setEdge('a', 'c', 'a');
+      expect(comparision.isGraphComplement(aGraph, bGraph)).toBe(false);
+    });
+
+    it("returns false when the first graph's nodes is not same with another", function () {
+      const aGraph = new Graph();
+      aGraph.setNode('a');
+      aGraph.setNode('b');
+      aGraph.setNode('c');
+      aGraph.setEdge('a', 'b', 'a');
+      aGraph.setEdge('b', 'c', 'b');
+      aGraph.setEdge('c', 'd', 'c');
+      const bGraph = new Graph();
+      bGraph.setNode('a');
+      bGraph.setNode('b');
+      bGraph.setNode('d');
+      bGraph.setEdge('a', 'b', 'a');
+      bGraph.setEdge('c', 'e', 'c');
+      expect(comparision.isGraphComplement(aGraph, bGraph)).toBe(false);
+    });
+
+    it('returns false when first graph is not a simple graph', function () {
+      const aGraph = new Graph({
+        multigraph: true,
+        directed: false,
+      });
+      aGraph.setNode('a');
+      aGraph.setNode('b');
+      aGraph.setNode('c');
+      aGraph.setEdge('a', 'b', 'a');
+      aGraph.setEdge('b', 'a', 'b');
       aGraph.setEdge('c', 'd', 'c');
       const bGraph = new Graph();
       bGraph.setNode('a');
       bGraph.setNode('b');
       bGraph.setNode('c');
       bGraph.setEdge('a', 'b', 'a');
-      bGraph.setEdge('b', 'd', 'b');
-      bGraph.setEdge('c', 'e', 'c');
+      bGraph.setEdge('b', 'c', 'b');
+      bGraph.setEdge('c', 'd', 'c');
+      expect(comparision.isGraphComplement(aGraph, bGraph)).toBe(false);
+    });
+
+    it("return false when two graph's node counts different", () => {
+      const aGraph = new Graph();
+      const bGraph = new Graph();
+      aGraph.setNode('a');
+      aGraph.setNode('v');
+      bGraph.setNode('b');
+      bGraph.setGraph('w');
       expect(comparision.isGraphComplement(aGraph, bGraph)).toBe(false);
     });
   });
