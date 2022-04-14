@@ -23,7 +23,9 @@ export const getGraphComplement = <NodeIDType = any, EdgeType = any>(
     complementGraph.setNode(nodei, originGraph.node(nodei));
     for (let j = i + 1; j < nodeCount; j++) {
       const nodej = nodes[j];
-      complementGraph.setEdge(nodei, nodej);
+      if (!originGraph.hasEdge(nodei, nodej)) {
+        complementGraph.setEdge(nodei, nodej);
+      }
     }
   }
   return complementGraph;
