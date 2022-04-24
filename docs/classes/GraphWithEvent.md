@@ -1,6 +1,6 @@
-[@antv/graphlib](../README.md) / [Exports](../modules.md) / Graph
+[@antv/graphlib](../README.md) / [Exports](../modules.md) / GraphWithEvent
 
-# Class: Graph<NodeIDType, NodeType, EdgeType, GraphType\>
+# Class: GraphWithEvent<NodeIDType, NodeType, EdgeType, GraphType\>
 
 ## Type parameters
 
@@ -13,91 +13,76 @@
 
 ## Hierarchy
 
-- **`Graph`**
+- [`Graph`](Graph.md)<`NodeIDType`, `NodeType`, `EdgeType`, `GraphType`\>
 
-  ↳ [`GraphWithEvent`](GraphWithEvent.md)
+  ↳ **`GraphWithEvent`**
 
 ## Table of contents
 
 ### Constructors
 
-- [constructor](Graph.md#constructor)
+- [constructor](GraphWithEvent.md#constructor)
 
 ### Properties
 
-- [GRAPH\_NODE](Graph.md#graph_node)
-- [childrenMap](Graph.md#childrenmap)
-- [compound](Graph.md#compound)
-- [defaultEdgeLabelFn](Graph.md#defaultedgelabelfn)
-- [defaultNodeLabelFn](Graph.md#defaultnodelabelfn)
-- [directed](Graph.md#directed)
-- [edgeCountNum](Graph.md#edgecountnum)
-- [edgesLabelsMap](Graph.md#edgeslabelsmap)
-- [edgesMap](Graph.md#edgesmap)
-- [inEdgesMap](Graph.md#inedgesmap)
-- [label](Graph.md#label)
-- [multigraph](Graph.md#multigraph)
-- [nodeCountNum](Graph.md#nodecountnum)
-- [nodesLabelMap](Graph.md#nodeslabelmap)
-- [outEdgesMap](Graph.md#outedgesmap)
-- [parentMap](Graph.md#parentmap)
-- [predecessorsMap](Graph.md#predecessorsmap)
-- [successorsMap](Graph.md#successorsmap)
-- [fromJSON](Graph.md#fromjson)
+- [eventPool](GraphWithEvent.md#eventpool)
+- [label](GraphWithEvent.md#label)
+- [fromJSON](GraphWithEvent.md#fromjson)
 
 ### Methods
 
-- [checkCompound](Graph.md#checkcompound)
-- [children](Graph.md#children)
-- [edge](Graph.md#edge)
-- [edgeCount](Graph.md#edgecount)
-- [edgeFromArgs](Graph.md#edgefromargs)
-- [edges](Graph.md#edges)
-- [filterNodes](Graph.md#filternodes)
-- [graph](Graph.md#graph)
-- [hasEdge](Graph.md#hasedge)
-- [hasNode](Graph.md#hasnode)
-- [inEdges](Graph.md#inedges)
-- [isCompound](Graph.md#iscompound)
-- [isDirected](Graph.md#isdirected)
-- [isLeaf](Graph.md#isleaf)
-- [isMultigraph](Graph.md#ismultigraph)
-- [neighbors](Graph.md#neighbors)
-- [node](Graph.md#node)
-- [nodeCount](Graph.md#nodecount)
-- [nodeDegree](Graph.md#nodedegree)
-- [nodeEdges](Graph.md#nodeedges)
-- [nodeInDegree](Graph.md#nodeindegree)
-- [nodeOutDegree](Graph.md#nodeoutdegree)
-- [nodes](Graph.md#nodes)
-- [outEdges](Graph.md#outedges)
-- [parent](Graph.md#parent)
-- [predecessors](Graph.md#predecessors)
-- [removeEdge](Graph.md#removeedge)
-- [removeEdgeObj](Graph.md#removeedgeobj)
-- [removeFromParentsChildList](Graph.md#removefromparentschildlist)
-- [removeNode](Graph.md#removenode)
-- [setDefaultEdgeLabel](Graph.md#setdefaultedgelabel)
-- [setDefaultNodeLabel](Graph.md#setdefaultnodelabel)
-- [setEdge](Graph.md#setedge)
-- [setEdgeObj](Graph.md#setedgeobj)
-- [setGraph](Graph.md#setgraph)
-- [setNode](Graph.md#setnode)
-- [setNodes](Graph.md#setnodes)
-- [setParent](Graph.md#setparent)
-- [setPath](Graph.md#setpath)
-- [sinks](Graph.md#sinks)
-- [source](Graph.md#source)
-- [sources](Graph.md#sources)
-- [successors](Graph.md#successors)
-- [target](Graph.md#target)
-- [toJSON](Graph.md#tojson)
+- [appendEvent](GraphWithEvent.md#appendevent)
+- [children](GraphWithEvent.md#children)
+- [edge](GraphWithEvent.md#edge)
+- [edgeCount](GraphWithEvent.md#edgecount)
+- [edgeFromArgs](GraphWithEvent.md#edgefromargs)
+- [edges](GraphWithEvent.md#edges)
+- [emitEvent](GraphWithEvent.md#emitevent)
+- [filterNodes](GraphWithEvent.md#filternodes)
+- [graph](GraphWithEvent.md#graph)
+- [hasEdge](GraphWithEvent.md#hasedge)
+- [hasNode](GraphWithEvent.md#hasnode)
+- [inEdges](GraphWithEvent.md#inedges)
+- [isCompound](GraphWithEvent.md#iscompound)
+- [isDirected](GraphWithEvent.md#isdirected)
+- [isLeaf](GraphWithEvent.md#isleaf)
+- [isMultigraph](GraphWithEvent.md#ismultigraph)
+- [neighbors](GraphWithEvent.md#neighbors)
+- [node](GraphWithEvent.md#node)
+- [nodeCount](GraphWithEvent.md#nodecount)
+- [nodeDegree](GraphWithEvent.md#nodedegree)
+- [nodeEdges](GraphWithEvent.md#nodeedges)
+- [nodeInDegree](GraphWithEvent.md#nodeindegree)
+- [nodeOutDegree](GraphWithEvent.md#nodeoutdegree)
+- [nodes](GraphWithEvent.md#nodes)
+- [outEdges](GraphWithEvent.md#outedges)
+- [parent](GraphWithEvent.md#parent)
+- [predecessors](GraphWithEvent.md#predecessors)
+- [removeEdge](GraphWithEvent.md#removeedge)
+- [removeEdgeObj](GraphWithEvent.md#removeedgeobj)
+- [removeEvent](GraphWithEvent.md#removeevent)
+- [removeNode](GraphWithEvent.md#removenode)
+- [setDefaultEdgeLabel](GraphWithEvent.md#setdefaultedgelabel)
+- [setDefaultNodeLabel](GraphWithEvent.md#setdefaultnodelabel)
+- [setEdge](GraphWithEvent.md#setedge)
+- [setEdgeObj](GraphWithEvent.md#setedgeobj)
+- [setGraph](GraphWithEvent.md#setgraph)
+- [setNode](GraphWithEvent.md#setnode)
+- [setNodes](GraphWithEvent.md#setnodes)
+- [setParent](GraphWithEvent.md#setparent)
+- [setPath](GraphWithEvent.md#setpath)
+- [sinks](GraphWithEvent.md#sinks)
+- [source](GraphWithEvent.md#source)
+- [sources](GraphWithEvent.md#sources)
+- [successors](GraphWithEvent.md#successors)
+- [target](GraphWithEvent.md#target)
+- [toJSON](GraphWithEvent.md#tojson)
 
 ## Constructors
 
 ### constructor
 
-• **new Graph**<`NodeIDType`, `NodeType`, `EdgeType`, `GraphType`\>(`options?`)
+• **new GraphWithEvent**<`NodeIDType`, `NodeType`, `EdgeType`, `GraphType`\>(`options?`)
 
 #### Type parameters
 
@@ -114,169 +99,27 @@
 | :------ | :------ |
 | `options` | `GraphOption` |
 
+#### Inherited from
+
+[Graph](Graph.md).[constructor](Graph.md#constructor)
+
 #### Defined in
 
 [Graph/index.ts:112](https://github.com/antvis/graphlib/blob/7513e82/src/Graph/index.ts#L112)
 
 ## Properties
 
-### GRAPH\_NODE
+### eventPool
 
-• `Private` **GRAPH\_NODE**: `NodeIDType`
+• `Private` **eventPool**: `Record`<`string`, `Function`[]\> = `{}`
 
-#### Defined in
+**`description`** a pool of event listeners.
 
-[Graph/index.ts:73](https://github.com/antvis/graphlib/blob/7513e82/src/Graph/index.ts#L73)
-
-___
-
-### childrenMap
-
-• `Private` `Optional` **childrenMap**: `Map`<`NodeIDType`, `Map`<`NodeIDType`, `boolean`\>\>
-
-**`description`** Map for children relationship
-
-**`description.zh-cn`** 子孙关系的映射
+**`description.zh-cn`** 事件监听器池。
 
 #### Defined in
 
-[Graph/index.ts:139](https://github.com/antvis/graphlib/blob/7513e82/src/Graph/index.ts#L139)
-
-___
-
-### compound
-
-• `Private` **compound**: `boolean` = `false`
-
-#### Defined in
-
-[Graph/index.ts:71](https://github.com/antvis/graphlib/blob/7513e82/src/Graph/index.ts#L71)
-
-___
-
-### defaultEdgeLabelFn
-
-• `Private` **defaultEdgeLabelFn**: (`v`: `NodeIDType`, `w`: `NodeIDType`, `name?`: `string`) => `undefined` \| `EdgeType`
-
-#### Type declaration
-
-▸ (`v`, `w`, `name?`): `undefined` \| `EdgeType`
-
-**`description`** return edge label with its id
-
-**`description.zh-cn`** 返回边的默认的标签
-
-##### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `v` | `NodeIDType` |
-| `w` | `NodeIDType` |
-| `name?` | `string` |
-
-##### Returns
-
-`undefined` \| `EdgeType`
-
-#### Defined in
-
-[Graph/index.ts:106](https://github.com/antvis/graphlib/blob/7513e82/src/Graph/index.ts#L106)
-
-___
-
-### defaultNodeLabelFn
-
-• `Private` **defaultNodeLabelFn**: (`v`: `NodeIDType`) => `undefined` \| `NodeType`
-
-#### Type declaration
-
-▸ (`v`): `undefined` \| `NodeType`
-
-**`description`** return node label with its id
-
-**`description.zh-cn`** 返回节点的默认的标签
-
-##### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `v` | `NodeIDType` |
-
-##### Returns
-
-`undefined` \| `NodeType`
-
-#### Defined in
-
-[Graph/index.ts:100](https://github.com/antvis/graphlib/blob/7513e82/src/Graph/index.ts#L100)
-
-___
-
-### directed
-
-• `Private` **directed**: `boolean` = `true`
-
-#### Defined in
-
-[Graph/index.ts:67](https://github.com/antvis/graphlib/blob/7513e82/src/Graph/index.ts#L67)
-
-___
-
-### edgeCountNum
-
-• `Private` **edgeCountNum**: `number` = `0`
-
-**`description`** Number of edges in the graph
-
-**`description.zh-cn`** 节点的数量
-
-**`default`** 0
-
-#### Defined in
-
-[Graph/index.ts:94](https://github.com/antvis/graphlib/blob/7513e82/src/Graph/index.ts#L94)
-
-___
-
-### edgesLabelsMap
-
-• `Private` **edgesLabelsMap**: `Map`<`string`, `undefined` \| `EdgeType`\>
-
-**`description`** Map for edge label
-
-**`description.zh-cn`** 边的标签的映射
-
-#### Defined in
-
-[Graph/index.ts:173](https://github.com/antvis/graphlib/blob/7513e82/src/Graph/index.ts#L173)
-
-___
-
-### edgesMap
-
-• `Private` **edgesMap**: `Map`<`string`, `DefaultEdgeType`<`NodeIDType`, `EdgeType`\>\>
-
-**`description`** Map for edge object
-
-**`description.zh-cn`** 边的映射
-
-#### Defined in
-
-[Graph/index.ts:167](https://github.com/antvis/graphlib/blob/7513e82/src/Graph/index.ts#L167)
-
-___
-
-### inEdgesMap
-
-• `Private` **inEdgesMap**: `Map`<`NodeIDType`, `Map`<`string`, `DefaultEdgeType`<`NodeIDType`, `EdgeType`\>\>\>
-
-**`description`** Map for edges
-
-**`description.zh-cn`** 边的映射
-
-#### Defined in
-
-[Graph/index.ts:147](https://github.com/antvis/graphlib/blob/7513e82/src/Graph/index.ts#L147)
+Graph/event.ts:15
 
 ___
 
@@ -290,97 +133,13 @@ ___
 
 **`default`** undefined
 
+#### Inherited from
+
+[Graph](Graph.md).[label](Graph.md#label)
+
 #### Defined in
 
 [Graph/index.ts:80](https://github.com/antvis/graphlib/blob/7513e82/src/Graph/index.ts#L80)
-
-___
-
-### multigraph
-
-• `Private` **multigraph**: `boolean` = `false`
-
-#### Defined in
-
-[Graph/index.ts:69](https://github.com/antvis/graphlib/blob/7513e82/src/Graph/index.ts#L69)
-
-___
-
-### nodeCountNum
-
-• `Private` **nodeCountNum**: `number` = `0`
-
-**`description`** Number of nodes in the graph
-
-**`description.zh-cn`** 节点的数量
-
-**`default`** 0
-
-#### Defined in
-
-[Graph/index.ts:87](https://github.com/antvis/graphlib/blob/7513e82/src/Graph/index.ts#L87)
-
-___
-
-### nodesLabelMap
-
-• `Private` **nodesLabelMap**: `Map`<`NodeIDType`, `undefined` \| `NodeType`\>
-
-#### Defined in
-
-[Graph/index.ts:141](https://github.com/antvis/graphlib/blob/7513e82/src/Graph/index.ts#L141)
-
-___
-
-### outEdgesMap
-
-• `Private` **outEdgesMap**: `Map`<`NodeIDType`, `Map`<`string`, `DefaultEdgeType`<`NodeIDType`, `EdgeType`\>\>\>
-
-#### Defined in
-
-[Graph/index.ts:149](https://github.com/antvis/graphlib/blob/7513e82/src/Graph/index.ts#L149)
-
-___
-
-### parentMap
-
-• `Private` `Optional` **parentMap**: `Map`<`NodeIDType`, `NodeIDType`\>
-
-**`description`** Map for parent relationship
-
-**`description.zh-cn`** 父子关系的映射
-
-#### Defined in
-
-[Graph/index.ts:133](https://github.com/antvis/graphlib/blob/7513e82/src/Graph/index.ts#L133)
-
-___
-
-### predecessorsMap
-
-• `Private` **predecessorsMap**: `Map`<`NodeIDType`, `Map`<`NodeIDType`, `number`\>\>
-
-**`description`** Map for predecessors
-
-**`description.zh-cn`** 前驱节点的映射
-
-#### Defined in
-
-[Graph/index.ts:155](https://github.com/antvis/graphlib/blob/7513e82/src/Graph/index.ts#L155)
-
-___
-
-### successorsMap
-
-• `Private` **successorsMap**: `Map`<`NodeIDType`, `Map`<`NodeIDType`, `number`\>\>
-
-**`description`** Map for successors
-
-**`description.zh-cn`** 后继节点的映射
-
-#### Defined in
-
-[Graph/index.ts:161](https://github.com/antvis/graphlib/blob/7513e82/src/Graph/index.ts#L161)
 
 ___
 
@@ -415,19 +174,30 @@ ___
 
 [`Graph`](Graph.md)<`NodeIDType`, `NodeType`, `EdgeType`, `GraphType`\>
 
+#### Inherited from
+
+[Graph](Graph.md).[fromJSON](Graph.md#fromjson)
+
 #### Defined in
 
 [Graph/index.ts:762](https://github.com/antvis/graphlib/blob/7513e82/src/Graph/index.ts#L762)
 
 ## Methods
 
-### checkCompound
+### appendEvent
 
-▸ `Private` **checkCompound**(): `void`
+▸ **appendEvent**(`type`, `callback`): `void`
 
-**`description`** if graph is not compound then throw error
+**`description`** Add an event listener.
 
-**`description.zh-cn`** 如果图不是复合图就报错
+**`description.zh-cn`** 添加事件监听器。
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `type` | `GraphEventType` |
+| `callback` | `Function` |
 
 #### Returns
 
@@ -435,7 +205,7 @@ ___
 
 #### Defined in
 
-[Graph/index.ts:335](https://github.com/antvis/graphlib/blob/7513e82/src/Graph/index.ts#L335)
+Graph/event.ts:21
 
 ___
 
@@ -456,6 +226,10 @@ ___
 #### Returns
 
 `undefined` \| `NodeIDType`[]
+
+#### Inherited from
+
+[Graph](Graph.md).[children](Graph.md#children)
 
 #### Defined in
 
@@ -484,6 +258,10 @@ ___
 
 `undefined` \| `EdgeType`
 
+#### Inherited from
+
+[Graph](Graph.md).[edge](Graph.md#edge)
+
 #### Defined in
 
 [Graph/index.ts:660](https://github.com/antvis/graphlib/blob/7513e82/src/Graph/index.ts#L660)
@@ -503,6 +281,10 @@ ___
 `number`
 
 number
+
+#### Inherited from
+
+[Graph](Graph.md).[edgeCount](Graph.md#edgecount)
 
 #### Defined in
 
@@ -530,6 +312,10 @@ ___
 
 `undefined` \| `EdgeType`
 
+#### Inherited from
+
+[Graph](Graph.md).[edgeFromArgs](Graph.md#edgefromargs)
+
 #### Defined in
 
 [Graph/index.ts:650](https://github.com/antvis/graphlib/blob/7513e82/src/Graph/index.ts#L650)
@@ -548,9 +334,38 @@ ___
 
 `DefaultEdgeType`<`NodeIDType`, `EdgeType`\>[]
 
+#### Inherited from
+
+[Graph](Graph.md).[edges](Graph.md#edges)
+
 #### Defined in
 
 [Graph/index.ts:716](https://github.com/antvis/graphlib/blob/7513e82/src/Graph/index.ts#L716)
+
+___
+
+### emitEvent
+
+▸ **emitEvent**(`type`, ...`args`): `void`
+
+**`description`** trigger an event.
+
+**`description.zh-cn`** 触发事件。
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `type` | `GraphEventType` |
+| `...args` | `any`[] |
+
+#### Returns
+
+`void`
+
+#### Defined in
+
+Graph/event.ts:46
 
 ___
 
@@ -572,6 +387,10 @@ ___
 
 [`Graph`](Graph.md)<`NodeIDType`, `NodeType`, `EdgeType`, `GraphType`\>
 
+#### Inherited from
+
+[Graph](Graph.md).[filterNodes](Graph.md#filternodes)
+
 #### Defined in
 
 [Graph/index.ts:480](https://github.com/antvis/graphlib/blob/7513e82/src/Graph/index.ts#L480)
@@ -591,6 +410,10 @@ ___
 `GraphType`
 
 stirng | undefined
+
+#### Inherited from
+
+[Graph](Graph.md).[graph](Graph.md#graph)
 
 #### Defined in
 
@@ -618,6 +441,10 @@ ___
 
 `boolean`
 
+#### Inherited from
+
+[Graph](Graph.md).[hasEdge](Graph.md#hasedge)
+
 #### Defined in
 
 [Graph/index.ts:672](https://github.com/antvis/graphlib/blob/7513e82/src/Graph/index.ts#L672)
@@ -641,6 +468,10 @@ ___
 #### Returns
 
 `boolean`
+
+#### Inherited from
+
+[Graph](Graph.md).[hasNode](Graph.md#hasnode)
 
 #### Defined in
 
@@ -667,6 +498,10 @@ ___
 
 `undefined` \| `DefaultEdgeType`<`NodeIDType`, `EdgeType`\>[]
 
+#### Inherited from
+
+[Graph](Graph.md).[inEdges](Graph.md#inedges)
+
 #### Defined in
 
 [Graph/index.ts:725](https://github.com/antvis/graphlib/blob/7513e82/src/Graph/index.ts#L725)
@@ -687,6 +522,10 @@ ___
 
 `boolean`
 
+#### Inherited from
+
+[Graph](Graph.md).[isCompound](Graph.md#iscompound)
+
 #### Defined in
 
 [Graph/index.ts:194](https://github.com/antvis/graphlib/blob/7513e82/src/Graph/index.ts#L194)
@@ -706,6 +545,10 @@ ___
 #### Returns
 
 `boolean`
+
+#### Inherited from
+
+[Graph](Graph.md).[isDirected](Graph.md#isdirected)
 
 #### Defined in
 
@@ -731,6 +574,10 @@ ___
 
 `boolean`
 
+#### Inherited from
+
+[Graph](Graph.md).[isLeaf](Graph.md#isleaf)
+
 #### Defined in
 
 [Graph/index.ts:467](https://github.com/antvis/graphlib/blob/7513e82/src/Graph/index.ts#L467)
@@ -750,6 +597,10 @@ ___
 #### Returns
 
 `boolean`
+
+#### Inherited from
+
+[Graph](Graph.md).[isMultigraph](Graph.md#ismultigraph)
 
 #### Defined in
 
@@ -775,6 +626,10 @@ ___
 
 `undefined` \| `NodeIDType`[]
 
+#### Inherited from
+
+[Graph](Graph.md).[neighbors](Graph.md#neighbors)
+
 #### Defined in
 
 [Graph/index.ts:454](https://github.com/antvis/graphlib/blob/7513e82/src/Graph/index.ts#L454)
@@ -799,6 +654,10 @@ ___
 
 `undefined` \| `NodeType`
 
+#### Inherited from
+
+[Graph](Graph.md).[node](Graph.md#node)
+
 #### Defined in
 
 [Graph/index.ts:240](https://github.com/antvis/graphlib/blob/7513e82/src/Graph/index.ts#L240)
@@ -818,6 +677,10 @@ ___
 `number`
 
 number
+
+#### Inherited from
+
+[Graph](Graph.md).[nodeCount](Graph.md#nodecount)
 
 #### Defined in
 
@@ -842,6 +705,10 @@ ___
 #### Returns
 
 `number`
+
+#### Inherited from
+
+[Graph](Graph.md).[nodeDegree](Graph.md#nodedegree)
 
 #### Defined in
 
@@ -868,6 +735,10 @@ ___
 
 `undefined` \| `DefaultEdgeType`<`NodeIDType`, `EdgeType`\>[]
 
+#### Inherited from
+
+[Graph](Graph.md).[nodeEdges](Graph.md#nodeedges)
+
 #### Defined in
 
 [Graph/index.ts:755](https://github.com/antvis/graphlib/blob/7513e82/src/Graph/index.ts#L755)
@@ -891,6 +762,10 @@ ___
 #### Returns
 
 `number`
+
+#### Inherited from
+
+[Graph](Graph.md).[nodeInDegree](Graph.md#nodeindegree)
 
 #### Defined in
 
@@ -916,6 +791,10 @@ ___
 
 `number`
 
+#### Inherited from
+
+[Graph](Graph.md).[nodeOutDegree](Graph.md#nodeoutdegree)
+
 #### Defined in
 
 [Graph/index.ts:784](https://github.com/antvis/graphlib/blob/7513e82/src/Graph/index.ts#L784)
@@ -933,6 +812,10 @@ ___
 #### Returns
 
 `NodeIDType`[]
+
+#### Inherited from
+
+[Graph](Graph.md).[nodes](Graph.md#nodes)
 
 #### Defined in
 
@@ -959,6 +842,10 @@ ___
 
 `undefined` \| `DefaultEdgeType`<`NodeIDType`, `EdgeType`\>[]
 
+#### Inherited from
+
+[Graph](Graph.md).[outEdges](Graph.md#outedges)
+
 #### Defined in
 
 [Graph/index.ts:740](https://github.com/antvis/graphlib/blob/7513e82/src/Graph/index.ts#L740)
@@ -982,6 +869,10 @@ ___
 #### Returns
 
 `undefined` \| `NodeIDType`
+
+#### Inherited from
+
+[Graph](Graph.md).[parent](Graph.md#parent)
 
 #### Defined in
 
@@ -1007,6 +898,10 @@ ___
 
 `undefined` \| `NodeIDType`[]
 
+#### Inherited from
+
+[Graph](Graph.md).[predecessors](Graph.md#predecessors)
+
 #### Defined in
 
 [Graph/index.ts:432](https://github.com/antvis/graphlib/blob/7513e82/src/Graph/index.ts#L432)
@@ -1015,11 +910,7 @@ ___
 
 ### removeEdge
 
-▸ **removeEdge**(`v_`, `w_`, `name?`): [`Graph`](Graph.md)<`NodeIDType`, `NodeType`, `EdgeType`, `GraphType`\>
-
-**`description`** remove a specific edge
-
-**`description.zh-cn`** 删除一条边
+▸ **removeEdge**(`v_`, `w_`, `name?`): [`GraphWithEvent`](GraphWithEvent.md)<`NodeIDType`, `NodeType`, `EdgeType`, `GraphType`\>
 
 #### Parameters
 
@@ -1031,11 +922,15 @@ ___
 
 #### Returns
 
-[`Graph`](Graph.md)<`NodeIDType`, `NodeType`, `EdgeType`, `GraphType`\>
+[`GraphWithEvent`](GraphWithEvent.md)<`NodeIDType`, `NodeType`, `EdgeType`, `GraphType`\>
+
+#### Overrides
+
+[Graph](Graph.md).[removeEdge](Graph.md#removeedge)
 
 #### Defined in
 
-[Graph/index.ts:684](https://github.com/antvis/graphlib/blob/7513e82/src/Graph/index.ts#L684)
+Graph/event.ts:73
 
 ___
 
@@ -1060,25 +955,30 @@ ___
 
 `this`
 
+#### Inherited from
+
+[Graph](Graph.md).[removeEdgeObj](Graph.md#removeedgeobj)
+
 #### Defined in
 
 [Graph/index.ts:708](https://github.com/antvis/graphlib/blob/7513e82/src/Graph/index.ts#L708)
 
 ___
 
-### removeFromParentsChildList
+### removeEvent
 
-▸ `Private` **removeFromParentsChildList**(`node`): `void`
+▸ **removeEvent**(`type`, `callback`): `void`
 
-**`description`** Remove node from its parent (compond graph only)
+**`description`** remove an event listener.
 
-**`description.zh-cn`** 将节点与其父节点之间的父子关系删除(只有复合图可以使用)
+**`description.zh-cn`** 移除事件监听器。
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `node` | `NodeIDType` |
+| `type` | `GraphEventType` |
+| `callback` | `Function` |
 
 #### Returns
 
@@ -1086,17 +986,13 @@ ___
 
 #### Defined in
 
-[Graph/index.ts:361](https://github.com/antvis/graphlib/blob/7513e82/src/Graph/index.ts#L361)
+Graph/event.ts:32
 
 ___
 
 ### removeNode
 
-▸ **removeNode**(`node`): [`Graph`](Graph.md)<`NodeIDType`, `NodeType`, `EdgeType`, `GraphType`\>
-
-**`description`** Remove node from graph
-
-**`description.zh-cn`** 将节点从图中移除
+▸ **removeNode**(`node`): [`GraphWithEvent`](GraphWithEvent.md)<`NodeIDType`, `NodeType`, `EdgeType`, `GraphType`\>
 
 #### Parameters
 
@@ -1106,11 +1002,15 @@ ___
 
 #### Returns
 
-[`Graph`](Graph.md)<`NodeIDType`, `NodeType`, `EdgeType`, `GraphType`\>
+[`GraphWithEvent`](GraphWithEvent.md)<`NodeIDType`, `NodeType`, `EdgeType`, `GraphType`\>
+
+#### Overrides
+
+[Graph](Graph.md).[removeNode](Graph.md#removenode)
 
 #### Defined in
 
-[Graph/index.ts:527](https://github.com/antvis/graphlib/blob/7513e82/src/Graph/index.ts#L527)
+Graph/event.ts:61
 
 ___
 
@@ -1131,6 +1031,10 @@ ___
 #### Returns
 
 `this`
+
+#### Inherited from
+
+[Graph](Graph.md).[setDefaultEdgeLabel](Graph.md#setdefaultedgelabel)
 
 #### Defined in
 
@@ -1158,6 +1062,10 @@ ___
 
 this
 
+#### Inherited from
+
+[Graph](Graph.md).[setDefaultNodeLabel](Graph.md#setdefaultnodelabel)
+
 #### Defined in
 
 [Graph/index.ts:220](https://github.com/antvis/graphlib/blob/7513e82/src/Graph/index.ts#L220)
@@ -1166,11 +1074,7 @@ ___
 
 ### setEdge
 
-▸ **setEdge**(`v_`, `w_`, `value?`, `name?`): [`Graph`](Graph.md)<`NodeIDType`, `NodeType`, `EdgeType`, `GraphType`\>
-
-**`description`** set edge value, if nodes or edges not exsit then add to graph
-
-**`description.zh-cn`** 设置边的属性，如果边或节点不存在，那么将他们加入这个图
+▸ **setEdge**(`v_`, `w_`, `value?`, `name?`): [`GraphWithEvent`](GraphWithEvent.md)<`NodeIDType`, `NodeType`, `EdgeType`, `GraphType`\>
 
 #### Parameters
 
@@ -1183,11 +1087,15 @@ ___
 
 #### Returns
 
-[`Graph`](Graph.md)<`NodeIDType`, `NodeType`, `EdgeType`, `GraphType`\>
+[`GraphWithEvent`](GraphWithEvent.md)<`NodeIDType`, `NodeType`, `EdgeType`, `GraphType`\>
+
+#### Overrides
+
+[Graph](Graph.md).[setEdge](Graph.md#setedge)
 
 #### Defined in
 
-[Graph/index.ts:590](https://github.com/antvis/graphlib/blob/7513e82/src/Graph/index.ts#L590)
+Graph/event.ts:67
 
 ___
 
@@ -1205,6 +1113,10 @@ ___
 #### Returns
 
 `this`
+
+#### Inherited from
+
+[Graph](Graph.md).[setEdgeObj](Graph.md#setedgeobj)
 
 #### Defined in
 
@@ -1230,6 +1142,10 @@ ___
 
 `this`
 
+#### Inherited from
+
+[Graph](Graph.md).[setGraph](Graph.md#setgraph)
+
 #### Defined in
 
 [Graph/index.ts:202](https://github.com/antvis/graphlib/blob/7513e82/src/Graph/index.ts#L202)
@@ -1238,11 +1154,7 @@ ___
 
 ### setNode
 
-▸ **setNode**(`node`, `value?`): [`Graph`](Graph.md)<`NodeIDType`, `NodeType`, `EdgeType`, `GraphType`\>
-
-**`description`** Set Node label in graph if node not in graph then create it
-
-**`description.zh-cn`** 设置节点的label，如果这个节点不在图中，则在图中创建这个节点
+▸ **setNode**(`node`, `value?`): [`GraphWithEvent`](GraphWithEvent.md)<`NodeIDType`, `NodeType`, `EdgeType`, `GraphType`\>
 
 #### Parameters
 
@@ -1253,11 +1165,15 @@ ___
 
 #### Returns
 
-[`Graph`](Graph.md)<`NodeIDType`, `NodeType`, `EdgeType`, `GraphType`\>
+[`GraphWithEvent`](GraphWithEvent.md)<`NodeIDType`, `NodeType`, `EdgeType`, `GraphType`\>
+
+#### Overrides
+
+[Graph](Graph.md).[setNode](Graph.md#setnode)
 
 #### Defined in
 
-[Graph/index.ts:270](https://github.com/antvis/graphlib/blob/7513e82/src/Graph/index.ts#L270)
+Graph/event.ts:55
 
 ___
 
@@ -1279,6 +1195,10 @@ ___
 #### Returns
 
 `this`
+
+#### Inherited from
+
+[Graph](Graph.md).[setNodes](Graph.md#setnodes)
 
 #### Defined in
 
@@ -1305,6 +1225,10 @@ ___
 
 `this`
 
+#### Inherited from
+
+[Graph](Graph.md).[setParent](Graph.md#setparent)
+
 #### Defined in
 
 [Graph/index.ts:373](https://github.com/antvis/graphlib/blob/7513e82/src/Graph/index.ts#L373)
@@ -1330,6 +1254,10 @@ ___
 
 `this`
 
+#### Inherited from
+
+[Graph](Graph.md).[setPath](Graph.md#setpath)
+
 #### Defined in
 
 [Graph/index.ts:634](https://github.com/antvis/graphlib/blob/7513e82/src/Graph/index.ts#L634)
@@ -1347,6 +1275,10 @@ ___
 #### Returns
 
 `NodeIDType`[]
+
+#### Inherited from
+
+[Graph](Graph.md).[sinks](Graph.md#sinks)
 
 #### Defined in
 
@@ -1372,6 +1304,10 @@ ___
 
 `NodeIDType`
 
+#### Inherited from
+
+[Graph](Graph.md).[source](Graph.md#source)
+
 #### Defined in
 
 [Graph/index.ts:804](https://github.com/antvis/graphlib/blob/7513e82/src/Graph/index.ts#L804)
@@ -1389,6 +1325,10 @@ ___
 #### Returns
 
 `NodeIDType`[]
+
+#### Inherited from
+
+[Graph](Graph.md).[sources](Graph.md#sources)
 
 #### Defined in
 
@@ -1414,6 +1354,10 @@ ___
 
 `undefined` \| `NodeIDType`[]
 
+#### Inherited from
+
+[Graph](Graph.md).[successors](Graph.md#successors)
+
 #### Defined in
 
 [Graph/index.ts:443](https://github.com/antvis/graphlib/blob/7513e82/src/Graph/index.ts#L443)
@@ -1438,6 +1382,10 @@ ___
 
 `NodeIDType`
 
+#### Inherited from
+
+[Graph](Graph.md).[target](Graph.md#target)
+
 #### Defined in
 
 [Graph/index.ts:810](https://github.com/antvis/graphlib/blob/7513e82/src/Graph/index.ts#L810)
@@ -1451,6 +1399,10 @@ ___
 #### Returns
 
 `JSONGraph`<`NodeIDType`, `NodeType`, `EdgeType`, `GraphType`\>
+
+#### Inherited from
+
+[Graph](Graph.md).[toJSON](Graph.md#tojson)
 
 #### Defined in
 

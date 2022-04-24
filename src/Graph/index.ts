@@ -267,7 +267,7 @@ export default class Graph<
    * @param value
    * @returns
    */
-  setNode = (node: NodeIDType, value?: NodeType) => {
+  setNode(node: NodeIDType, value?: NodeType) {
     const {
       nodesLabelMap,
       defaultNodeLabelFn,
@@ -306,7 +306,7 @@ export default class Graph<
 
     this.nodeCountNum += 1;
     return this;
-  };
+  }
 
   /**
    * @description Set nodes or add nodes in batch
@@ -524,7 +524,7 @@ export default class Graph<
    * @param node
    * @returns
    */
-  removeNode = (node: NodeIDType) => {
+  removeNode(node: NodeIDType) {
     if (this.hasNode(node)) {
       const cleanEdge = (edgeObj: DefaultEdgeType<NodeIDType, EdgeType>) => {
         this.removeEdge(edgeObj.v, edgeObj.w, edgeObj.name);
@@ -554,7 +554,7 @@ export default class Graph<
       this.nodeCountNum -= 1;
     }
     return this;
-  };
+  }
 
   /**
    * @description Set function that generate default label for edge, if param is non-function value then default label will always be this value;
@@ -587,7 +587,7 @@ export default class Graph<
    * @param name
    * @returns
    */
-  setEdge = (v_: NodeIDType, w_: NodeIDType, value?: any, name?: string) => {
+  setEdge(v_: NodeIDType, w_: NodeIDType, value?: any, name?: string) {
     const edgeObj = edgeArgsToObj<NodeIDType>(this.isDirected(), v_, w_, name);
     const edgeId = edgeObjToId(this.isDirected(), edgeObj);
     const { v, w } = edgeObj;
@@ -618,7 +618,7 @@ export default class Graph<
     this.edgeCountNum += 1;
 
     return this;
-  };
+  }
 
   setEdgeObj = (edgeObj: DefaultEdgeType<NodeIDType, EdgeType>, value?: EdgeType) => {
     return this.setEdge(edgeObj.v, edgeObj.w, value, edgeObj.name);
@@ -681,7 +681,7 @@ export default class Graph<
    * @param name
    * @returns
    */
-  removeEdge = (v_: NodeIDType, w_: NodeIDType, name?: any) => {
+  removeEdge(v_: NodeIDType, w_: NodeIDType, name?: any) {
     const edgeId = edgeArgsToId(this.isDirected(), v_, w_, name);
     const edgeObj = this.edgesMap.get(edgeId);
     if (edgeObj) {
@@ -699,7 +699,7 @@ export default class Graph<
       this.edgeCountNum -= 1;
     }
     return this;
-  };
+  }
 
   /**
    * @description remove a specific edge by edge object

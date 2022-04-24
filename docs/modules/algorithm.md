@@ -27,14 +27,14 @@
 
 #### Type parameters
 
-| Name         |
-| :----------- |
+| Name |
+| :------ |
 | `NodeIDType` |
 
 #### Parameters
 
 | Name | Type |
-| :-- | :-- |
+| :------ | :------ |
 | `graph` | [`Graph`](../classes/Graph.md)<`NodeIDType`, `Record`<`string`, `any`\>, `Record`<`string`, `any`\>, `string`\> |
 
 #### Returns
@@ -43,9 +43,9 @@
 
 #### Defined in
 
-[algorithm/components.ts:3](https://github.com/antvis/graphlib/blob/630e2c1/src/algorithm/components.ts#L3)
+[algorithm/components.ts:3](https://github.com/antvis/graphlib/blob/7513e82/src/algorithm/components.ts#L3)
 
----
+___
 
 ### dfs
 
@@ -57,17 +57,17 @@
 
 #### Type parameters
 
-| Name         | Type  |
-| :----------- | :---- |
+| Name | Type |
+| :------ | :------ |
 | `NodeIDType` | `any` |
 
 #### Parameters
 
-| Name    | Type                                                               |
-| :------ | :----------------------------------------------------------------- |
+| Name | Type |
+| :------ | :------ |
 | `graph` | [`Graph`](../classes/Graph.md)<`NodeIDType`, `any`, `any`, `any`\> |
-| `node`  | `NodeIDType` \| `NodeIDType`[]                                     |
-| `order` | `"pre"` \| `"post"`                                                |
+| `node` | `NodeIDType` \| `NodeIDType`[] |
+| `order` | ``"pre"`` \| ``"post"`` |
 
 #### Returns
 
@@ -75,9 +75,9 @@
 
 #### Defined in
 
-[algorithm/dfs.ts:33](https://github.com/antvis/graphlib/blob/630e2c1/src/algorithm/dfs.ts#L33)
+[algorithm/dfs.ts:33](https://github.com/antvis/graphlib/blob/7513e82/src/algorithm/dfs.ts#L33)
 
----
+___
 
 ### dijkstra
 
@@ -91,19 +91,19 @@
 
 #### Type parameters
 
-| Name         |
-| :----------- |
+| Name |
+| :------ |
 | `NodeIDType` |
-| `EdgeType`   |
+| `EdgeType` |
 
 #### Parameters
 
-| Name        | Type                                                                       |
-| :---------- | :------------------------------------------------------------------------- |
-| `graph`     | [`Graph`](../classes/Graph.md)<`NodeIDType`, `any`, `EdgeType`, `string`\> |
-| `source`    | `NodeIDType`                                                               |
-| `weightFn?` | (`node`: `DefaultEdgeType`<`NodeIDType`, `EdgeType`\>) => `number`         |
-| `edgeFn?`   | (`node`: `NodeIDType`) => `DefaultEdgeType`<`NodeIDType`, `EdgeType`\>[]   |
+| Name | Type |
+| :------ | :------ |
+| `graph` | [`Graph`](../classes/Graph.md)<`NodeIDType`, `any`, `EdgeType`, `string`\> |
+| `source` | `NodeIDType` |
+| `weightFn?` | (`node`: `DefaultEdgeType`<`NodeIDType`, `EdgeType`\>) => `number` |
+| `edgeFn?` | (`node`: `NodeIDType`) => `DefaultEdgeType`<`NodeIDType`, `EdgeType`\>[] |
 
 #### Returns
 
@@ -111,9 +111,9 @@
 
 #### Defined in
 
-[algorithm/dijkstra.ts:11](https://github.com/antvis/graphlib/blob/630e2c1/src/algorithm/dijkstra.ts#L11)
+[algorithm/dijkstra.ts:11](https://github.com/antvis/graphlib/blob/7513e82/src/algorithm/dijkstra.ts#L11)
 
----
+___
 
 ### dijkstraAll
 
@@ -121,18 +121,18 @@
 
 #### Type parameters
 
-| Name       |
-| :--------- |
+| Name |
+| :------ |
 | `NodeType` |
 | `EdgeType` |
 
 #### Parameters
 
-| Name        | Type                                                                     |
-| :---------- | :----------------------------------------------------------------------- |
-| `graph`     | [`Graph`](../classes/Graph.md)<`NodeType`, `any`, `EdgeType`, `string`\> |
-| `weightFn?` | (`node`: `DefaultEdgeType`<`NodeType`, `EdgeType`\>) => `number`         |
-| `edgeFn?`   | (`node`: `NodeType`) => `DefaultEdgeType`<`NodeType`, `EdgeType`\>[]     |
+| Name | Type |
+| :------ | :------ |
+| `graph` | [`Graph`](../classes/Graph.md)<`NodeType`, `any`, `EdgeType`, `string`\> |
+| `weightFn?` | (`node`: `DefaultEdgeType`<`NodeType`, `EdgeType`\>) => `number` |
+| `edgeFn?` | (`node`: `NodeType`) => `DefaultEdgeType`<`NodeType`, `EdgeType`\>[] |
 
 #### Returns
 
@@ -140,9 +140,9 @@
 
 #### Defined in
 
-[algorithm/dijkstra-all.ts:4](https://github.com/antvis/graphlib/blob/630e2c1/src/algorithm/dijkstra-all.ts#L4)
+[algorithm/dijkstra-all.ts:4](https://github.com/antvis/graphlib/blob/7513e82/src/algorithm/dijkstra-all.ts#L4)
 
----
+___
 
 ### findCycles
 
@@ -150,14 +150,14 @@
 
 #### Type parameters
 
-| Name       |
-| :--------- |
+| Name |
+| :------ |
 | `NodeType` |
 
 #### Parameters
 
 | Name | Type |
-| :-- | :-- |
+| :------ | :------ |
 | `graph` | [`Graph`](../classes/Graph.md)<`NodeType`, `Record`<`string`, `any`\>, `Record`<`string`, `any`\>, `string`\> |
 
 #### Returns
@@ -166,9 +166,9 @@
 
 #### Defined in
 
-[algorithm/find-cycles.ts:4](https://github.com/antvis/graphlib/blob/630e2c1/src/algorithm/find-cycles.ts#L4)
+[algorithm/find-cycles.ts:4](https://github.com/antvis/graphlib/blob/7513e82/src/algorithm/find-cycles.ts#L4)
 
----
+___
 
 ### floydWarshall
 
@@ -176,18 +176,18 @@
 
 #### Type parameters
 
-| Name         |
-| :----------- |
+| Name |
+| :------ |
 | `NodeIDType` |
-| `EdgeType`   |
+| `EdgeType` |
 
 #### Parameters
 
-| Name        | Type                                                                       |
-| :---------- | :------------------------------------------------------------------------- |
-| `graph`     | [`Graph`](../classes/Graph.md)<`NodeIDType`, `any`, `EdgeType`, `string`\> |
-| `weightFn?` | (`node`: `DefaultEdgeType`<`NodeIDType`, `EdgeType`\>) => `number`         |
-| `edgeFn?`   | (`node`: `NodeIDType`) => `DefaultEdgeType`<`NodeIDType`, `EdgeType`\>[]   |
+| Name | Type |
+| :------ | :------ |
+| `graph` | [`Graph`](../classes/Graph.md)<`NodeIDType`, `any`, `EdgeType`, `string`\> |
+| `weightFn?` | (`node`: `DefaultEdgeType`<`NodeIDType`, `EdgeType`\>) => `number` |
+| `edgeFn?` | (`node`: `NodeIDType`) => `DefaultEdgeType`<`NodeIDType`, `EdgeType`\>[] |
 
 #### Returns
 
@@ -195,9 +195,9 @@
 
 #### Defined in
 
-[algorithm/floyd-warshall.ts:5](https://github.com/antvis/graphlib/blob/630e2c1/src/algorithm/floyd-warshall.ts#L5)
+[algorithm/floyd-warshall.ts:5](https://github.com/antvis/graphlib/blob/7513e82/src/algorithm/floyd-warshall.ts#L5)
 
----
+___
 
 ### isAcyclic
 
@@ -206,7 +206,7 @@
 #### Parameters
 
 | Name | Type |
-| :-- | :-- |
+| :------ | :------ |
 | `graph` | [`Graph`](../classes/Graph.md)<`string`, `Record`<`string`, `any`\>, `Record`<`string`, `any`\>, `string`\> |
 
 #### Returns
@@ -215,9 +215,9 @@
 
 #### Defined in
 
-[algorithm/is-acyclic.ts:4](https://github.com/antvis/graphlib/blob/630e2c1/src/algorithm/is-acyclic.ts#L4)
+[algorithm/is-acyclic.ts:4](https://github.com/antvis/graphlib/blob/7513e82/src/algorithm/is-acyclic.ts#L4)
 
----
+___
 
 ### postorder
 
@@ -225,16 +225,16 @@
 
 #### Type parameters
 
-| Name       |
-| :--------- |
+| Name |
+| :------ |
 | `NodeType` |
 
 #### Parameters
 
-| Name    | Type                                                             |
-| :------ | :--------------------------------------------------------------- |
+| Name | Type |
+| :------ | :------ |
 | `graph` | [`Graph`](../classes/Graph.md)<`NodeType`, `any`, `any`, `any`\> |
-| `nodes` | `NodeType` \| `NodeType`[]                                       |
+| `nodes` | `NodeType` \| `NodeType`[] |
 
 #### Returns
 
@@ -242,9 +242,9 @@
 
 #### Defined in
 
-[algorithm/postorder.ts:4](https://github.com/antvis/graphlib/blob/630e2c1/src/algorithm/postorder.ts#L4)
+[algorithm/postorder.ts:4](https://github.com/antvis/graphlib/blob/7513e82/src/algorithm/postorder.ts#L4)
 
----
+___
 
 ### preorder
 
@@ -252,16 +252,16 @@
 
 #### Type parameters
 
-| Name       |
-| :--------- |
+| Name |
+| :------ |
 | `NodeType` |
 
 #### Parameters
 
-| Name    | Type                                                             |
-| :------ | :--------------------------------------------------------------- |
+| Name | Type |
+| :------ | :------ |
 | `graph` | [`Graph`](../classes/Graph.md)<`NodeType`, `any`, `any`, `any`\> |
-| `nodes` | `NodeType` \| `NodeType`[]                                       |
+| `nodes` | `NodeType` \| `NodeType`[] |
 
 #### Returns
 
@@ -269,9 +269,9 @@
 
 #### Defined in
 
-[algorithm/preorder.ts:4](https://github.com/antvis/graphlib/blob/630e2c1/src/algorithm/preorder.ts#L4)
+[algorithm/preorder.ts:4](https://github.com/antvis/graphlib/blob/7513e82/src/algorithm/preorder.ts#L4)
 
----
+___
 
 ### prim
 
@@ -279,18 +279,18 @@
 
 #### Type parameters
 
-| Name         |
-| :----------- |
+| Name |
+| :------ |
 | `NodeIdType` |
-| `NodeType`   |
-| `EdgeType`   |
+| `NodeType` |
+| `EdgeType` |
 
 #### Parameters
 
-| Name       | Type                                                                            |
-| :--------- | :------------------------------------------------------------------------------ |
-| `graph`    | [`Graph`](../classes/Graph.md)<`NodeIdType`, `NodeType`, `EdgeType`, `string`\> |
-| `weightFn` | (`node`: `DefaultEdgeType`<`NodeIdType`, `EdgeType`\>) => `number`              |
+| Name | Type |
+| :------ | :------ |
+| `graph` | [`Graph`](../classes/Graph.md)<`NodeIdType`, `NodeType`, `EdgeType`, `string`\> |
+| `weightFn` | (`node`: `DefaultEdgeType`<`NodeIdType`, `EdgeType`\>) => `number` |
 
 #### Returns
 
@@ -298,9 +298,9 @@
 
 #### Defined in
 
-[algorithm/prim.ts:4](https://github.com/antvis/graphlib/blob/630e2c1/src/algorithm/prim.ts#L4)
+[algorithm/prim.ts:4](https://github.com/antvis/graphlib/blob/7513e82/src/algorithm/prim.ts#L4)
 
----
+___
 
 ### tarjan
 
@@ -314,14 +314,14 @@
 
 #### Type parameters
 
-| Name         |
-| :----------- |
+| Name |
+| :------ |
 | `NodeIDType` |
 
 #### Parameters
 
 | Name | Type |
-| :-- | :-- |
+| :------ | :------ |
 | `graph` | [`Graph`](../classes/Graph.md)<`NodeIDType`, `Record`<`string`, `any`\>, `Record`<`string`, `any`\>, `string`\> |
 
 #### Returns
@@ -330,9 +330,9 @@
 
 #### Defined in
 
-[algorithm/tarjan.ts:16](https://github.com/antvis/graphlib/blob/630e2c1/src/algorithm/tarjan.ts#L16)
+[algorithm/tarjan.ts:16](https://github.com/antvis/graphlib/blob/7513e82/src/algorithm/tarjan.ts#L16)
 
----
+___
 
 ### topsort
 
@@ -340,14 +340,14 @@
 
 #### Type parameters
 
-| Name         |
-| :----------- |
+| Name |
+| :------ |
 | `NodeIDType` |
 
 #### Parameters
 
 | Name | Type |
-| :-- | :-- |
+| :------ | :------ |
 | `graph` | [`Graph`](../classes/Graph.md)<`NodeIDType`, `Record`<`string`, `any`\>, `Record`<`string`, `any`\>, `string`\> |
 
 #### Returns
@@ -356,4 +356,4 @@
 
 #### Defined in
 
-[algorithm/topsort.ts:5](https://github.com/antvis/graphlib/blob/630e2c1/src/algorithm/topsort.ts#L5)
+[algorithm/topsort.ts:5](https://github.com/antvis/graphlib/blob/7513e82/src/algorithm/topsort.ts#L5)
