@@ -12,6 +12,7 @@
 - [containSameNodes](comparision.md#containsamenodes)
 - [getSameEdges](comparision.md#getsameedges)
 - [getSameNodes](comparision.md#getsamenodes)
+- [isGraphComplement](comparision.md#isgraphcomplement)
 - [isGraphContainsAnother](comparision.md#isgraphcontainsanother)
 - [isGraphOptionSame](comparision.md#isgraphoptionsame)
 - [isGraphSame](comparision.md#isgraphsame)
@@ -28,15 +29,15 @@
 
 #### Type parameters
 
-| Name         | Type  |
-| :----------- | :---- |
+| Name | Type |
+| :------ | :------ |
 | `NodeIDType` | `any` |
-| `EdgeType`   | `any` |
+| `EdgeType` | `any` |
 
 #### Parameters
 
-| Name     | Type                                                                    |
-| :------- | :---------------------------------------------------------------------- |
+| Name | Type |
+| :------ | :------ |
 | `aGraph` | [`Graph`](../classes/Graph.md)<`NodeIDType`, `any`, `EdgeType`, `any`\> |
 | `bGraph` | [`Graph`](../classes/Graph.md)<`NodeIDType`, `any`, `EdgeType`, `any`\> |
 
@@ -46,9 +47,9 @@
 
 #### Defined in
 
-[comparison.ts:96](https://github.com/antvis/graphlib/blob/630e2c1/src/comparison.ts#L96)
+[comparision/contain.ts:102](https://github.com/antvis/graphlib/blob/7513e82/src/comparision/contain.ts#L102)
 
----
+___
 
 ### containAllSameNodes
 
@@ -60,14 +61,14 @@
 
 #### Type parameters
 
-| Name         | Type  |
-| :----------- | :---- |
+| Name | Type |
+| :------ | :------ |
 | `NodeIDType` | `any` |
 
 #### Parameters
 
-| Name     | Type                                                               |
-| :------- | :----------------------------------------------------------------- |
+| Name | Type |
+| :------ | :------ |
 | `aGraph` | [`Graph`](../classes/Graph.md)<`NodeIDType`, `any`, `any`, `any`\> |
 | `bGraph` | [`Graph`](../classes/Graph.md)<`NodeIDType`, `any`, `any`, `any`\> |
 
@@ -77,9 +78,9 @@
 
 #### Defined in
 
-[comparison.ts:84](https://github.com/antvis/graphlib/blob/630e2c1/src/comparison.ts#L84)
+[comparision/contain.ts:90](https://github.com/antvis/graphlib/blob/7513e82/src/comparision/contain.ts#L90)
 
----
+___
 
 ### containSameEdges
 
@@ -91,16 +92,16 @@
 
 #### Type parameters
 
-| Name         | Type  |
-| :----------- | :---- |
+| Name | Type |
+| :------ | :------ |
 | `NodeIDType` | `any` |
 
 #### Parameters
 
 | Name | Type |
-| :-- | :-- |
-| `aGraph` | [`Graph`](../classes/Graph.md)<`NodeIDType`, `Record`<`string`, `any`\>, `Record`<`string`, `any`\>, `string`\> |
-| `bGraph` | [`Graph`](../classes/Graph.md)<`NodeIDType`, `Record`<`string`, `any`\>, `Record`<`string`, `any`\>, `string`\> |
+| :------ | :------ |
+| `aGraph` | [`Graph`](../classes/Graph.md)<`NodeIDType`, `any`, `any`, `string`\> |
+| `bGraph` | [`Graph`](../classes/Graph.md)<`NodeIDType`, `any`, `any`, `string`\> |
 
 #### Returns
 
@@ -108,9 +109,9 @@
 
 #### Defined in
 
-[comparison.ts:25](https://github.com/antvis/graphlib/blob/630e2c1/src/comparison.ts#L25)
+[comparision/contain.ts:31](https://github.com/antvis/graphlib/blob/7513e82/src/comparision/contain.ts#L31)
 
----
+___
 
 ### containSameNodes
 
@@ -122,14 +123,14 @@
 
 #### Type parameters
 
-| Name         | Type  |
-| :----------- | :---- |
+| Name | Type |
+| :------ | :------ |
 | `NodeIDType` | `any` |
 
 #### Parameters
 
 | Name | Type |
-| :-- | :-- |
+| :------ | :------ |
 | `aGraph` | [`Graph`](../classes/Graph.md)<`NodeIDType`, `Record`<`string`, `any`\>, `Record`<`string`, `any`\>, `string`\> |
 | `bGraph` | [`Graph`](../classes/Graph.md)<`NodeIDType`, `Record`<`string`, `any`\>, `Record`<`string`, `any`\>, `string`\> |
 
@@ -139,9 +140,9 @@
 
 #### Defined in
 
-[comparison.ts:7](https://github.com/antvis/graphlib/blob/630e2c1/src/comparison.ts#L7)
+[comparision/contain.ts:13](https://github.com/antvis/graphlib/blob/7513e82/src/comparision/contain.ts#L13)
 
----
+___
 
 ### getSameEdges
 
@@ -153,15 +154,15 @@
 
 #### Type parameters
 
-| Name         | Type  |
-| :----------- | :---- |
+| Name | Type |
+| :------ | :------ |
 | `NodeIDType` | `any` |
-| `EdgeType`   | `any` |
+| `EdgeType` | `any` |
 
 #### Parameters
 
-| Name     | Type                                                                    |
-| :------- | :---------------------------------------------------------------------- |
+| Name | Type |
+| :------ | :------ |
 | `aGraph` | [`Graph`](../classes/Graph.md)<`NodeIDType`, `any`, `EdgeType`, `any`\> |
 | `bGraph` | [`Graph`](../classes/Graph.md)<`NodeIDType`, `any`, `EdgeType`, `any`\> |
 
@@ -171,9 +172,9 @@
 
 #### Defined in
 
-[comparison.ts:56](https://github.com/antvis/graphlib/blob/630e2c1/src/comparison.ts#L56)
+[comparision/contain.ts:62](https://github.com/antvis/graphlib/blob/7513e82/src/comparision/contain.ts#L62)
 
----
+___
 
 ### getSameNodes
 
@@ -185,14 +186,14 @@
 
 #### Type parameters
 
-| Name         | Type  |
-| :----------- | :---- |
+| Name | Type |
+| :------ | :------ |
 | `NodeIDType` | `any` |
 
 #### Parameters
 
 | Name | Type |
-| :-- | :-- |
+| :------ | :------ |
 | `aGraph` | [`Graph`](../classes/Graph.md)<`NodeIDType`, `Record`<`string`, `any`\>, `Record`<`string`, `any`\>, `string`\> |
 | `bGraph` | [`Graph`](../classes/Graph.md)<`NodeIDType`, `Record`<`string`, `any`\>, `Record`<`string`, `any`\>, `string`\> |
 
@@ -202,9 +203,41 @@
 
 #### Defined in
 
-[comparison.ts:43](https://github.com/antvis/graphlib/blob/630e2c1/src/comparison.ts#L43)
+[comparision/contain.ts:49](https://github.com/antvis/graphlib/blob/7513e82/src/comparision/contain.ts#L49)
 
----
+___
+
+### isGraphComplement
+
+▸ **isGraphComplement**<`NodeIDType`, `EdgeType`\>(`originGraph`, `targetGraph`): `boolean`
+
+**`description`** Check if one graph is the complement of another graph.
+
+**`description.zh-cn`** 检查一个图是否是另一个图的补图。
+
+#### Type parameters
+
+| Name | Type |
+| :------ | :------ |
+| `NodeIDType` | `any` |
+| `EdgeType` | `any` |
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `originGraph` | [`Graph`](../classes/Graph.md)<`NodeIDType`, `any`, `EdgeType`, `any`\> |
+| `targetGraph` | [`Graph`](../classes/Graph.md)<`NodeIDType`, `any`, `EdgeType`, `any`\> |
+
+#### Returns
+
+`boolean`
+
+#### Defined in
+
+[comparision/complement.ts:9](https://github.com/antvis/graphlib/blob/7513e82/src/comparision/complement.ts#L9)
+
+___
 
 ### isGraphContainsAnother
 
@@ -216,15 +249,15 @@
 
 #### Type parameters
 
-| Name         | Type  |
-| :----------- | :---- |
+| Name | Type |
+| :------ | :------ |
 | `NodeIDType` | `any` |
-| `EdgeType`   | `any` |
+| `EdgeType` | `any` |
 
 #### Parameters
 
-| Name          | Type                                                                    |
-| :------------ | :---------------------------------------------------------------------- |
+| Name | Type |
+| :------ | :------ |
 | `originGraph` | [`Graph`](../classes/Graph.md)<`NodeIDType`, `any`, `EdgeType`, `any`\> |
 | `targetGraph` | [`Graph`](../classes/Graph.md)<`NodeIDType`, `any`, `EdgeType`, `any`\> |
 
@@ -234,9 +267,9 @@
 
 #### Defined in
 
-[comparison.ts:125](https://github.com/antvis/graphlib/blob/630e2c1/src/comparison.ts#L125)
+[comparision/contain.ts:131](https://github.com/antvis/graphlib/blob/7513e82/src/comparision/contain.ts#L131)
 
----
+___
 
 ### isGraphOptionSame
 
@@ -248,15 +281,15 @@
 
 #### Type parameters
 
-| Name         | Type  |
-| :----------- | :---- |
+| Name | Type |
+| :------ | :------ |
 | `NodeIDType` | `any` |
-| `EdgeType`   | `any` |
+| `EdgeType` | `any` |
 
 #### Parameters
 
-| Name     | Type                                                                    |
-| :------- | :---------------------------------------------------------------------- |
+| Name | Type |
+| :------ | :------ |
 | `aGraph` | [`Graph`](../classes/Graph.md)<`NodeIDType`, `any`, `EdgeType`, `any`\> |
 | `bGraph` | [`Graph`](../classes/Graph.md)<`NodeIDType`, `any`, `EdgeType`, `any`\> |
 
@@ -266,9 +299,9 @@
 
 #### Defined in
 
-[comparison.ts:69](https://github.com/antvis/graphlib/blob/630e2c1/src/comparison.ts#L69)
+[comparision/contain.ts:75](https://github.com/antvis/graphlib/blob/7513e82/src/comparision/contain.ts#L75)
 
----
+___
 
 ### isGraphSame
 
@@ -280,15 +313,15 @@
 
 #### Type parameters
 
-| Name         | Type  |
-| :----------- | :---- |
+| Name | Type |
+| :------ | :------ |
 | `NodeIDType` | `any` |
-| `EdgeType`   | `any` |
+| `EdgeType` | `any` |
 
 #### Parameters
 
-| Name     | Type                                                                    |
-| :------- | :---------------------------------------------------------------------- |
+| Name | Type |
+| :------ | :------ |
 | `aGraph` | [`Graph`](../classes/Graph.md)<`NodeIDType`, `any`, `EdgeType`, `any`\> |
 | `bGraph` | [`Graph`](../classes/Graph.md)<`NodeIDType`, `any`, `EdgeType`, `any`\> |
 
@@ -298,4 +331,4 @@
 
 #### Defined in
 
-[comparison.ts:108](https://github.com/antvis/graphlib/blob/630e2c1/src/comparison.ts#L108)
+[comparision/contain.ts:114](https://github.com/antvis/graphlib/blob/7513e82/src/comparision/contain.ts#L114)

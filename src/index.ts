@@ -1,6 +1,8 @@
 import Graph from './Graph';
-import { isGraph } from './util';
+import { GraphWithEvent } from './Graph/event';
 import * as algorithm from './algorithm';
-import * as comparision from './comparison';
+import * as comparision from './comparision';
+import * as essence from './essence';
+import * as generate from './generate';
 
-export { Graph, algorithm, isGraph, comparision };
+export { Graph, GraphWithEvent, algorithm, comparision, essence, generate };

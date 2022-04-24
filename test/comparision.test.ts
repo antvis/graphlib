@@ -1,5 +1,4 @@
 import { comparision, Graph } from '../src';
-import { isGraphOptionSame } from '../src/comparison';
 
 describe('comparision', function () {
   describe('containSameNodes', function () {
@@ -179,17 +178,17 @@ describe('comparision', function () {
       });
       const graph12 = new Graph({});
 
-      expect(isGraphOptionSame(graph11, graph12)).toBeFalsy();
+      expect(comparision.isGraphOptionSame(graph11, graph12)).toBeFalsy();
 
       const graph21 = new Graph({ compound: true, directed: false });
       const graph22 = new Graph({ compound: true, directed: true });
 
-      expect(isGraphOptionSame(graph21, graph22)).toBeFalsy();
+      expect(comparision.isGraphOptionSame(graph21, graph22)).toBeFalsy();
 
       const graph31 = new Graph({ compound: true, multigraph: true });
       const graph32 = new Graph({ compound: true, multigraph: false });
 
-      expect(isGraphOptionSame(graph31, graph32)).toBeFalsy();
+      expect(comparision.isGraphOptionSame(graph31, graph32)).toBeFalsy();
     });
   });
 
@@ -318,6 +317,87 @@ describe('comparision', function () {
       bGraph.setEdge('b', 'd', 'b');
       bGraph.setEdge('c', 'e', 'c');
       expect(comparision.isGraphContainsAnother(aGraph, bGraph)).toBe(false);
+    });
+  });
+
+  describe("is graph another's complement", function () {
+    it('returns true when the first graph is the complement of the second graph', function () {
+      const aGraph = new Graph();
+      aGraph.setNode('a');
+      aGraph.setNode('b');
+      aGraph.setNode('c');
+      aGraph.setEdge('a', 'b', 'a');
+      aGraph.setEdge('b', 'c', 'b');
+      const bGraph = new Graph();
+      bGraph.setNode('a');
+      bGraph.setNode('b');
+      bGraph.setNode('c');
+      bGraph.setEdge('a', 'c', 'c');
+      expect(comparision.isGraphComplement(aGraph, bGraph)).toBe(true);
+    });
+
+    it('returns false when the first graph is not the complement of the second graph', function () {
+      const aGraph = new Graph();
+      aGraph.setNode('a');
+      aGraph.setNode('b');
+      aGraph.setNode('c');
+      aGraph.setEdge('a', 'b', 'a');
+      aGraph.setEdge('b', 'c', 'b');
+      const bGraph = new Graph();
+      bGraph.setNode('a');
+      bGraph.setNode('b');
+      bGraph.setNode('c');
+      bGraph.setEdge('a', 'b', 'a');
+      bGraph.setEdge('a', 'c', 'a');
+      expect(comparision.isGraphComplement(aGraph, bGraph)).toBe(false);
+    });
+
+    it("returns false when the first graph's nodes is not same with another", function () {
+      const aGraph = new Graph();
+      aGraph.setNode('a');
+      aGraph.setNode('b');
+      aGraph.setNode('c');
+      aGraph.setEdge('a', 'b', 'a');
+      aGraph.setEdge('b', 'c', 'b');
+      aGraph.setEdge('c', 'd', 'c');
+      const bGraph = new Graph();
+      bGraph.setNode('a');
+      bGraph.setNode('b');
+      bGraph.setNode('d');
+      bGraph.setEdge('a', 'b', 'a');
+      bGraph.setEdge('c', 'e', 'c');
+      expect(comparision.isGraphComplement(aGraph, bGraph)).toBe(false);
+    });
+
+    it('returns false when first graph is not a simple graph', function () {
+      const aGraph = new Graph({
+        multigraph: true,
+        directed: false,
+      });
+      aGraph.setNode('a');
+      aGraph.setNode('b');
+      aGraph.setNode('c');
+      aGraph.setEdge('a', 'b', 'a');
+      aGraph.setEdge('b', 'a', 'b');
+      aGraph.setEdge('c', 'd', 'c');
+      const bGraph = new Graph();
+      bGraph.setNode('a');
+      bGraph.setNode('b');
+      bGraph.setNode('c');
+      bGraph.setEdge('a', 'b', 'a');
+      bGraph.setEdge('b', 'c', 'b');
+      bGraph.setEdge('c', 'd', 'c');
+      expect(comparision.isGraphComplement(aGraph, bGraph)).toBe(false);
+    });
+
+    it("return false when two graph's node counts different", () => {
+      const aGraph = new Graph();
+      const bGraph = new Graph();
+      aGraph.setNode('a');
+      aGraph.setNode('v');
+      bGraph.setNode('b');
+      bGraph.setGraph('w');
+      expect(comparision.isGraphComplement(aGraph, bGraph)).toBe(false);
     });
   });
 });

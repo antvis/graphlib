@@ -1,5 +1,5 @@
 import Graph, { DefaultEdgeType } from '../Graph';
-import PriorityQueue from '../PriorityQueue';
+import PriorityQueue from './PriorityQueue';
 
 const DEFAULT_WEIGHT_FUNC = () => 1;
 

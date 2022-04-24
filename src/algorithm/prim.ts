@@ -1,5 +1,5 @@
 import Graph, { DefaultEdgeType } from '../Graph';
-import PriorityQueue from '../PriorityQueue';
+import PriorityQueue from './PriorityQueue';
 
 const prim = <NodeIdType, NodeType, EdgeType>(
   graph: Graph<NodeIdType, NodeType, EdgeType>,
