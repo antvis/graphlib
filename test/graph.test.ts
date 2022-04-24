@@ -1,4 +1,5 @@
 import { Graph } from '../src';
+import { GraphWithEvent } from '../src/Graph/event';
 import _ from 'lodash';
 
 describe('Graph', function () {
@@ -1304,6 +1305,80 @@ describe('Graph', function () {
     it('target', function () {
       g.setEdge('a', 'b');
       expect(g.target(g.edges()[0])).toBe('b');
+    });
+  });
+
+  describe('event graph', function () {
+    it('adds nodes', function () {
+      const g = new GraphWithEvent();
+      const spy = jest.fn();
+      g.appendEvent('nodeAdd', spy);
+      g.setNode('a', {});
+      expect(spy).toHaveBeenCalledWith('a', {});
+    });
+
+    it('adds edges', function () {
+      const g = new GraphWithEvent();
+      const spy = jest.fn();
+      g.appendEvent('edgeAdd', spy);
+      g.setEdge('a', 'b');
+      expect(spy).toHaveBeenCalledWith('a', 'b', undefined, undefined);
+    });
+
+    it('removes nodes', function () {
+      const g = new GraphWithEvent();
+      const spy = jest.fn();
+      g.appendEvent('nodeRemove', spy);
+      g.setNode('a', {});
+      g.removeNode('a');
+      expect(spy).toHaveBeenCalledWith('a');
+    });
+
+    it('removes edges', function () {
+      const g = new GraphWithEvent();
+      const spy = jest.fn();
+      g.appendEvent('edgeRemove', spy);
+      g.setEdge('a', 'b');
+      g.removeEdge('a', 'b');
+      expect(spy).toHaveBeenCalledWith('a', 'b', undefined);
+    });
+
+    it("emit event didn't exsit", () => {
+      const g = new GraphWithEvent();
+      expect(g.emitEvent('nodeAdd')).toBeUndefined();
+    });
+
+    it('remove event listener', () => {
+      const g = new GraphWithEvent();
+      const spy = jest.fn();
+      g.appendEvent('nodeAdd', spy);
+      g.removeEvent('nodeAdd', spy);
+      g.removeEvent('nodeRemove', spy);
+      g.setNode('a', {});
+      expect(spy).not.toHaveBeenCalled();
+    });
+
+    it('append multple listeners on same event', () => {
+      const g = new GraphWithEvent();
+      const spy1 = jest.fn();
+      const spy2 = jest.fn();
+      g.appendEvent('nodeAdd', spy1);
+      g.appendEvent('nodeAdd', spy2);
+      g.setNode('a', {});
+      expect(spy1).toHaveBeenCalledWith('a', {});
+      expect(spy2).toHaveBeenCalledWith('a', {});
+    });
+
+    it('remove multple listeners on same event', () => {
+      const g = new GraphWithEvent();
+      const spy1 = jest.fn();
+      const spy2 = jest.fn();
+      g.appendEvent('nodeAdd', spy1);
+      g.removeEvent('nodeAdd', spy1);
+      g.removeEvent('nodeAdd', spy2);
+      g.setNode('a', {});
+      expect(spy1).not.toHaveBeenCalled();
+      expect(spy2).not.toHaveBeenCalled();
     });
   });
 });

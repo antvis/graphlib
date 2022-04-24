@@ -10,18 +10,22 @@
 
 ### Namespaces
 
-- [algorithm](docs/modules/algorithm.md)
-- [comparision](docs/modules/comparision.md)
+- [algorithm](modules/algorithm.md)
+- [comparision](modules/comparision.md)
+- [essence](modules/essence.md)
+- [generate](modules/generate.md)
 
 ### Classes
 
-- [Graph](docs/classes/Graph.md)
-
-### Functions
-
-- [isGraph](docs/modules.md#isgraph)
-
+- [Graph](classes/Graph.md)
+- [GraphWithEvent](classes/GraphWithEvent.md)
 ## Change Log
+
+#### 1.2.0
+- 🎉  `GraphWithEvent` now you can use graph with event listener
+- 🎉  `essece` module for graph basic essence property check
+- 🎉 `generate` module for graph generate new graph, now support graph's complement;
+- 
 
 #### 1.1.0
 
