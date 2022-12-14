@@ -11,16 +11,15 @@
 /es
 /docs-dist
 /lib
+/esm
+/dist
+
+# Bundle visualizer
+stats.html
 
 # misc
 .DS_Store
 /coverage
-
-# umi
-.umi
-.umi-production
-.umi-test
-.env.local
 
 # ide
 /.vscode
