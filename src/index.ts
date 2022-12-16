@@ -1,1 +1,2 @@
-export class Graph {}
+export * from './types';
+export * from './Graph';
