@@ -3,12 +3,13 @@ import {
   Edge,
   GraphChange,
   GraphChangedEvent,
-  GraphDiff,
   GraphOptions,
   ID,
   TreeData,
   PlainObject,
   TreeIndices,
+  NodeDataUpdated,
+  TreeStructureChanged,
 } from './types';
 
 export class Graph<N extends PlainObject, E extends PlainObject> {
@@ -104,10 +105,142 @@ export class Graph<N extends PlainObject, E extends PlainObject> {
   }
 
   /**
-   * Merge ordered atomic changes to a single {@link GraphDiff}.
+   * Reduce the number of ordered graph changes by dropping or merging unnecessary changes.
+   *
+   * For example, if we update a node and remove it in a batch:
+   *
+   * ```ts
+   * graph.batch(() => {
+   *   graph.updateNodeData('A', 'foo', 2);
+   *   graph.removeNode('A');
+   * });
+   * ```
+   *
+   * We get 2 atomic graph changes like
+   *
+   * ```ts
+   * [
+   *   { type: 'NodeDataUpdated', id: 'A', propertyName: 'foo', oldValue: 1, newValue: 2 },
+   *   { type: 'NodeRemoved', value: { id: 'A', data: { foo: 2 } },
+   * ]
+   * ```
+   *
+   * Since node 'A' has been removed, we actually have no need to handle with NodeDataUpdated change.
+   *
+   * `reduceChanges()` here helps us remove such changes.
    */
-  public mergeChanges(changes: GraphChange<N, E>[]): GraphDiff<N, E> {
-    throw new Error('To be implemented');
+  public reduceChanges(changes: GraphChange<N, E>[]): GraphChange<N, E>[] {
+    let mergedChanges: GraphChange<N, E>[] = [];
+    changes.forEach((change) => {
+      switch (change.type) {
+        case 'NodeRemoved': {
+          // NodeAdded: A added.
+          // NodeDataUpdated: A changed.
+          // TreeStructureChanged: A's parent changed.
+          // NodeRemoved: A removed. 👈🏻 Since A was removed, above three changes may be ignored.
+          let isNewlyAdded = false;
+          mergedChanges = mergedChanges.filter((pastChange) => {
+            if (pastChange.type === 'NodeAdded') {
+              const sameId = pastChange.value.id === change.value.id;
+              if (sameId) {
+                isNewlyAdded = true;
+              }
+              return !sameId;
+            } else if (pastChange.type === 'NodeDataUpdated') {
+              return pastChange.id !== change.value.id;
+            } else if (pastChange.type === 'TreeStructureChanged') {
+              return pastChange.nodeId !== change.value.id;
+            }
+            return true;
+          });
+          if (!isNewlyAdded) {
+            mergedChanges.push(change);
+          }
+          break;
+        }
+        case 'EdgeRemoved': {
+          // EdgeAdded: A added.
+          // EdgeDataUpdated: A changed.
+          // EdgeDataUpdated: A's source/target changed.
+          // EdgeRemoved: A removed. 👈🏻 Since A was removed, above three changes may be ignored.
+          let isNewlyAdded = false;
+          mergedChanges = mergedChanges.filter((pastChange) => {
+            if (pastChange.type === 'EdgeAdded') {
+              const sameId = pastChange.value.id === change.value.id;
+              if (sameId) {
+                isNewlyAdded = true;
+              }
+              return !sameId;
+            } else if (
+              pastChange.type === 'EdgeDataUpdated' ||
+              pastChange.type === 'EdgeUpdated'
+            ) {
+              return pastChange.id !== change.value.id;
+            }
+            return true;
+          });
+          if (!isNewlyAdded) {
+            mergedChanges.push(change);
+          }
+          break;
+        }
+        case 'NodeDataUpdated':
+        case 'EdgeDataUpdated':
+        case 'EdgeUpdated': {
+          // NodeDataUpdated: { id: A, propertyName: 'foo', oldValue: 1, newValue: 2 }.
+          // NodeDataUpdated: { id: A, propertyName: 'foo', oldValue: 2, newValue: 3 }.
+          // 👆 Could be merged as { id: A, propertyName: 'foo', oldValue: 1, newValue: 3 }.
+          const existingChange = mergedChanges.find((pastChange) => {
+            return (
+              pastChange.type === change.type &&
+              pastChange.id === change.id &&
+              pastChange.propertyName === change.propertyName
+            );
+          });
+          if (existingChange) {
+            (existingChange as NodeDataUpdated<N>).newValue = change.newValue;
+          } else {
+            mergedChanges.push(change);
+          }
+          break;
+        }
+        case 'TreeStructureDetached': {
+          // TreeStructureAttached
+          // TreeStructureChanged
+          // TreeStructureDetached 👈🏻 Since the tree struct was detached, above 2 changes may be ignored.
+          mergedChanges = mergedChanges.filter((pastChange) => {
+            if (pastChange.type === 'TreeStructureAttached') {
+              return pastChange.treeKey !== change.treeKey;
+            } else if (pastChange.type === 'TreeStructureChanged') {
+              return pastChange.treeKey !== change.treeKey;
+            }
+            return true;
+          });
+          mergedChanges.push(change);
+          break;
+        }
+        case 'TreeStructureChanged': {
+          const existingChange = mergedChanges.find((pastChange) => {
+            return (
+              pastChange.type === 'TreeStructureChanged' &&
+              pastChange.treeKey === change.treeKey &&
+              pastChange.nodeId === change.nodeId
+            );
+          });
+          if (existingChange) {
+            (existingChange as TreeStructureChanged).newParentId =
+              change.newParentId;
+          } else {
+            mergedChanges.push(change);
+          }
+          break;
+        }
+        default:
+          mergedChanges.push(change);
+          break;
+      }
+    });
+    return mergedChanges;
   }
 
   // ================= Node =================

@@ -154,7 +154,7 @@ export type NodeRemoved<D extends PlainObject> = {
 export type NodeDataUpdated<D extends PlainObject> = {
   type: 'NodeDataUpdated';
   id: ID;
-  propertyName: string | number | symbol;
+  propertyName: PropertyKey;
   oldValue: any;
   newValue: any;
 };
@@ -180,7 +180,7 @@ export type EdgeUpdated<D extends PlainObject> = {
 export type EdgeDataUpdated<D extends PlainObject> = {
   type: 'EdgeDataUpdated';
   id: ID;
-  propertyName: string | number | symbol;
+  propertyName: PropertyKey;
   oldValue: any;
   newValue: any;
 };
@@ -202,22 +202,3 @@ export type TreeStructureChanged = {
   oldParentId?: ID;
   newParentId: ID;
 };
-
-export interface GraphDiff<NodeData, EdgeData> {
-  addedNodes: NodeData[];
-  addedEdges: EdgeData[];
-  droppedNodes: NodeData[];
-  droppedEdges: EdgeData[];
-  nodeChanges: Array<{
-    id: ID;
-    property: string;
-    oldValue: any;
-    newValue: any;
-  }>;
-  edgeChanges: Array<{
-    id: ID;
-    property: string;
-    oldValue: any;
-    newValue: any;
-  }>;
-}
