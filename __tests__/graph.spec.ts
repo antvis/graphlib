@@ -230,21 +230,49 @@ test('reduceChanges', () => {
 });
 
 test('bsf', () => {
-  const graph = new Graph();
-  expect(() => {
-    graph.bfs(1, () => {
-      // Do nothing.
-    });
-  }).toThrow('To be implemented');
+  const graph = new Graph({
+    nodes: [
+      { id: 0, data: {} },
+      { id: 1, data: {} },
+      { id: 2, data: {} },
+      { id: 3, data: {} },
+    ],
+    edges: [
+      { id: 0, source: 0, target: 1, data: {} },
+      { id: 1, source: 1, target: 3, data: {} },
+      { id: 2, source: 3, target: 0, data: {} },
+      { id: 3, source: 0, target: 2, data: {} },
+      { id: 4, source: 2, target: 3, data: {} },
+    ],
+  });
+  const nodeIdList: any[] = [];
+  graph.bfs(0, (node) => {
+    nodeIdList.push(node.id);
+  });
+  expect(nodeIdList).toEqual([0, 1, 2, 3]);
 });
 
 test('dsf', () => {
-  const graph = new Graph();
-  expect(() => {
-    graph.dfs(1, () => {
-      // Do nothing.
-    });
-  }).toThrow('To be implemented');
+  const graph = new Graph({
+    nodes: [
+      { id: 0, data: {} },
+      { id: 1, data: {} },
+      { id: 2, data: {} },
+      { id: 3, data: {} },
+    ],
+    edges: [
+      { id: 0, source: 0, target: 1, data: {} },
+      { id: 1, source: 1, target: 3, data: {} },
+      { id: 2, source: 3, target: 0, data: {} },
+      { id: 3, source: 0, target: 2, data: {} },
+      { id: 4, source: 2, target: 3, data: {} },
+    ],
+  });
+  const nodeIdList: any[] = [];
+  graph.dfs(0, (node) => {
+    nodeIdList.push(node.id);
+  });
+  expect(nodeIdList).toEqual([0, 1, 3, 2]);
 });
 
 test('clone', () => {
@@ -261,9 +289,17 @@ test('clone', () => {
     nodes,
     edges,
   });
+  graph.attachTreeStructure('Tree');
+  graph.setParent('Node2', 'Node1', 'Tree');
+  graph.setParent('Node3', 'Node1', 'Tree');
   const clone = graph.clone();
   expect(clone.getAllNodes()).toEqual(nodes);
   expect(clone.getAllEdges()).toEqual(edges);
+  expect(clone.getParent('Node2', 'Tree')).toEqual({ id: 'Node1', data: {} });
+  expect(clone.getChildren('Node1', 'Tree')).toEqual([
+    { id: 'Node2', data: {} },
+    { id: 'Node3', data: {} },
+  ]);
 });
 
 test('toJSON', () => {

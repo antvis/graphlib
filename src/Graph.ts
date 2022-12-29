@@ -881,23 +881,80 @@ export class Graph<N extends PlainObject, E extends PlainObject> {
     return Array.from(this.edgeMap.values());
   }
 
+  private doBFS(
+    queue: Node<N>[],
+    visited: Set<ID>,
+    fn: (node: Node<N>) => void,
+  ) {
+    while (queue.length) {
+      const node = queue.shift()!;
+      fn(node);
+      visited.add(node.id);
+      this.getSuccessors(node.id).forEach((n) => {
+        if (!visited.has(n.id)) {
+          visited.add(n.id);
+          queue.push(n);
+        }
+      });
+    }
+  }
+
   public bfs(id: ID, fn: (node: Node<N>) => void): void {
-    throw new Error('To be implemented');
+    this.doBFS([this.getNode(id)], new Set(), fn);
+  }
+
+  private doDFS(node: Node<N>, visited: Set<ID>, fn: (node: Node<N>) => void) {
+    fn(node);
+    visited.add(node.id);
+    this.getSuccessors(node.id).forEach((n) => {
+      if (!visited.has(n.id)) {
+        this.doDFS(n, visited, fn);
+      }
+    });
   }
 
   public dfs(id: ID, fn: (node: Node<N>) => void): void {
-    throw new Error('To be implemented');
+    this.doDFS(this.getNode(id), new Set(), fn);
   }
 
   public clone(): Graph<N, E> {
-    // FIXME: Should deep clone nodes, edges, and tree structures.
-    const newGraph = new Graph<N, E>({
-      nodes: this.getAllNodes(),
-      edges: this.getAllEdges(),
-      onChanged: this.onChanged,
+    // Make a shallow copy of nodes and edges.
+    const newNodes = this.getAllNodes().map((oldNode) => {
+      return { ...oldNode, data: { ...oldNode.data } };
     });
-    newGraph.treeIndices = new Map();
-    newGraph.treeIndices = this.treeIndices;
+    const newEdges = this.getAllEdges().map((oldEdge) => {
+      return { ...oldEdge, data: { ...oldEdge.data } };
+    });
+
+    // Create a new graph with shallow copied nodes and edges.
+    const newGraph = new Graph<N, E>({
+      nodes: newNodes,
+      edges: newEdges,
+    });
+
+    // Add tree indices.
+    this.treeIndices.forEach(
+      ({ parentMap: oldParentMap, childrenMap: oldChildrenMap }, treeKey) => {
+        const parentMap = new Map<ID, Node<N>>();
+        oldParentMap.forEach((parent, key) => {
+          parentMap.set(key, newGraph.getNode(parent.id));
+        });
+
+        const childrenMap = new Map<ID, Set<Node<N>>>();
+        oldChildrenMap.forEach((children, key) => {
+          childrenMap.set(
+            key,
+            new Set(Array.from(children).map((n) => newGraph.getNode(n.id))),
+          );
+        });
+
+        newGraph.treeIndices.set(treeKey, {
+          parentMap: parentMap,
+          childrenMap: childrenMap,
+        });
+      },
+    );
+
     return newGraph;
   }
 
