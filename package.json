@@ -12,9 +12,8 @@
     "build": "run-p build:*"
   },
   "license": "MIT",
-  "type": "module",
   "main": "lib/index.js",
-  "module": "es/index.js",
+  "module": "esm/index.js",
   "types": "lib/index.d.ts",
   "dependencies": {},
   "devDependencies": {
