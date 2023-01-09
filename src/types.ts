@@ -1,4 +1,4 @@
-import type { Graph } from './Graph';
+import type { Graph } from './graph';
 
 /**
  * Supported node/edge ID type.
