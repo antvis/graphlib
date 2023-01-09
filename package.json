@@ -18,6 +18,7 @@
   "main": "lib/index.js",
   "module": "esm/index.js",
   "types": "lib/index.d.ts",
+  "unpkg": "dist/index.umd.min.js",
   "dependencies": {},
   "devDependencies": {
     "@commitlint/cli": "^11.0.0",
@@ -55,7 +56,7 @@
   },
   "limit-size": [
     {
-      "path": "dist/index.min.js",
+      "path": "dist/index.umd.min.js",
       "limit": "10 Kb",
       "gzip": true
     }

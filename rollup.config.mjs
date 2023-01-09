@@ -11,7 +11,7 @@ export default [
   {
     input: 'src/index.ts',
     output: {
-      file: 'dist/index.min.js',
+      file: 'dist/index.umd.min.js',
       name: 'GraphLib',
       format: 'umd',
       sourcemap: false,
