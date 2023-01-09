@@ -405,11 +405,7 @@ export class Graph<N extends PlainObject, E extends PlainObject> {
     this.removeNodes([id]);
   }
 
-  /**
-   * Update node data.
-   * @group NodeMethods
-   */
-  public updateNodeData<P extends keyof N>(
+  private updateNodeDataProperty<P extends keyof N>(
     id: ID,
     propertyName: P,
     value: N[P],
@@ -437,7 +433,72 @@ export class Graph<N extends PlainObject, E extends PlainObject> {
   public mergeNodeData(id: ID, patch: Partial<N>): void {
     this.batch(() => {
       Object.entries(patch).forEach(([propertyName, value]) => {
-        this.updateNodeData(id, propertyName, value);
+        this.updateNodeDataProperty(id, propertyName, value);
+      });
+    });
+  }
+
+  /**
+   * Update node data. This will replace the whole data object.
+   *
+   * ```ts
+   * updateNodeData(id, data); // Works like `node.data = data`
+   * ```
+   *
+   * @group NodeMethods
+   */
+  public updateNodeData(id: ID, data: N): void;
+  /**
+   * Update a single property on the node data.
+   *
+   * To update multiple properties, you could {@link Graph.batch batch} several updates or use {@link Graph.mergeNodeData mergeNodeData}.
+   *
+   * ```ts
+   * updateNodeData(id, key, value); // Works like `node.data[key] = value`
+   * ```
+   *
+   * @group NodeMethods
+   */
+  public updateNodeData<P extends keyof N>(
+    id: ID,
+    propertyName: P,
+    value: N[P],
+  ): void;
+  /**
+   * Update node data by a update function.
+   *
+   * ```ts
+   * updateNodeData(id, oldData => newData);
+   * ```
+   * @group NodeMethods
+   */
+  public updateNodeData(id: ID, update: (data: N) => N): void;
+  public updateNodeData(...args: any[]): void {
+    const id: ID = args[0];
+    const node = this.getNode(id);
+    if (typeof args[1] === 'string') {
+      // id, propertyName, value
+      this.updateNodeDataProperty(id, args[1], args[2]);
+      return;
+    }
+    let data: N;
+    if (typeof args[1] === 'function') {
+      // id, update
+      const update = args[1];
+      data = update(node.data);
+    } else if (typeof args[1] === 'object') {
+      // id, data
+      data = args[1];
+    }
+    this.batch(() => {
+      const oldValue = node.data;
+      const newValue = data;
+      node.data = data;
+      this.changes.push({
+        type: 'NodeDataUpdated',
+        id,
+        oldValue,
+        newValue,
       });
     });
   }
@@ -601,11 +662,7 @@ export class Graph<N extends PlainObject, E extends PlainObject> {
     });
   }
 
-  /**
-   * Update edge data.
-   * @group EdgeMethods
-   */
-  public updateEdgeData<P extends keyof E>(
+  private updateEdgeDataProperty<P extends keyof E>(
     id: ID,
     propertyName: P,
     value: E[P],
@@ -624,13 +681,79 @@ export class Graph<N extends PlainObject, E extends PlainObject> {
       });
     });
   }
+
+  /**
+   * Update edge data. This will replace the whole data object.
+   *
+   * ```ts
+   * updateEdgeData(id, data); // Works like `edge.data = data`
+   * ```
+   *
+   * @group EdgeMethods
+   */
+  public updateEdgeData(id: ID, data: E): void;
+  /**
+   * Update a single property on the edge data.
+   *
+   * To update multiple properties, you could {@link Graph.batch batch} several updates or use {@link Graph.mergeEdgeData mergeNodeData}.
+   *
+   * ```ts
+   * updateEdgeData(id, key, value); // Works like `edge.data[key] = value`
+   * ```
+   *
+   * @group EdgeMethods
+   */
+  public updateEdgeData<P extends keyof E>(
+    id: ID,
+    propertyName: P,
+    value: E[P],
+  ): void;
+  /**
+   * Update edge data by a update function.
+   *
+   * ```ts
+   * updateEdgeData(id, oldData => newData);
+   * ```
+   * @group EdgeMethods
+   */
+  public updateEdgeData(id: ID, update: (data: E) => E): void;
+  public updateEdgeData(...args: any[]): void {
+    const id: ID = args[0];
+    const edge = this.getEdge(id);
+    if (typeof args[1] === 'string') {
+      // id, propertyName, value
+      this.updateEdgeDataProperty(id, args[1], args[2]);
+      return;
+    }
+    let data: E;
+    if (typeof args[1] === 'function') {
+      // id, update
+      const update = args[1];
+      data = update(edge.data);
+    } else if (typeof args[1] === 'object') {
+      // id, data
+      data = args[1];
+    }
+    this.batch(() => {
+      const oldValue = edge.data;
+      const newValue = data;
+      edge.data = data;
+      this.changes.push({
+        type: 'EdgeDataUpdated',
+        id,
+        oldValue,
+        newValue,
+      });
+    });
+  }
+
   /**
    * @group EdgeMethods
    */
   public mergeEdgeData(id: ID, patch: Partial<E>): void {
     this.batch(() => {
       Object.entries(patch).forEach(([propertyName, value]) => {
-        this.updateEdgeData(id, propertyName, value);
+        this.updateEdgeDataProperty(id, propertyName, value);
       });
     });
   }

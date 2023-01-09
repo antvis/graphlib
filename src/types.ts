@@ -154,7 +154,7 @@ export type NodeRemoved<D extends PlainObject> = {
 export type NodeDataUpdated<D extends PlainObject> = {
   type: 'NodeDataUpdated';
   id: ID;
-  propertyName: PropertyKey;
+  propertyName?: PropertyKey;
   oldValue: any;
   newValue: any;
 };
@@ -180,7 +180,7 @@ export type EdgeUpdated<D extends PlainObject> = {
 export type EdgeDataUpdated<D extends PlainObject> = {
   type: 'EdgeDataUpdated';
   id: ID;
-  propertyName: PropertyKey;
+  propertyName?: PropertyKey;
   oldValue: any;
   newValue: any;
 };

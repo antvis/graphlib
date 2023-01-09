@@ -32,7 +32,7 @@ test('Edge related methods', () => {
   expect(graph.hasEdge('Edge999')).toBe(false);
 
   // getEdge()
-  //
+  // getEdgeDetail()
   expect(graph.getEdge('Edge1')).toEqual({
     id: 'Edge1',
     source: 'Node1',
@@ -48,12 +48,21 @@ test('Edge related methods', () => {
     graph.getEdge('Edge999');
   }).toThrow('Edge not found');
 
-  // updateEdgeData()
-  // mergeEdgeData()
+  // updateEdgeData(id, propertyName, value)
   graph.updateEdgeData('Edge1', 'foo', 1);
   expect(graph.getEdge('Edge1').data).toEqual({ foo: 1 });
   graph.updateEdgeData('Edge1', 'foo', 2);
   expect(graph.getEdge('Edge1').data).toEqual({ foo: 2 });
+
+  // updateEdgeData(id, data)
+  graph.updateEdgeData('Edge1', { bar: 1 });
+  expect(graph.getEdge('Edge1').data).toEqual({ bar: 1 });
+
+  // updateEdgeData(id, oldData => newData);
+  graph.updateEdgeData('Edge1', (data) => ({ foo: Number(data.bar) + 1 }));
+  expect(graph.getEdge('Edge1').data).toEqual({ foo: 2 });
+
+  // mergeEdgeData()
   graph.mergeEdgeData('Edge1', { bar: '1' });
   expect(graph.getEdge('Edge1').data).toEqual({ foo: 2, bar: '1' });
   graph.mergeEdgeData('Edge1', { foo: 3, bar: '2' });

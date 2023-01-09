@@ -70,12 +70,21 @@ test('Node related methods', () => {
   ]);
   expect(graph.areNeighbors('Node1', 'Node2')).toBe(true);
 
-  // updateNodeData()
-  // mergeNodeData()
+  // updateNodeData(id, propertyName, value)
   graph.updateNodeData('Node1', 'foo', 1);
   expect(graph.getNode('Node1').data).toEqual({ foo: 1 });
   graph.updateNodeData('Node1', 'foo', 2);
   expect(graph.getNode('Node1').data).toEqual({ foo: 2 });
+
+  // updateNodeData(id, data)
+  graph.updateNodeData('Node1', { bar: 1 });
+  expect(graph.getNode('Node1').data).toEqual({ bar: 1 });
+
+  // updateNodeData(id, oldData => newData);
+  graph.updateNodeData('Node1', (data) => ({ foo: Number(data.bar) + 1 }));
+  expect(graph.getNode('Node1').data).toEqual({ foo: 2 });
+
+  // mergeNodeData()
   graph.mergeNodeData('Node1', { bar: '1' });
   expect(graph.getNode('Node1').data).toEqual({ foo: 2, bar: '1' });
   graph.mergeNodeData('Node1', { foo: 3, bar: '2' });
