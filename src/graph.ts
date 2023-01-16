@@ -1,3 +1,4 @@
+import { GraphView } from './graphView';
 import {
   Node,
   Edge,
@@ -10,7 +11,9 @@ import {
   TreeIndices,
   NodeDataUpdated,
   TreeStructureChanged,
+  GraphViewOptions,
 } from './types';
+import { doBFS, doDFS } from './utils/traverse';
 
 export class Graph<N extends PlainObject, E extends PlainObject> {
   private nodeMap: Map<ID, Node<N>> = new Map();
@@ -98,10 +101,11 @@ export class Graph<N extends PlainObject, E extends PlainObject> {
   private commit(): void {
     const changes = this.changes;
     this.changes = [];
-    this.onChanged({
+    const event = {
       graph: this,
       changes,
-    });
+    };
+    this.onChanged(event);
   }
 
   /**
@@ -245,9 +249,7 @@ export class Graph<N extends PlainObject, E extends PlainObject> {
 
   // ================= Node =================
   private checkNodeExistence(id: ID): void {
-    if (!this.hasNode(id)) {
-      throw new Error('Node not found for id: ' + id);
-    }
+    this.getNode(id);
   }
 
   /**
@@ -263,7 +265,6 @@ export class Graph<N extends PlainObject, E extends PlainObject> {
    * @group NodeMethods
    */
   public areNeighbors(firstNodeId: ID, secondNodeId: ID): boolean {
-    this.checkNodeExistence(firstNodeId);
     return this.getNeighbors(secondNodeId).some(
       (neighbor) => neighbor.id === firstNodeId,
     );
@@ -274,7 +275,10 @@ export class Graph<N extends PlainObject, E extends PlainObject> {
    * @group NodeMethods
    */
   public getNode(id: ID): Node<N> {
-    this.checkNodeExistence(id);
+    const node = this.nodeMap.get(id);
+    if (!node) {
+      throw new Error('Node not found for id: ' + id);
+    }
     return this.nodeMap.get(id)!;
   }
 
@@ -760,9 +764,13 @@ export class Graph<N extends PlainObject, E extends PlainObject> {
 
   // ================= Tree =================
   private checkTreeExistence(treeKey: string | undefined): void {
-    if (!this.treeIndices.has(treeKey)) {
+    if (!this.hasTreeStructure(treeKey)) {
       throw new Error('Tree structure not found for treeKey: ' + treeKey);
     }
+  }
+
+  public hasTreeStructure(treeKey: string | undefined): boolean {
+    return this.treeIndices.has(treeKey);
   }
 
   /**
@@ -1004,40 +1012,30 @@ export class Graph<N extends PlainObject, E extends PlainObject> {
     return Array.from(this.edgeMap.values());
   }
 
-  private doBFS(
-    queue: Node<N>[],
-    visited: Set<ID>,
+  public bfs(
+    id: ID,
     fn: (node: Node<N>) => void,
-  ) {
-    while (queue.length) {
-      const node = queue.shift()!;
-      fn(node);
-      visited.add(node.id);
-      this.getSuccessors(node.id).forEach((n) => {
-        if (!visited.has(n.id)) {
-          visited.add(n.id);
-          queue.push(n);
-        }
-      });
-    }
+    direction: 'in' | 'out' | 'both' = 'out',
+  ): void {
+    const navigator = {
+      in: this.getPredecessors.bind(this),
+      out: this.getSuccessors.bind(this),
+      both: this.getNeighbors.bind(this),
+    }[direction];
+    doBFS([this.getNode(id)], new Set(), fn, navigator);
   }
 
-  public bfs(id: ID, fn: (node: Node<N>) => void): void {
-    this.doBFS([this.getNode(id)], new Set(), fn);
-  }
-
-  private doDFS(node: Node<N>, visited: Set<ID>, fn: (node: Node<N>) => void) {
-    fn(node);
-    visited.add(node.id);
-    this.getSuccessors(node.id).forEach((n) => {
-      if (!visited.has(n.id)) {
-        this.doDFS(n, visited, fn);
-      }
-    });
-  }
-
-  public dfs(id: ID, fn: (node: Node<N>) => void): void {
-    this.doDFS(this.getNode(id), new Set(), fn);
+  public dfs(
+    id: ID,
+    fn: (node: Node<N>) => void,
+    direction: 'in' | 'out' | 'both' = 'out',
+  ): void {
+    const navigator = {
+      in: this.getPredecessors.bind(this),
+      out: this.getSuccessors.bind(this),
+      both: this.getNeighbors.bind(this),
+    }[direction];
+    doDFS(this.getNode(id), new Set(), fn, navigator);
   }
 
   public clone(): Graph<N, E> {
@@ -1086,6 +1084,23 @@ export class Graph<N extends PlainObject, E extends PlainObject> {
       nodes: this.getAllNodes(),
       edges: this.getAllEdges(),
       // FIXME: And tree structures?
+    });
+  }
+
+  /**
+   * Create a readonly GraphView with a NodeFilter and an EdgeFilter.
+   *
+   * A GraphView is a "view" of a Graph. It does not contain any own data, but shares
+   * nodes and edges from the Graph, with a filter. When "viewing" it (calling any getter
+   * method on it), the filter will be applied.
+   *
+   * For example, if you filter out a node in a view, then that node will be ignored
+   * in `getAllNodes()`, `getNeighbors()`, etc. As if it doesn't exist in the graph.
+   */
+  public createGraphView(options: Omit<GraphViewOptions<N, E>, 'graph'>) {
+    return new GraphView({
+      graph: this,
+      ...options,
     });
   }
 }

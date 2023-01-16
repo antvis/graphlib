@@ -202,3 +202,17 @@ export type TreeStructureChanged = {
   oldParentId?: ID;
   newParentId: ID;
 };
+
+export interface GraphViewOptions<
+  N extends PlainObject,
+  E extends PlainObject,
+> {
+  graph: Graph<N, E>;
+  nodeFilter?: (node: Node<N>, graph: Graph<N, E>) => boolean;
+  edgeFilter?: (
+    edge: Edge<E>,
+    source: Node<N>,
+    target: Node<N>,
+    graph: Graph<N, E>,
+  ) => boolean;
+}
