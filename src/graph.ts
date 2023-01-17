@@ -1,4 +1,4 @@
-import { GraphView } from './graphView';
+import EventEmitter from '@antv/event-emitter';
 import {
   Node,
   Edge,
@@ -11,15 +11,18 @@ import {
   TreeIndices,
   NodeDataUpdated,
   TreeStructureChanged,
-  GraphViewOptions,
 } from './types';
 import { doBFS, doDFS } from './utils/traverse';
 
-export class Graph<N extends PlainObject, E extends PlainObject> {
+export class Graph<
+  N extends PlainObject,
+  E extends PlainObject,
+> extends EventEmitter {
   private nodeMap: Map<ID, Node<N>> = new Map();
   private edgeMap: Map<ID, Edge<E>> = new Map();
   private inEdgesMap: Map<ID, Set<Edge<E>>> = new Map();
   private outEdgesMap: Map<ID, Set<Edge<E>>> = new Map();
+  private bothEdgesMap: Map<ID, Set<Edge<E>>> = new Map();
   private treeIndices: TreeIndices<Node<N>> = new Map();
 
   private changes: GraphChange<N, E>[] = [];
@@ -58,6 +61,7 @@ export class Graph<N extends PlainObject, E extends PlainObject> {
    * ```
    */
   constructor(options?: GraphOptions<N, E>) {
+    super();
     if (!options) return;
     if (options.nodes) this.addNodes(options.nodes);
     if (options.edges) this.addEdges(options.edges);
@@ -105,6 +109,7 @@ export class Graph<N extends PlainObject, E extends PlainObject> {
       graph: this,
       changes,
     };
+    this.emit('changed', event);
     this.onChanged(event);
   }
 
@@ -279,7 +284,7 @@ export class Graph<N extends PlainObject, E extends PlainObject> {
     if (!node) {
       throw new Error('Node not found for id: ' + id);
     }
-    return this.nodeMap.get(id)!;
+    return node;
   }
 
   /**
@@ -291,17 +296,16 @@ export class Graph<N extends PlainObject, E extends PlainObject> {
   public getRelatedEdges(id: ID, direction?: 'in' | 'out' | 'both'): Edge<E>[] {
     this.checkNodeExistence(id);
 
-    const inEdges = this.inEdgesMap.get(id)!;
-    const outEdges = this.outEdgesMap.get(id)!;
-
     if (direction === 'in') {
+      const inEdges = this.inEdgesMap.get(id)!;
       return Array.from(inEdges);
     } else if (direction === 'out') {
+      const outEdges = this.outEdgesMap.get(id)!;
       return Array.from(outEdges);
+    } else {
+      const bothEdges = this.bothEdgesMap.get(id)!;
+      return Array.from(bothEdges);
     }
-
-    const bothEdges = new Set([...inEdges, ...outEdges]);
-    return Array.from(bothEdges);
   }
 
   /**
@@ -348,6 +352,7 @@ export class Graph<N extends PlainObject, E extends PlainObject> {
     this.nodeMap.set(node.id, node);
     this.inEdgesMap.set(node.id, new Set());
     this.outEdgesMap.set(node.id, new Set());
+    this.bothEdgesMap.set(node.id, new Set());
     this.treeIndices.forEach((tree) => {
       tree.childrenMap.set(node.id, new Set());
     });
@@ -376,10 +381,8 @@ export class Graph<N extends PlainObject, E extends PlainObject> {
 
   private doRemoveNode(id: ID): void {
     const node = this.getNode(id);
-    const inEdges = this.inEdgesMap.get(id);
-    const outEdges = this.outEdgesMap.get(id);
-    inEdges?.forEach((edge) => this.doRemoveEdge(edge.id));
-    outEdges?.forEach((edge) => this.doRemoveEdge(edge.id));
+    const bothEdges = this.bothEdgesMap.get(id);
+    bothEdges?.forEach((edge) => this.doRemoveEdge(edge.id));
     this.nodeMap.delete(id);
     this.treeIndices.forEach((tree) => {
       tree.childrenMap.get(id)?.forEach((child) => {
@@ -558,8 +561,12 @@ export class Graph<N extends PlainObject, E extends PlainObject> {
     this.edgeMap.set(edge.id, edge);
     const inEdges = this.inEdgesMap.get(edge.target)!;
     const outEdges = this.outEdgesMap.get(edge.source)!;
+    const bothEdgesOfSource = this.bothEdgesMap.get(edge.source)!;
+    const bothEdgesOfTarget = this.bothEdgesMap.get(edge.target)!;
     inEdges.add(edge);
     outEdges.add(edge);
+    bothEdgesOfSource.add(edge);
+    bothEdgesOfTarget.add(edge);
 
     this.changes.push({ type: 'EdgeAdded', value: edge });
   }
@@ -596,8 +603,12 @@ export class Graph<N extends PlainObject, E extends PlainObject> {
     const edge = this.getEdge(id);
     const outEdges = this.outEdgesMap.get(edge.source)!;
     const inEdges = this.inEdgesMap.get(edge.target)!;
+    const bothEdgesOfSource = this.bothEdgesMap.get(edge.source)!;
+    const bothEdgesOfTarget = this.bothEdgesMap.get(edge.target)!;
     outEdges.delete(edge);
     inEdges.delete(edge);
+    bothEdgesOfSource.delete(edge);
+    bothEdgesOfTarget.delete(edge);
     this.edgeMap.delete(id);
     this.changes.push({ type: 'EdgeRemoved', value: edge });
   }
@@ -630,7 +641,9 @@ export class Graph<N extends PlainObject, E extends PlainObject> {
     const oldSource = edge.source;
     const newSource = source;
     this.outEdgesMap.get(oldSource)!.delete(edge);
+    this.bothEdgesMap.get(oldSource)!.delete(edge);
     this.outEdgesMap.get(newSource)!.add(edge);
+    this.bothEdgesMap.get(newSource)!.add(edge);
     edge.source = source;
     this.batch(() => {
       this.changes.push({
@@ -653,7 +666,9 @@ export class Graph<N extends PlainObject, E extends PlainObject> {
     const oldTarget = edge.target;
     const newTarget = target;
     this.inEdgesMap.get(oldTarget)!.delete(edge);
+    this.bothEdgesMap.get(oldTarget)!.delete(edge);
     this.inEdgesMap.get(newTarget)!.add(edge);
+    this.bothEdgesMap.get(newTarget)!.add(edge);
     edge.target = target;
     this.batch(() => {
       this.changes.push({
@@ -1084,23 +1099,6 @@ export class Graph<N extends PlainObject, E extends PlainObject> {
       nodes: this.getAllNodes(),
       edges: this.getAllEdges(),
       // FIXME: And tree structures?
-    });
-  }
-
-  /**
-   * Create a readonly GraphView with a NodeFilter and an EdgeFilter.
-   *
-   * A GraphView is a "view" of a Graph. It does not contain any own data, but shares
-   * nodes and edges from the Graph, with a filter. When "viewing" it (calling any getter
-   * method on it), the filter will be applied.
-   *
-   * For example, if you filter out a node in a view, then that node will be ignored
-   * in `getAllNodes()`, `getNeighbors()`, etc. As if it doesn't exist in the graph.
-   */
-  public createGraphView(options: Omit<GraphViewOptions<N, E>, 'graph'>) {
-    return new GraphView({
-      graph: this,
-      ...options,
     });
   }
 }
