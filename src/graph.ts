@@ -321,8 +321,8 @@ export class Graph<
    */
   public getSuccessors(id: ID): Node<N>[] {
     const outEdges = this.getRelatedEdges(id, 'out');
-    const targets = outEdges.map((edge) => edge.target);
-    return Array.from(new Set(targets)).map((id) => this.getNode(id));
+    const targets = outEdges.map((edge) => this.getNode(edge.target));
+    return Array.from(new Set(targets));
   }
 
   /**
@@ -330,8 +330,8 @@ export class Graph<
    */
   public getPredecessors(id: ID): Node<N>[] {
     const inEdges = this.getRelatedEdges(id, 'in');
-    const sources = inEdges.map((edge) => edge.source);
-    return Array.from(new Set(sources)).map((id) => this.getNode(id));
+    const sources = inEdges.map((edge) => this.getNode(edge.source));
+    return Array.from(new Set(sources));
   }
 
   /**

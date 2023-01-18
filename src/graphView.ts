@@ -207,14 +207,11 @@ export class GraphView<N extends PlainObject, E extends PlainObject> {
     this.checkNodeExistence(id);
     if (this.cacheEnabled) {
       if (direction === 'in') {
-        const inEdges = this.inEdgesMap.get(id)!;
-        return Array.from(inEdges);
+        return this.inEdgesMap.get(id)!;
       } else if (direction === 'out') {
-        const outEdges = this.outEdgesMap.get(id)!;
-        return Array.from(outEdges);
+        return this.outEdgesMap.get(id)!;
       } else {
-        const bothEdges = this.bothEdgesMap.get(id)!;
-        return Array.from(bothEdges);
+        return this.bothEdgesMap.get(id)!;
       }
     }
     const edges = this.graph.getRelatedEdges(id, direction);
@@ -227,14 +224,14 @@ export class GraphView<N extends PlainObject, E extends PlainObject> {
 
   public getSuccessors(id: ID): Node<N>[] {
     const outEdges = this.getRelatedEdges(id, 'out');
-    const targets = outEdges.map((edge) => edge.target);
-    return Array.from(new Set(targets)).map((id) => this.getNode(id));
+    const targets = outEdges.map((edge) => this.getNode(edge.target));
+    return Array.from(new Set(targets));
   }
 
   public getPredecessors(id: ID): Node<N>[] {
     const inEdges = this.getRelatedEdges(id, 'in');
-    const sources = inEdges.map((edge) => edge.source);
-    return Array.from(new Set(sources)).map((id) => this.getNode(id));
+    const sources = inEdges.map((edge) => this.getNode(edge.source));
+    return Array.from(new Set(sources));
   }
 
   public getNeighbors(id: ID): Node<N>[] {
