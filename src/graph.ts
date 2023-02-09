@@ -201,15 +201,24 @@ export class Graph<
           // NodeDataUpdated: { id: A, propertyName: 'foo', oldValue: 1, newValue: 2 }.
           // NodeDataUpdated: { id: A, propertyName: 'foo', oldValue: 2, newValue: 3 }.
           // 👆 Could be merged as { id: A, propertyName: 'foo', oldValue: 1, newValue: 3 }.
-          const existingChange = mergedChanges.find((pastChange) => {
+          const index = mergedChanges.findIndex((pastChange) => {
             return (
               pastChange.type === change.type &&
               pastChange.id === change.id &&
-              pastChange.propertyName === change.propertyName
+              (change.propertyName === undefined ||
+                pastChange.propertyName === change.propertyName)
             );
           });
+          const existingChange = mergedChanges[index];
           if (existingChange) {
-            (existingChange as NodeDataUpdated<N>).newValue = change.newValue;
+            if (change.propertyName !== undefined) {
+              // The incoming change is of the same property of existing change.
+              (existingChange as NodeDataUpdated<N>).newValue = change.newValue;
+            } else {
+              // The incoming change is a whole data override.
+              mergedChanges.splice(index, 1);
+              mergedChanges.push(change);
+            }
           } else {
             mergedChanges.push(change);
           }
@@ -1134,6 +1143,7 @@ export class Graph<
   ): GraphView<N, E> {
     return new GraphView({
       graph: this,
+      ...options,
     });
   }
 }

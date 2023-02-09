@@ -48,6 +48,23 @@ test('reduceChanges', () => {
         newValue: 3,
       },
       {
+        type: 'NodeDataUpdated',
+        id: 'B',
+        propertyName: 'foo',
+        oldValue: 1,
+        newValue: 2,
+      },
+      {
+        type: 'NodeDataUpdated',
+        id: 'B',
+        oldValue: {
+          foo: 2,
+        },
+        newValue: {
+          bar: 3,
+        },
+      },
+      {
         type: 'EdgeDataUpdated',
         id: 'A',
         propertyName: 'foo',
@@ -69,6 +86,16 @@ test('reduceChanges', () => {
       propertyName: 'foo',
       oldValue: 1,
       newValue: 3,
+    },
+    {
+      type: 'NodeDataUpdated',
+      id: 'B',
+      oldValue: {
+        foo: 2,
+      },
+      newValue: {
+        bar: 3,
+      },
     },
     {
       type: 'EdgeDataUpdated',

@@ -30,8 +30,7 @@ const initGraphView = (cache: any) => {
       { id: 6, source: 3, target: 0, data: { visible: false } },
     ],
   });
-  const graphView = new GraphView({
-    graph,
+  const graphView = graph.createView({
     nodeFilter: (node) => node.data.visible,
     edgeFilter: (edge) => edge.data.visible,
     cache,
