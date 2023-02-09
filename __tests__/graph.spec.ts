@@ -48,6 +48,23 @@ test('reduceChanges', () => {
         newValue: 3,
       },
       {
+        type: 'NodeDataUpdated',
+        id: 'B',
+        propertyName: 'foo',
+        oldValue: 1,
+        newValue: 2,
+      },
+      {
+        type: 'NodeDataUpdated',
+        id: 'B',
+        oldValue: {
+          foo: 2,
+        },
+        newValue: {
+          bar: 3,
+        },
+      },
+      {
         type: 'EdgeDataUpdated',
         id: 'A',
         propertyName: 'foo',
@@ -69,6 +86,16 @@ test('reduceChanges', () => {
       propertyName: 'foo',
       oldValue: 1,
       newValue: 3,
+    },
+    {
+      type: 'NodeDataUpdated',
+      id: 'B',
+      oldValue: {
+        foo: 2,
+      },
+      newValue: {
+        bar: 3,
+      },
     },
     {
       type: 'EdgeDataUpdated',
@@ -250,6 +277,14 @@ test('bsf', () => {
     nodeIdList.push(node.id);
   });
   expect(nodeIdList).toEqual([0, 1, 2, 3]);
+
+  // Abort on 1.
+  nodeIdList.length = 0;
+  graph.bfs(0, (node) => {
+    nodeIdList.push(node.id);
+    if (node.id === 1) return true;
+  });
+  expect(nodeIdList).toEqual([0, 1]);
 });
 
 test('dsf', () => {
@@ -273,6 +308,14 @@ test('dsf', () => {
     nodeIdList.push(node.id);
   });
   expect(nodeIdList).toEqual([0, 1, 3, 2]);
+
+  // Abort on 1.
+  nodeIdList.length = 0;
+  graph.dfs(0, (node) => {
+    nodeIdList.push(node.id);
+    if (node.id === 1) return true;
+  });
+  expect(nodeIdList).toEqual([0, 1]);
 });
 
 test('clone', () => {

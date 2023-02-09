@@ -1,3 +1,5 @@
+import EventEmitter from '@antv/event-emitter';
+import { GraphView } from './graphView';
 import {
   Node,
   Edge,
@@ -10,13 +12,19 @@ import {
   TreeIndices,
   NodeDataUpdated,
   TreeStructureChanged,
+  GraphViewOptions,
 } from './types';
+import { doBFS, doDFS } from './utils/traverse';
 
-export class Graph<N extends PlainObject, E extends PlainObject> {
+export class Graph<
+  N extends PlainObject,
+  E extends PlainObject,
+> extends EventEmitter {
   private nodeMap: Map<ID, Node<N>> = new Map();
   private edgeMap: Map<ID, Edge<E>> = new Map();
   private inEdgesMap: Map<ID, Set<Edge<E>>> = new Map();
   private outEdgesMap: Map<ID, Set<Edge<E>>> = new Map();
+  private bothEdgesMap: Map<ID, Set<Edge<E>>> = new Map();
   private treeIndices: TreeIndices<Node<N>> = new Map();
 
   private changes: GraphChange<N, E>[] = [];
@@ -55,6 +63,7 @@ export class Graph<N extends PlainObject, E extends PlainObject> {
    * ```
    */
   constructor(options?: GraphOptions<N, E>) {
+    super();
     if (!options) return;
     if (options.nodes) this.addNodes(options.nodes);
     if (options.edges) this.addEdges(options.edges);
@@ -98,10 +107,12 @@ export class Graph<N extends PlainObject, E extends PlainObject> {
   private commit(): void {
     const changes = this.changes;
     this.changes = [];
-    this.onChanged({
+    const event = {
       graph: this,
       changes,
-    });
+    };
+    this.emit('changed', event);
+    this.onChanged(event);
   }
 
   /**
@@ -190,15 +201,24 @@ export class Graph<N extends PlainObject, E extends PlainObject> {
           // NodeDataUpdated: { id: A, propertyName: 'foo', oldValue: 1, newValue: 2 }.
           // NodeDataUpdated: { id: A, propertyName: 'foo', oldValue: 2, newValue: 3 }.
           // 👆 Could be merged as { id: A, propertyName: 'foo', oldValue: 1, newValue: 3 }.
-          const existingChange = mergedChanges.find((pastChange) => {
+          const index = mergedChanges.findIndex((pastChange) => {
             return (
               pastChange.type === change.type &&
               pastChange.id === change.id &&
-              pastChange.propertyName === change.propertyName
+              (change.propertyName === undefined ||
+                pastChange.propertyName === change.propertyName)
             );
           });
+          const existingChange = mergedChanges[index];
           if (existingChange) {
-            (existingChange as NodeDataUpdated<N>).newValue = change.newValue;
+            if (change.propertyName !== undefined) {
+              // The incoming change is of the same property of existing change.
+              (existingChange as NodeDataUpdated<N>).newValue = change.newValue;
+            } else {
+              // The incoming change is a whole data override.
+              mergedChanges.splice(index, 1);
+              mergedChanges.push(change);
+            }
           } else {
             mergedChanges.push(change);
           }
@@ -245,9 +265,7 @@ export class Graph<N extends PlainObject, E extends PlainObject> {
 
   // ================= Node =================
   private checkNodeExistence(id: ID): void {
-    if (!this.hasNode(id)) {
-      throw new Error('Node not found for id: ' + id);
-    }
+    this.getNode(id);
   }
 
   /**
@@ -263,7 +281,6 @@ export class Graph<N extends PlainObject, E extends PlainObject> {
    * @group NodeMethods
    */
   public areNeighbors(firstNodeId: ID, secondNodeId: ID): boolean {
-    this.checkNodeExistence(firstNodeId);
     return this.getNeighbors(secondNodeId).some(
       (neighbor) => neighbor.id === firstNodeId,
     );
@@ -274,8 +291,11 @@ export class Graph<N extends PlainObject, E extends PlainObject> {
    * @group NodeMethods
    */
   public getNode(id: ID): Node<N> {
-    this.checkNodeExistence(id);
-    return this.nodeMap.get(id)!;
+    const node = this.nodeMap.get(id);
+    if (!node) {
+      throw new Error('Node not found for id: ' + id);
+    }
+    return node;
   }
 
   /**
@@ -287,17 +307,16 @@ export class Graph<N extends PlainObject, E extends PlainObject> {
   public getRelatedEdges(id: ID, direction?: 'in' | 'out' | 'both'): Edge<E>[] {
     this.checkNodeExistence(id);
 
-    const inEdges = this.inEdgesMap.get(id)!;
-    const outEdges = this.outEdgesMap.get(id)!;
-
     if (direction === 'in') {
+      const inEdges = this.inEdgesMap.get(id)!;
       return Array.from(inEdges);
     } else if (direction === 'out') {
+      const outEdges = this.outEdgesMap.get(id)!;
       return Array.from(outEdges);
+    } else {
+      const bothEdges = this.bothEdgesMap.get(id)!;
+      return Array.from(bothEdges);
     }
-
-    const bothEdges = new Set([...inEdges, ...outEdges]);
-    return Array.from(bothEdges);
   }
 
   /**
@@ -313,8 +332,8 @@ export class Graph<N extends PlainObject, E extends PlainObject> {
    */
   public getSuccessors(id: ID): Node<N>[] {
     const outEdges = this.getRelatedEdges(id, 'out');
-    const targets = outEdges.map((edge) => edge.target);
-    return Array.from(new Set(targets)).map((id) => this.getNode(id));
+    const targets = outEdges.map((edge) => this.getNode(edge.target));
+    return Array.from(new Set(targets));
   }
 
   /**
@@ -322,8 +341,8 @@ export class Graph<N extends PlainObject, E extends PlainObject> {
    */
   public getPredecessors(id: ID): Node<N>[] {
     const inEdges = this.getRelatedEdges(id, 'in');
-    const sources = inEdges.map((edge) => edge.source);
-    return Array.from(new Set(sources)).map((id) => this.getNode(id));
+    const sources = inEdges.map((edge) => this.getNode(edge.source));
+    return Array.from(new Set(sources));
   }
 
   /**
@@ -344,6 +363,7 @@ export class Graph<N extends PlainObject, E extends PlainObject> {
     this.nodeMap.set(node.id, node);
     this.inEdgesMap.set(node.id, new Set());
     this.outEdgesMap.set(node.id, new Set());
+    this.bothEdgesMap.set(node.id, new Set());
     this.treeIndices.forEach((tree) => {
       tree.childrenMap.set(node.id, new Set());
     });
@@ -372,10 +392,8 @@ export class Graph<N extends PlainObject, E extends PlainObject> {
 
   private doRemoveNode(id: ID): void {
     const node = this.getNode(id);
-    const inEdges = this.inEdgesMap.get(id);
-    const outEdges = this.outEdgesMap.get(id);
-    inEdges?.forEach((edge) => this.doRemoveEdge(edge.id));
-    outEdges?.forEach((edge) => this.doRemoveEdge(edge.id));
+    const bothEdges = this.bothEdgesMap.get(id);
+    bothEdges?.forEach((edge) => this.doRemoveEdge(edge.id));
     this.nodeMap.delete(id);
     this.treeIndices.forEach((tree) => {
       tree.childrenMap.get(id)?.forEach((child) => {
@@ -554,8 +572,12 @@ export class Graph<N extends PlainObject, E extends PlainObject> {
     this.edgeMap.set(edge.id, edge);
     const inEdges = this.inEdgesMap.get(edge.target)!;
     const outEdges = this.outEdgesMap.get(edge.source)!;
+    const bothEdgesOfSource = this.bothEdgesMap.get(edge.source)!;
+    const bothEdgesOfTarget = this.bothEdgesMap.get(edge.target)!;
     inEdges.add(edge);
     outEdges.add(edge);
+    bothEdgesOfSource.add(edge);
+    bothEdgesOfTarget.add(edge);
 
     this.changes.push({ type: 'EdgeAdded', value: edge });
   }
@@ -592,8 +614,12 @@ export class Graph<N extends PlainObject, E extends PlainObject> {
     const edge = this.getEdge(id);
     const outEdges = this.outEdgesMap.get(edge.source)!;
     const inEdges = this.inEdgesMap.get(edge.target)!;
+    const bothEdgesOfSource = this.bothEdgesMap.get(edge.source)!;
+    const bothEdgesOfTarget = this.bothEdgesMap.get(edge.target)!;
     outEdges.delete(edge);
     inEdges.delete(edge);
+    bothEdgesOfSource.delete(edge);
+    bothEdgesOfTarget.delete(edge);
     this.edgeMap.delete(id);
     this.changes.push({ type: 'EdgeRemoved', value: edge });
   }
@@ -626,7 +652,9 @@ export class Graph<N extends PlainObject, E extends PlainObject> {
     const oldSource = edge.source;
     const newSource = source;
     this.outEdgesMap.get(oldSource)!.delete(edge);
+    this.bothEdgesMap.get(oldSource)!.delete(edge);
     this.outEdgesMap.get(newSource)!.add(edge);
+    this.bothEdgesMap.get(newSource)!.add(edge);
     edge.source = source;
     this.batch(() => {
       this.changes.push({
@@ -649,7 +677,9 @@ export class Graph<N extends PlainObject, E extends PlainObject> {
     const oldTarget = edge.target;
     const newTarget = target;
     this.inEdgesMap.get(oldTarget)!.delete(edge);
+    this.bothEdgesMap.get(oldTarget)!.delete(edge);
     this.inEdgesMap.get(newTarget)!.add(edge);
+    this.bothEdgesMap.get(newTarget)!.add(edge);
     edge.target = target;
     this.batch(() => {
       this.changes.push({
@@ -760,9 +790,13 @@ export class Graph<N extends PlainObject, E extends PlainObject> {
 
   // ================= Tree =================
   private checkTreeExistence(treeKey: string | undefined): void {
-    if (!this.treeIndices.has(treeKey)) {
+    if (!this.hasTreeStructure(treeKey)) {
       throw new Error('Tree structure not found for treeKey: ' + treeKey);
     }
+  }
+
+  public hasTreeStructure(treeKey: string | undefined): boolean {
+    return this.treeIndices.has(treeKey);
   }
 
   /**
@@ -950,6 +984,21 @@ export class Graph<N extends PlainObject, E extends PlainObject> {
   }
 
   /**
+   * Returns an array of all the ancestor nodes, staring from the parent to the root.
+   */
+  public getAncestors(id: ID, treeKey?: string): Node<N>[] {
+    const ancestors: Node<N>[] = [];
+    let current = this.getNode(id);
+    let parent: Node<N> | null;
+    // eslint-disable-next-line no-cond-assign
+    while ((parent = this.getParent(current.id, treeKey))) {
+      ancestors.push(parent);
+      current = parent;
+    }
+    return ancestors;
+  }
+
+  /**
    * Set node parent. If this operation causes a circle, it fails with an error.
    * @param id - ID of the child node.
    * @param parent - ID of the parent node.
@@ -989,6 +1038,16 @@ export class Graph<N extends PlainObject, E extends PlainObject> {
     });
   }
 
+  dfsTree(id: ID, fn: (node: Node<N>) => boolean | void, treeKey?: string) {
+    const navigator = (nodeId: ID) => this.getChildren(nodeId, treeKey);
+    return doDFS(this.getNode(id), new Set(), fn, navigator);
+  }
+
+  bfsTree(id: ID, fn: (node: Node<N>) => boolean | void, treeKey?: string) {
+    const navigator = (nodeId: ID) => this.getChildren(nodeId, treeKey);
+    return doBFS([this.getNode(id)], new Set(), fn, navigator);
+  }
+
   // ================= Graph =================
   /**
    * Get all nodes in the graph as an array.
@@ -1004,40 +1063,30 @@ export class Graph<N extends PlainObject, E extends PlainObject> {
     return Array.from(this.edgeMap.values());
   }
 
-  private doBFS(
-    queue: Node<N>[],
-    visited: Set<ID>,
-    fn: (node: Node<N>) => void,
-  ) {
-    while (queue.length) {
-      const node = queue.shift()!;
-      fn(node);
-      visited.add(node.id);
-      this.getSuccessors(node.id).forEach((n) => {
-        if (!visited.has(n.id)) {
-          visited.add(n.id);
-          queue.push(n);
-        }
-      });
-    }
+  public bfs(
+    id: ID,
+    fn: (node: Node<N>) => boolean | void,
+    direction: 'in' | 'out' | 'both' = 'out',
+  ): boolean {
+    const navigator = {
+      in: this.getPredecessors.bind(this),
+      out: this.getSuccessors.bind(this),
+      both: this.getNeighbors.bind(this),
+    }[direction];
+    return doBFS([this.getNode(id)], new Set(), fn, navigator);
   }
 
-  public bfs(id: ID, fn: (node: Node<N>) => void): void {
-    this.doBFS([this.getNode(id)], new Set(), fn);
-  }
-
-  private doDFS(node: Node<N>, visited: Set<ID>, fn: (node: Node<N>) => void) {
-    fn(node);
-    visited.add(node.id);
-    this.getSuccessors(node.id).forEach((n) => {
-      if (!visited.has(n.id)) {
-        this.doDFS(n, visited, fn);
-      }
-    });
-  }
-
-  public dfs(id: ID, fn: (node: Node<N>) => void): void {
-    this.doDFS(this.getNode(id), new Set(), fn);
+  public dfs(
+    id: ID,
+    fn: (node: Node<N>) => boolean | void,
+    direction: 'in' | 'out' | 'both' = 'out',
+  ): boolean {
+    const navigator = {
+      in: this.getPredecessors.bind(this),
+      out: this.getSuccessors.bind(this),
+      both: this.getNeighbors.bind(this),
+    }[direction];
+    return doDFS(this.getNode(id), new Set(), fn, navigator);
   }
 
   public clone(): Graph<N, E> {
@@ -1086,6 +1135,15 @@ export class Graph<N extends PlainObject, E extends PlainObject> {
       nodes: this.getAllNodes(),
       edges: this.getAllEdges(),
       // FIXME: And tree structures?
+    });
+  }
+
+  public createView(
+    options: Omit<GraphViewOptions<N, E>, 'graph'>,
+  ): GraphView<N, E> {
+    return new GraphView({
+      graph: this,
+      ...options,
     });
   }
 }

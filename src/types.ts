@@ -124,7 +124,7 @@ export interface GraphChangedEvent<
    *
    * Each change object is a smallest unit of change that can be made to a graph, including addition, removal, or modification of nodes or edges.
    *
-   * You can call {@link Graph.mergeChanges} to merge them into a {@link GraphDiff}.
+   * You can call {@link Graph.reduceChanges} to reduce them.
    */
   changes: GraphChange<N, E>[];
 }
@@ -202,3 +202,28 @@ export type TreeStructureChanged = {
   oldParentId?: ID;
   newParentId: ID;
 };
+
+/** Options to create a GraphView */
+export interface GraphViewOptions<
+  N extends PlainObject,
+  E extends PlainObject,
+> {
+  /** The original Graph */
+  graph: Graph<N, E>;
+  nodeFilter?: (node: Node<N>) => boolean;
+  edgeFilter?: (edge: Edge<E>, source: Node<N>, target: Node<N>) => boolean;
+  /**
+   * Cache mode of the GraphView. Defaults to 'none'.
+   *
+   * - `none`: Use no cache. Filters are applied when reading data. Fast to create but a bit
+   * slow to read data.
+   *
+   * - `auto`: Automatically cache data when view created or graph changed. Fast to read
+   * data but takes time to build up cache. You should call `stopAutoCache()` to avoid
+   * unnecessary updates if the GraphView is no longer active.
+   *
+   * - `manual` Manage cache manually. `clearCache()` `refreshCache()` `updateCache()`
+   * might be useful.
+   */
+  cache?: 'none' | 'auto' | 'manual';
+}
