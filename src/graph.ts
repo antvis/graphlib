@@ -973,6 +973,21 @@ export class Graph<
   }
 
   /**
+   * Returns an array of all the ancestor nodes, staring from the parent to the root.
+   */
+  public getAncestors(id: ID, treeKey?: string): Node<N>[] {
+    const ancestors: Node<N>[] = [];
+    let current = this.getNode(id);
+    let parent: Node<N> | null;
+    // eslint-disable-next-line no-cond-assign
+    while ((parent = this.getParent(current.id, treeKey))) {
+      ancestors.push(parent);
+      current = parent;
+    }
+    return ancestors;
+  }
+
+  /**
    * Set node parent. If this operation causes a circle, it fails with an error.
    * @param id - ID of the child node.
    * @param parent - ID of the parent node.
@@ -1012,6 +1027,16 @@ export class Graph<
     });
   }
 
+  dfsTree(id: ID, fn: (node: Node<N>) => boolean | void, treeKey?: string) {
+    const navigator = (nodeId: ID) => this.getChildren(nodeId, treeKey);
+    return doDFS(this.getNode(id), new Set(), fn, navigator);
+  }
+
+  bfsTree(id: ID, fn: (node: Node<N>) => boolean | void, treeKey?: string) {
+    const navigator = (nodeId: ID) => this.getChildren(nodeId, treeKey);
+    return doBFS([this.getNode(id)], new Set(), fn, navigator);
+  }
+
   // ================= Graph =================
   /**
    * Get all nodes in the graph as an array.
@@ -1029,28 +1054,28 @@ export class Graph<
 
   public bfs(
     id: ID,
-    fn: (node: Node<N>) => void,
+    fn: (node: Node<N>) => boolean | void,
     direction: 'in' | 'out' | 'both' = 'out',
-  ): void {
+  ): boolean {
     const navigator = {
       in: this.getPredecessors.bind(this),
       out: this.getSuccessors.bind(this),
       both: this.getNeighbors.bind(this),
     }[direction];
-    doBFS([this.getNode(id)], new Set(), fn, navigator);
+    return doBFS([this.getNode(id)], new Set(), fn, navigator);
   }
 
   public dfs(
     id: ID,
-    fn: (node: Node<N>) => void,
+    fn: (node: Node<N>) => boolean | void,
     direction: 'in' | 'out' | 'both' = 'out',
-  ): void {
+  ): boolean {
     const navigator = {
       in: this.getPredecessors.bind(this),
       out: this.getSuccessors.bind(this),
       both: this.getNeighbors.bind(this),
     }[direction];
-    doDFS(this.getNode(id), new Set(), fn, navigator);
+    return doDFS(this.getNode(id), new Set(), fn, navigator);
   }
 
   public clone(): Graph<N, E> {

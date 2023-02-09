@@ -3,12 +3,15 @@ import { ID, Node, PlainObject } from '../types';
 export function doBFS<N extends PlainObject>(
   queue: Node<N>[],
   visited: Set<ID>,
-  fn: (node: Node<N>) => void,
+  fn: (node: Node<N>) => boolean | void,
   navigator: (id: ID) => Node<N>[],
-) {
+): boolean {
   while (queue.length) {
     const node = queue.shift()!;
-    fn(node);
+    const abort = fn(node);
+    if (abort) {
+      return true;
+    }
     visited.add(node.id);
     navigator(node.id).forEach((n) => {
       if (!visited.has(n.id)) {
@@ -17,19 +20,28 @@ export function doBFS<N extends PlainObject>(
       }
     });
   }
+  return false;
 }
 
 export function doDFS<N extends PlainObject>(
   node: Node<N>,
   visited: Set<ID>,
-  fn: (node: Node<N>) => void,
+  fn: (node: Node<N>) => boolean | void,
   navigator: (id: ID) => Node<N>[],
-) {
-  fn(node);
+): boolean {
+  const abort = fn(node);
+  if (abort) {
+    return true;
+  }
+
   visited.add(node.id);
-  navigator(node.id).forEach((n) => {
+  for (const n of navigator(node.id)) {
     if (!visited.has(n.id)) {
-      doDFS(n, visited, fn, navigator);
+      if (doDFS(n, visited, fn, navigator)) {
+        return true;
+      }
     }
-  });
+  }
+
+  return false;
 }

@@ -250,6 +250,14 @@ test('bsf', () => {
     nodeIdList.push(node.id);
   });
   expect(nodeIdList).toEqual([0, 1, 2, 3]);
+
+  // Abort on 1.
+  nodeIdList.length = 0;
+  graph.bfs(0, (node) => {
+    nodeIdList.push(node.id);
+    if (node.id === 1) return true;
+  });
+  expect(nodeIdList).toEqual([0, 1]);
 });
 
 test('dsf', () => {
@@ -273,6 +281,14 @@ test('dsf', () => {
     nodeIdList.push(node.id);
   });
   expect(nodeIdList).toEqual([0, 1, 3, 2]);
+
+  // Abort on 1.
+  nodeIdList.length = 0;
+  graph.dfs(0, (node) => {
+    nodeIdList.push(node.id);
+    if (node.id === 1) return true;
+  });
+  expect(nodeIdList).toEqual([0, 1]);
 });
 
 test('clone', () => {
