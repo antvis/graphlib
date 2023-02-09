@@ -124,7 +124,7 @@ export interface GraphChangedEvent<
    *
    * Each change object is a smallest unit of change that can be made to a graph, including addition, removal, or modification of nodes or edges.
    *
-   * You can call {@link Graph.mergeChanges} to merge them into a {@link GraphDiff}.
+   * You can call {@link Graph.reduceChanges} to reduce them.
    */
   changes: GraphChange<N, E>[];
 }

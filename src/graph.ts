@@ -1,4 +1,5 @@
 import EventEmitter from '@antv/event-emitter';
+import { GraphView } from './graphView';
 import {
   Node,
   Edge,
@@ -11,6 +12,7 @@ import {
   TreeIndices,
   NodeDataUpdated,
   TreeStructureChanged,
+  GraphViewOptions,
 } from './types';
 import { doBFS, doDFS } from './utils/traverse';
 
@@ -1124,6 +1126,14 @@ export class Graph<
       nodes: this.getAllNodes(),
       edges: this.getAllEdges(),
       // FIXME: And tree structures?
+    });
+  }
+
+  public createView(
+    options: Omit<GraphViewOptions<N, E>, 'graph'>,
+  ): GraphView<N, E> {
+    return new GraphView({
+      graph: this,
     });
   }
 }

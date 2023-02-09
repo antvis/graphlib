@@ -15,7 +15,7 @@
 /dist
 
 # docs
-/docs
+# /docs
 
 # Bundle visualizer
 stats.html
