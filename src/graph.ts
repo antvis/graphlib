@@ -1016,7 +1016,7 @@ export class Graph<
     if (oldParent?.id === parent) return;
 
     // New parent is undefined, unset parent for the node
-    if (!parent) {
+    if (parent === undefined) {
       if (oldParent) {
         tree.childrenMap.get(oldParent.id)?.delete(node);
       }
