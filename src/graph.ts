@@ -1001,16 +1001,29 @@ export class Graph<
   /**
    * Set node parent. If this operation causes a circle, it fails with an error.
    * @param id - ID of the child node.
-   * @param parent - ID of the parent node.
+   * @param parent - ID of the parent node. If it is undefined, means unset parent for node with id.
    * @param treeKey - Which tree structure the relation is applied to.
    * @group TreeMethods
    */
-  public setParent(id: ID, parent: ID, treeKey?: string) {
+  public setParent(id: ID, parent?: ID, treeKey?: string) {
     this.checkTreeExistence(treeKey);
 
     const tree = this.treeIndices.get(treeKey)!;
     const node = this.getNode(id);
     const oldParent = tree.parentMap.get(id);
+
+    // Same parent id as old one, skip
+    if (oldParent?.id === parent) return;
+
+    // New parent is undefined, unset parent for the node
+    if (parent === undefined) {
+      if (oldParent) {
+        tree.childrenMap.get(oldParent.id)?.delete(node);
+      }
+      tree.parentMap.delete(id);
+      return;
+    }
+
     const newParent = this.getNode(parent);
 
     // Set parent

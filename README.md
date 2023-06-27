@@ -21,6 +21,10 @@
 
 ## Change Log
 
+#### 2.0.2
+
+- feat: supports undefined parent as unsetting parent for setParent API;
+
 #### 2.0
 
 - 🎉 Release new version
