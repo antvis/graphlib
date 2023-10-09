@@ -8,7 +8,7 @@
 >
 > 一个包含方便的图结构，图算法，以及其他操作图的方法的图库，为 AntV 上层提供相应的图基础能力。
 
-[![Build Status](https://github.com/antvis/graphlib/workflows/build/badge.svg?branch=master)](https://github.com/antvis/graphlib/actions)
+[![build](https://github.com/antvis/graphlib/actions/workflows/build.yml/badge.svg)](https://github.com/antvis/graphlib/actions/workflows/build.yml)
 [![Coverage Status](https://coveralls.io/repos/github/antvis/graphlib/badge.svg?branch=master)](https://coveralls.io/github/antvis/graphlib?branch=master)
 [![npm Version](https://img.shields.io/npm/v/@antv/graphlib.svg)](https://www.npmjs.com/package/@antv/graphlib)
 [![npm Download](https://img.shields.io/npm/dm/@antv/graphlib.svg)](https://www.npmjs.com/package/@antv/graphlib)
