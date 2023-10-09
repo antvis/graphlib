@@ -16,20 +16,20 @@
 
 </div>
 
-## Features
+## ✨ Features
 
 - Manage graph structure data with simple APIs.
 - Easily batch multiple changes for performance optimization.
 - GraphView for efficient data transformation.
 
-## API
+## 📖 API
 
 ### Classes
 
 - [Graph](docs/classes/Graph.md)
 - [GraphView](docs/classes/GraphView.md)
 
-## Change Log
+## 🗂 Change Log
 
 #### 2.0.2
 
@@ -38,3 +38,7 @@
 #### 2.0
 
 - 🎉 Release new version
+
+## 📄 License
+
+MIT@[AntV](https://github.com/antvis).
