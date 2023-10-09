@@ -1,6 +1,10 @@
 {
   "name": "@antv/graphlib",
   "version": "2.0.2",
+  "main": "lib/index.js",
+  "module": "esm/index.js",
+  "types": "lib/index.d.ts",
+  "unpkg": "dist/index.umd.min.js",
   "sideEffects": false,
   "scripts": {
     "clean": "rimraf lib esm dist",
@@ -16,11 +20,6 @@
     "build": "run-p build:*",
     "bundle-vis": "cross-env BUNDLE_VIS=1 run-p build:umd"
   },
-  "license": "MIT",
-  "main": "lib/index.js",
-  "module": "esm/index.js",
-  "types": "lib/index.d.ts",
-  "unpkg": "dist/index.umd.min.js",
   "dependencies": {
     "@antv/event-emitter": "^0.1.3"
   },
@@ -62,7 +61,7 @@
   "limit-size": [
     {
       "path": "dist/index.umd.min.js",
-      "limit": "10 Kb",
+      "limit": "5 Kb",
       "gzip": true
     }
   ],
@@ -77,5 +76,6 @@
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org"
-  }
+  },
+  "license": "MIT"
 }
