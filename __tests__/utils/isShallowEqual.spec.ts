@@ -1,4 +1,8 @@
-import { isShallowEqual, depthOf } from '../../src/utils/isShallowEqual';
+import {
+  isShallowEqual,
+  depthOf,
+  isEqual,
+} from '../../src/utils/isShallowEqual';
 
 describe('isShallowEqual', () => {
   it('depth 0', () => {
@@ -86,6 +90,10 @@ describe('isShallowEqual', () => {
     expect(
       isShallowEqual({ a: { b: { c: [0] } } }, { a: { b: { c: [1] } } }),
     ).toBe(true);
+
+    expect(isEqual({ a: { b: { c: [0] } } }, { a: { b: { c: [1] } } })).toBe(
+      false,
+    );
   });
 
   it('depth 4', () => {
