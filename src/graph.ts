@@ -399,9 +399,16 @@ export class Graph<
       tree.childrenMap.get(id)?.forEach((child) => {
         tree.parentMap.delete(child.id);
       });
+
+      const parent = tree.parentMap.get(id);
+      if (parent) tree.childrenMap.get(parent.id)?.delete(node);
+
       tree.parentMap.delete(id);
       tree.childrenMap.delete(id);
     });
+    this.bothEdgesMap.delete(id);
+    this.inEdgesMap.delete(id);
+    this.outEdgesMap.delete(id);
     this.changes.push({ type: 'NodeRemoved', value: node });
   }
 
