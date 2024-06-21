@@ -9,7 +9,7 @@ export type ID = string | number;
 
 export type PlainObject = Record<string, unknown>;
 
-export interface Node<D extends PlainObject> {
+export interface Node<D> {
   /**
    * Every node in a graph must have a unique ID.
    */
@@ -21,7 +21,7 @@ export interface Node<D extends PlainObject> {
   data: D;
 }
 
-export interface Edge<D extends PlainObject> {
+export interface Edge<D> {
   /**
    * Every edge in a graph must have a unique ID.
    */
