@@ -15,6 +15,7 @@ import {
   GraphViewOptions,
 } from './types';
 import { doBFS, doDFS } from './utils/traverse';
+import { isEqual } from './utils/isShallowEqual';
 
 export class Graph<
   N extends PlainObject,
@@ -106,6 +107,7 @@ export class Graph<
    */
   private commit(): void {
     const changes = this.changes;
+    if (changes.length === 0) return;
     this.changes = [];
     const event = {
       graph: this,
@@ -439,6 +441,7 @@ export class Graph<
     this.batch(() => {
       const oldValue = node.data[propertyName];
       const newValue = value;
+      if (isEqual(oldValue, newValue)) return;
       node.data[propertyName] = newValue;
       this.changes.push({
         type: 'NodeDataUpdated',
@@ -518,6 +521,7 @@ export class Graph<
     this.batch(() => {
       const oldValue = node.data;
       const newValue = data;
+      if (isEqual(oldValue, newValue)) return;
       node.data = data;
       this.changes.push({
         type: 'NodeDataUpdated',
@@ -658,6 +662,7 @@ export class Graph<
     this.checkNodeExistence(source);
     const oldSource = edge.source;
     const newSource = source;
+    if (oldSource === newSource) return;
     this.outEdgesMap.get(oldSource)!.delete(edge);
     this.bothEdgesMap.get(oldSource)!.delete(edge);
     this.outEdgesMap.get(newSource)!.add(edge);
@@ -683,6 +688,7 @@ export class Graph<
     this.checkNodeExistence(target);
     const oldTarget = edge.target;
     const newTarget = target;
+    if (oldTarget === newTarget) return;
     this.inEdgesMap.get(oldTarget)!.delete(edge);
     this.bothEdgesMap.get(oldTarget)!.delete(edge);
     this.inEdgesMap.get(newTarget)!.add(edge);
@@ -708,6 +714,7 @@ export class Graph<
     this.batch(() => {
       const oldValue = edge.data[propertyName];
       const newValue = value;
+      if (isEqual(oldValue, newValue)) return;
       edge.data[propertyName] = newValue;
       this.changes.push({
         type: 'EdgeDataUpdated',
@@ -774,6 +781,7 @@ export class Graph<
     this.batch(() => {
       const oldValue = edge.data;
       const newValue = data;
+      if (isEqual(oldValue, newValue)) return;
       edge.data = data;
       this.changes.push({
         type: 'EdgeDataUpdated',
