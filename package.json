@@ -6,6 +6,14 @@
   "types": "lib/index.d.ts",
   "unpkg": "dist/index.umd.min.js",
   "sideEffects": false,
+  "files": [
+    "lib",
+    "esm",
+    "dist",
+    "src",
+    "README.md",
+    "LICENSE"
+  ],
   "scripts": {
     "clean": "rimraf lib esm dist",
     "doc": "typedoc src/index.ts --plugin typedoc-plugin-markdown",
@@ -18,7 +26,8 @@
     "build:cjs": "rimraf ./lib && tsc --module commonjs --outDir lib",
     "build:esm": "rimraf ./esm && tsc --module ESNext --outDir esm",
     "build": "run-p build:*",
-    "bundle-vis": "cross-env BUNDLE_VIS=1 run-p build:umd"
+    "bundle-vis": "cross-env BUNDLE_VIS=1 run-p build:umd",
+    "prepublishOnly": "npm run build"
   },
   "dependencies": {
     "@antv/event-emitter": "^0.1.3"
