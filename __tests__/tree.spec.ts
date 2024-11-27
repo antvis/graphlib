@@ -74,6 +74,18 @@ describe('Tree related methods', () => {
     expect(graph.getChildren(1).map((n) => n.id)).toEqual([3]);
   });
 
+  test('Remove parent', () => {
+    const graph = initTreeGraph();
+    graph.setParent(2, 4);
+    expect(graph.getParent(2)?.id).toEqual(4);
+    graph.setParent(2, null);
+    expect(graph.getParent(2)).toEqual(null);
+
+    graph.setParent(2, 1);
+    expect(graph.getParent(2)?.id).toEqual(1);
+    graph.setParent(2); // use undefined to remove parent
+  });
+
   test('Removing nodes', () => {
     const graph = initTreeGraph();
     graph.removeNode(1);
